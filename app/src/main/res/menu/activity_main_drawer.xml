@@ -2,20 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:id="@+id/group1">
-        <item android:id="@+id/nav_account" android:icon="@android:drawable/ic_menu_camera"
+        <item android:id="@+id/nav_account" android:icon="@mipmap/ic_person_outline_black_24dp"
             android:title="Account &amp; Billing" />
-        <item android:id="@+id/nav_maintenance" android:icon="@android:drawable/ic_menu_gallery"
+        <item android:id="@+id/nav_maintenance" android:icon="@mipmap/ic_content_paste_black_24dp"
             android:title="Maintenance" />
-        <item android:id="@+id/nav_community" android:icon="@android:drawable/ic_menu_gallery"
+        <item android:id="@+id/nav_community" android:icon="@mipmap/ic_group_black_24dp"
             android:title="Community" />
-        <item android:id="@+id/nav_local" android:icon="@android:drawable/ic_menu_slideshow"
+        <item android:id="@+id/nav_local" android:icon="@mipmap/ic_whatshot_black_24dp"
             android:title="Local Deals" />
     </group>
 
     <group android:id="@+id/group2">
-            <item android:id="@+id/nav_notification" android:icon="@android:drawable/ic_menu_share"
+            <item android:id="@+id/nav_notification" android:icon="@mipmap/ic_notifications_active_black_24dp"
                 android:title="Notifications" />
-            <item android:id="@+id/nav_contact" android:icon="@android:drawable/ic_menu_send"
+            <item android:id="@+id/nav_contact" android:icon="@mipmap/ic_call_black_24dp"
                 android:title="Contact Us" />
     </group>
 </menu>
