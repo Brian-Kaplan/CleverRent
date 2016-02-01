@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Switch
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Account Notifications"
+        android:id="@+id/switch1"
+        android:layout_marginTop="108dp"
+        android:checked="false"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="23dp"
+        android:layout_marginEnd="23dp" />
+
+    <Switch
+        android:layout_width="273dp"
+        android:layout_height="wrap_content"
+        android:text="Account &amp; Billing"
+        android:id="@+id/switch2"
+        android:checked="false"
+        android:textSize="18dp"
+        android:layout_below="@+id/switch3"
+        android:layout_alignRight="@+id/switch1"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp" />
+
+    <Switch
+        android:layout_width="273dp"
+        android:layout_height="wrap_content"
+        android:text="Maintenance"
+        android:id="@+id/switch3"
+        android:checked="false"
+        android:textSize="18dp"
+        android:layout_below="@+id/switch6"
+        android:layout_alignRight="@+id/switch1"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp" />
+
+    <Switch
+        android:layout_width="273dp"
+        android:layout_height="wrap_content"
+        android:text="Comunity Events"
+        android:id="@+id/switch4"
+        android:checked="false"
+        android:textSize="18dp"
+        android:layout_below="@+id/switch1"
+        android:layout_alignRight="@+id/switch1"
+        android:layout_alignEnd="@+id/switch1"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp" />
+
+    <Switch
+        android:layout_width="273dp"
+        android:layout_height="wrap_content"
+        android:text="Community Classifieds"
+        android:id="@+id/switch5"
+        android:checked="false"
+        android:textSize="18dp"
+        android:layout_below="@+id/switch2"
+        android:layout_alignRight="@+id/switch1"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp" />
+
+    <Switch
+        android:layout_width="273dp"
+        android:layout_height="wrap_content"
+        android:text="Local Deals"
+        android:id="@+id/switch6"
+        android:checked="false"
+        android:textSize="18dp"
+        android:layout_below="@+id/switch4"
+        android:layout_alignRight="@+id/switch1"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp" />
+
+    <RelativeLayout
+        android:layout_width="150dp"
+        android:layout_height="1dp"
+        android:layout_below="@+id/switch1"
+        android:layout_alignLeft="@+id/switch1"
+        android:layout_alignStart="@+id/switch1"
+        android:background="#575757"
+        android:layout_alignRight="@+id/switch1"
+        android:layout_alignEnd="@+id/switch1"></RelativeLayout>
+</RelativeLayout>
