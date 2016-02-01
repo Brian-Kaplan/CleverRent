@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_account" android:icon="@android:drawable/ic_menu_camera"
+            android:title="Account &amp; Billing" />
+        <item android:id="@+id/nav_maintenance" android:icon="@android:drawable/ic_menu_gallery"
+            android:title="Maintenance" />
+        <item android:id="@+id/nav_community" android:icon="@android:drawable/ic_menu_gallery"
+            android:title="Community" />
+        <item android:id="@+id/nav_local" android:icon="@android:drawable/ic_menu_slideshow"
+            android:title="Local Deals" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <menu android:title="">
+            <item android:id="@+id/nav_notification" android:icon="@android:drawable/ic_menu_share"
+                android:title="Notifications" />
+            <item android:id="@+id/nav_contact" android:icon="@android:drawable/ic_menu_send"
+                android:title="Contact Us" />
+        </menu>
+    </group>
+</menu>
