@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.widget.RelativeLayout;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -34,6 +35,10 @@ public class MainActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
+
+        RelativeLayout contentView = (RelativeLayout)findViewById(R.id.content_view);
+        View child = getLayoutInflater().inflate(R.layout.content_main, null);
+        contentView.addView(child);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -122,6 +127,11 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_local) {
 
         } else if (id == R.id.nav_notification) {
+
+            RelativeLayout contentView = (RelativeLayout)findViewById(R.id.content_view);
+            View child = getLayoutInflater().inflate(R.layout.notification_page, null);
+            contentView.removeAllViews();
+            contentView.addView(child);
 
         } else if (id == R.id.nav_contact) {
 
