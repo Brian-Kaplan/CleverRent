@@ -143,6 +143,10 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_contact) {
 
+            RelativeLayout contentView = (RelativeLayout)findViewById(R.id.content_view);
+            View child = getLayoutInflater().inflate(R.layout.contact_page, null);
+            contentView.removeAllViews();
+            contentView.addView(child);
         }
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);

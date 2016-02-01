@@ -1,44 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:outlineProvider="bounds"
     android:paddingTop="100dp">
 
-    <TableRow
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="100dp">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/contact_phone_icon"
+            android:background="@android:drawable/ic_menu_call"
+            android:backgroundTint="#01bcd4"
+            android:layout_marginLeft="31dp"
+            android:layout_marginStart="31dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
-            android:id="@+id/textView4" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="(651) 555-1234"
+            android:id="@+id/contact_number"
+            android:textStyle="bold"
+            android:layout_above="@+id/contact_label1"
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
-            android:id="@+id/textView5" />
-    </TableRow>
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Mobile"
+            android:id="@+id/contact_label1"
+            android:textSize="15dp"
+            android:layout_alignBottom="@+id/contact_phone_icon"
+            android:layout_alignLeft="@+id/contact_number"
+            android:layout_alignStart="@+id/contact_number" />
 
-    <TableRow
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:paddingTop="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="100dp">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/contact_mail_icon"
+            android:background="@android:drawable/ic_dialog_email"
+            android:backgroundTint="#01bcd4"
+            android:layout_marginLeft="31dp"
+            android:layout_marginStart="31dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
-            android:id="@+id/textView6" />
-    </TableRow>
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="name@mymail.com"
+            android:id="@+id/contact_email"
+            android:textStyle="bold"
+            android:layout_marginLeft="47dp"
+            android:layout_marginStart="47dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/contact_mail_icon"
+            android:layout_toEndOf="@+id/contact_mail_icon" />
 
-</TableLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Personal"
+            android:id="@+id/contact_label2"
+            android:textSize="15dp"
+            android:layout_below="@+id/contact_email"
+            android:layout_alignLeft="@+id/contact_email"
+            android:layout_alignStart="@+id/contact_email" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:paddingTop="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/contact_map_icon"
+            android:background="@android:drawable/ic_dialog_map"
+            android:backgroundTint="#01bcd4"
+            android:layout_marginLeft="31dp"
+            android:layout_marginStart="31dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Address"
+            android:id="@+id/contact_address"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/contact_map_icon"
+            android:layout_toEndOf="@+id/contact_map_icon"
+            android:layout_marginLeft="47dp"
+            android:layout_marginStart="47dp" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:paddingTop="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+    </RelativeLayout>
+
+</LinearLayout>
