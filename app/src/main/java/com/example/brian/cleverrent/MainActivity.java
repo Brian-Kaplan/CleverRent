@@ -36,9 +36,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        RelativeLayout contentView = (RelativeLayout)findViewById(R.id.content_view);
-        View child = getLayoutInflater().inflate(R.layout.content_main, null);
-        contentView.addView(child);
+        setContentToTabLayout();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -99,6 +97,8 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_account) {
 
+            setContentToTabLayout();
+
             ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
             viewPager.setAdapter(new AccountFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this));
 
@@ -107,6 +107,9 @@ public class MainActivity extends AppCompatActivity
             tabLayout.setupWithViewPager(viewPager);
 
         } else if (id == R.id.nav_maintenance) {
+
+            setContentToTabLayout();
+
             ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
             viewPager.setAdapter(new CommunityFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this));
 
@@ -116,6 +119,9 @@ public class MainActivity extends AppCompatActivity
 
 
         } else if (id == R.id.nav_community) {
+
+            setContentToTabLayout();
+
             ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
             viewPager.setAdapter(new CommunityFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this));
 
@@ -125,6 +131,8 @@ public class MainActivity extends AppCompatActivity
 
 
         } else if (id == R.id.nav_local) {
+
+            setContentToTabLayout();
 
         } else if (id == R.id.nav_notification) {
 
@@ -137,8 +145,27 @@ public class MainActivity extends AppCompatActivity
 
         }
 
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        Menu m = navigationView.getMenu();
+        for (int i=0;i<m.size();i++) {
+            MenuItem mi = m.getItem(i);
+            if (!(mi.getItemId() == item.getItemId())) {
+                mi.setCheckable(false);
+            }
+        }
+        item.setCheckable(true);
+        item.setChecked(true);
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    //Sets the main content view to the TablLayout view
+    public void setContentToTabLayout(){
+        RelativeLayout contentView = (RelativeLayout)findViewById(R.id.content_view);
+        View child = getLayoutInflater().inflate(R.layout.content_main, null);
+        contentView.removeAllViews();
+        contentView.addView(child);
     }
 }
