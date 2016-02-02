@@ -15,7 +15,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -26,15 +29,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        getSupportActionBar().setTitle("Account");
 
         setContentToTabLayout();
 
@@ -46,6 +41,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        //Set the Account and Billing nav item to checked by default
+        Menu m = navigationView.getMenu();
+        MenuItem mi = m.getItem(0);
+        mi.setCheckable(true);
+        mi.setChecked(true);
+
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -97,8 +98,10 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_account) {
 
-            setContentToTabLayout();
+            //Set title of toolbar
+            getSupportActionBar().setTitle("Account");
 
+            setContentToTabLayout();
             ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
             viewPager.setAdapter(new AccountFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this));
 
@@ -108,14 +111,40 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_maintenance) {
 
-            setContentToTabLayout();
+            //Set title of toolbar
+            getSupportActionBar().setTitle("Maintenance");
 
-            ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-            viewPager.setAdapter(new CommunityFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this));
+            //Set the content to the maintenance_page
+            RelativeLayout contentView = (RelativeLayout)findViewById(R.id.content_view);
+            View child = getLayoutInflater().inflate(R.layout.maintenance_page, null);
+            contentView.removeAllViews();
+            contentView.addView(child);
 
-            // Give the TabLayout the ViewPager
-            TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-            tabLayout.setupWithViewPager(viewPager);
+            ListView lv = (ListView) findViewById(R.id.maintenanceListView);
+            String[] dates = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
+            final String[] status = {"pending", "failed", "complete", "pending", "pending", "failed", "complete", "pending", "pending", "failed", "complete", "pending"};
+//
+            MaintenanceListAdapter adapter = new MaintenanceListAdapter(this, dates, status);
+            lv.setAdapter(adapter);
+
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.maintenanceRequestButton);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
+
+            //Click Listener for Maintenance Requests
+//            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                    Toast.makeText(getApplicationContext(), status[position], Toast.LENGTH_SHORT).show();
+//                }
+//            });
+
 
 
         } else if (id == R.id.nav_community) {
@@ -136,17 +165,27 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_notification) {
 
+            //Set title of toolbar
+            getSupportActionBar().setTitle("Notifications");
+
+            //Set the content to the notification_page
             RelativeLayout contentView = (RelativeLayout)findViewById(R.id.content_view);
             View child = getLayoutInflater().inflate(R.layout.notification_page, null);
             contentView.removeAllViews();
             contentView.addView(child);
 
+
         } else if (id == R.id.nav_contact) {
 
+            //Set title of toolbar
+            getSupportActionBar().setTitle("Contact Us");
+
+            //Set the content to the contact_page
             RelativeLayout contentView = (RelativeLayout)findViewById(R.id.content_view);
             View child = getLayoutInflater().inflate(R.layout.contact_page, null);
             contentView.removeAllViews();
             contentView.addView(child);
+
         }
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
