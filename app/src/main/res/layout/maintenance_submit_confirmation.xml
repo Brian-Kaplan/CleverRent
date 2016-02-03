@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="500dp">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Return"
+        android:textAllCaps="false"
+        android:id="@+id/confirmationButton"
+        android:background="@color/colorAccent"
+        android:layout_below="@+id/confirmationLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Maintenance Requested"
+        android:id="@+id/confirmationLabel"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:id="@+id/confirmationCheck"
+        android:background="@mipmap/ic_iconmonstr_check_mark_8_240"
+        android:layout_marginBottom="31dp"
+        android:layout_above="@+id/confirmationLabel"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
