@@ -11,7 +11,7 @@
     android:weightSum="1">
 
     <ImageView android:layout_width="75dp" android:layout_height="75dp"
-        android:src="@drawable/side_menu_icon" android:id="@+id/imageView"
+        android:src="@mipmap/ic_launcher" android:id="@+id/imageView"
         android:layout_weight="0.19"
         android:scaleType="centerCrop"
         android:layout_alignParentLeft="true"
