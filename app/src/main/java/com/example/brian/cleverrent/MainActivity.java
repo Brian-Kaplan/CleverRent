@@ -1,6 +1,8 @@
 package com.example.brian.cleverrent;
 
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -21,8 +23,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    static AccountFragmentPagerAdapter accountFragmentPagerAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +54,8 @@ public class MainActivity extends AppCompatActivity
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new AccountFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this));
+        accountFragmentPagerAdapter = new AccountFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this);
+        viewPager.setAdapter(accountFragmentPagerAdapter);
 
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
@@ -102,13 +106,20 @@ public class MainActivity extends AppCompatActivity
             //Set title of toolbar
             getSupportActionBar().setTitle("Account");
 
-            setContentToTabLayout();
+            RelativeLayout contentView = (RelativeLayout)findViewById(R.id.content_view);
+            View child = getLayoutInflater().inflate(R.layout.content_main, null);
+            contentView.removeAllViews();
+            contentView.addView(child);
+
             ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-            viewPager.setAdapter(new AccountFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this));
+            accountFragmentPagerAdapter.notifyChangeInPosition(1);
+            accountFragmentPagerAdapter.notifyDataSetChanged();
+            viewPager.setAdapter(accountFragmentPagerAdapter);
 
             // Give the TabLayout the ViewPager
             TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
             tabLayout.setupWithViewPager(viewPager);
+
 
         } else if (id == R.id.nav_maintenance) {
 
@@ -124,7 +135,7 @@ public class MainActivity extends AppCompatActivity
             ListView lv = (ListView) findViewById(R.id.maintenanceListView);
             String[] dates = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
             final String[] status = {"pending", "failed", "complete", "pending", "pending", "failed", "complete", "pending", "pending", "failed", "complete", "pending"};
-//
+
             MaintenanceListAdapter adapter = new MaintenanceListAdapter(this, dates, status);
             lv.setAdapter(adapter);
 
@@ -132,7 +143,6 @@ public class MainActivity extends AppCompatActivity
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    System.out.println("TEST");
                     Intent intent = new Intent(MainActivity.this, MaintenanceRequestActivity.class);
                     startActivity(intent);
                 }

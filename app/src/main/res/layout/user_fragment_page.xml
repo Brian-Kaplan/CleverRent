@@ -8,13 +8,100 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Account # 12345"
+        android:id="@+id/userAccountNumber"
+        android:layout_marginTop="42dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Name"
-        android:id="@+id/nameLabel"
-        android:layout_marginTop="69dp"
-        android:layout_marginLeft="36dp"
-        android:layout_marginStart="36dp"
-        android:layout_alignParentTop="true"
+        android:id="@+id/userLabel1"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/userAccountNumber"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Roger Stephenson"
+        android:id="@+id/textView2"
+        android:layout_below="@+id/userLabel1"
+        android:layout_alignLeft="@+id/userLabel1"
+        android:layout_alignStart="@+id/userLabel1"
+        android:layout_marginLeft="28dp"
+        android:layout_marginStart="28dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Phone"
+        android:id="@+id/userLabel2"
+        android:layout_marginTop="26dp"
+        android:layout_below="@+id/textView2"
+        android:layout_alignLeft="@+id/userLabel1"
+        android:layout_alignStart="@+id/userLabel1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="703-555-6545"
+        android:id="@+id/textView6"
+        android:layout_below="@+id/userLabel2"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignStart="@+id/textView2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Email"
+        android:id="@+id/userLabel3"
+        android:layout_below="@+id/textView6"
+        android:layout_alignLeft="@+id/userLabel2"
+        android:layout_alignStart="@+id/userLabel2"
+        android:layout_marginTop="26dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="RogerSteph@cleverrent.com"
+        android:id="@+id/textView4"
+        android:layout_below="@+id/userLabel3"
+        android:layout_alignLeft="@+id/textView6"
+        android:layout_alignStart="@+id/textView6" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Address"
+        android:id="@+id/userLabel4"
+        android:layout_below="@+id/textView4"
+        android:layout_alignLeft="@+id/userLabel3"
+        android:layout_alignStart="@+id/userLabel3"
+        android:layout_marginTop="26dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Anyplace"
+        android:id="@+id/textView7"
+        android:layout_below="@+id/userLabel4"
+        android:layout_alignLeft="@+id/textView4"
+        android:layout_alignStart="@+id/textView4"
+        android:singleLine="false" />
+
 </RelativeLayout>

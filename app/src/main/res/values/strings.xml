@@ -6,4 +6,7 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_maintenance_request">MaintenanceRequestActivity</string>
+    <string name="title_activity_billing">BillingActivity</string>
+    <string name="title_activity_add_bank_account">AddBankAccountActivity</string>
+    <string name="title_activity_add_credit_card">AddCreditCardActivity</string>
 </resources>
