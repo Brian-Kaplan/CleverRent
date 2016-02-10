@@ -47,7 +47,7 @@ public class BillingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Dialog dialog = new Dialog(BillingActivity.this);
-                dialog.setContentView(R.layout.maintenance_submit_confirmation);
+                dialog.setContentView(R.layout.billing_submit_confirmation);
                 dialog.show();  //<-- See This!
 
                 Button confirmationButton = (Button) dialog.findViewById(R.id.confirmationButton);
@@ -83,5 +83,12 @@ public class BillingActivity extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // The activity has become visible (it is now "resumed").
+    }
+
 }
 

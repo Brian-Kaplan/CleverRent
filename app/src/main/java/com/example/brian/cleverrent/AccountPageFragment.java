@@ -60,7 +60,7 @@ public class AccountPageFragment extends Fragment {
         final String[] status = {"pending", "failed", "complete", "pending", "pending", "failed", "complete", "pending", "pending", "failed", "complete", "pending"};
 
         ListView lv = (ListView) view.findViewById(R.id.billingListView);
-        MaintenanceListAdapter adapter = new MaintenanceListAdapter(getActivity(), ammounts, status);
+        BillingListAdapter adapter = new BillingListAdapter(getActivity(), ammounts, status);
         lv.setAdapter(adapter);
     }
 
