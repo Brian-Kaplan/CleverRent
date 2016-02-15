@@ -22,6 +22,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+import com.example.brian.cleverrent.LocalDealsListAdapter.Deal;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -148,17 +150,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             });
 
-            //Click Listener for Maintenance Requests
-//            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    Toast.makeText(getApplicationContext(), status[position], Toast.LENGTH_SHORT).show();
-//                }
-//            });
-
-
-
         } else if (id == R.id.nav_community) {
 
             setContentToTabLayout();
@@ -173,7 +164,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         } else if (id == R.id.nav_local) {
 
-            setContentToTabLayout();
+            //Set title of toolbar
+            getSupportActionBar().setTitle("Local Deals");
+
+            //Set the content to the maintenance_page
+            RelativeLayout contentView = (RelativeLayout)findViewById(R.id.content_view);
+            View child = getLayoutInflater().inflate(R.layout.local_deals_page, null);
+            contentView.removeAllViews();
+            contentView.addView(child);
+
+            ListView lv = (ListView) findViewById(R.id.localDealsListView);
+            Deal dealOne = new Deal("Lyric", "10%", "test1", "May 9", "10% Off DeadPool");
+            Deal dealTwo = new Deal("Cinnebowl", "20%", "test2", "May 10", "20% Off DeadPool");
+            Deal dealThree = new Deal("Not Here", "50%", "test3", "May 11", "Ryan Reynolds Loves you");
+            Deal[] deals = {dealOne, dealTwo, dealThree};
+            LocalDealsListAdapter adapter = new LocalDealsListAdapter(this, deals);
+            lv.setAdapter(adapter);
 
         } else if (id == R.id.nav_notification) {
 

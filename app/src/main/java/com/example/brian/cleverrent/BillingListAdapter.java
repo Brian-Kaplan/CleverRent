@@ -26,7 +26,7 @@ public class BillingListAdapter extends ArrayAdapter<String> {
     }
 
     //Inner Class to hold views for each row
-    public class ViewHolder
+    private class ViewHolder
     {
         TextView ammount;
         TextView status;
