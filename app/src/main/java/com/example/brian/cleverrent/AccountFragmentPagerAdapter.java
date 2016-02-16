@@ -5,7 +5,9 @@ import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
+import android.view.ViewGroup;
 
 /**
  * Created by brian on 1/31/16.
@@ -52,4 +54,12 @@ public class AccountFragmentPagerAdapter extends FragmentPagerAdapter {
         // shift the ID returned by getItemId outside the range of all previous fragments
         baseId += getCount() + n;
     }
+
+//    @Override
+//    public void destroyItem(ViewGroup container, int position, Object object) {
+//        FragmentManager manager = ((Fragment)object).getFragmentManager();
+//        FragmentTransaction trans = manager.beginTransaction();
+//        trans.remove((Fragment)object);
+//        trans.commit();
+//    }
 }

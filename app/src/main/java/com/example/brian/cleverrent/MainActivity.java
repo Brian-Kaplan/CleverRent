@@ -28,6 +28,7 @@ import com.example.brian.cleverrent.LocalDealsListAdapter.Deal;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     static AccountFragmentPagerAdapter accountFragmentPagerAdapter = null;
+    static CommunityFragmentPagerAdapter communityFragmentPagerAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         accountFragmentPagerAdapter = new AccountFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this);
+        communityFragmentPagerAdapter = new CommunityFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this);
         viewPager.setAdapter(accountFragmentPagerAdapter);
 
         // Give the TabLayout the ViewPager
@@ -152,10 +154,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         } else if (id == R.id.nav_community) {
 
-            setContentToTabLayout();
+            //Set title of toolbar
+            getSupportActionBar().setTitle("Community");
+
+            RelativeLayout contentView = (RelativeLayout)findViewById(R.id.content_view);
+            View child = getLayoutInflater().inflate(R.layout.content_main, null);
+            contentView.removeAllViews();
+            contentView.addView(child);
 
             ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-            viewPager.setAdapter(new CommunityFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this));
+            //The fragmentsPagerAdapters mess with each other. Offset this by 2 and the other by 1
+//            communityFragmentPagerAdapter.notifyChangeInPosition(2);
+//            communityFragmentPagerAdapter.notifyDataSetChanged();
+            viewPager.setAdapter(communityFragmentPagerAdapter);
+
+
 
             // Give the TabLayout the ViewPager
             TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
