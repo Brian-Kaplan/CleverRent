@@ -10,102 +10,85 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventCreateNewActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class ClassifiedsCreateNewActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event_create_new);
+        setContentView(R.layout.activity_classifieds_create_new);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("New Event");
+        getSupportActionBar().setTitle("New Classified");
 
-        Button createEventButton = (Button) findViewById(R.id.eventCreateSubmitButton);
-        createEventButton.setOnClickListener(new View.OnClickListener() {
+        Button createClassifiedButton = (Button) findViewById(R.id.classifiedSubmitButton);
+        createClassifiedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventCreateNewActivity.this.finish();
+                ClassifiedsCreateNewActivity.this.finish();
             }
         });
 
-        Button uploadImageButton = (Button) findViewById(R.id.eventUploadImageButton);
+        Button uploadImageButton = (Button) findViewById(R.id.classifiedUploadImageButton);
         uploadImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
-        public void onClick(View v) {
+            public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 7);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 8);
             }
         });
 
-
-        Spinner ageSpinner = (Spinner) findViewById(R.id.eventAgeTypeSpinner);
-        Spinner timeSpinner = (Spinner) findViewById(R.id.eventTimeSpinner);
+        Spinner typeSpinner = (Spinner) findViewById(R.id.classifiedTypeSpinner);
+        Spinner conditionSpinner = (Spinner) findViewById(R.id.classifiedConditionSpinner);
 
         // Spinner Drop down elements
-        List<String> ageCategories = new ArrayList<String>();
-        ageCategories.add("Adult");
-        ageCategories.add("Teenage");
-        ageCategories.add("Children");
-        ageCategories.add("Toddlers");
-        ageCategories.add("Other");
+        List<String> typeCategories = new ArrayList<String>();
+        typeCategories.add("Kitchen");
+        typeCategories.add("Bathroom");
+        typeCategories.add("Bedroom");
+        typeCategories.add("Other");
 
-        List<String> timeCategories = new ArrayList<String>();
-        timeCategories.add("Early Morning");
-        timeCategories.add("Afternoon");
-        timeCategories.add("After Work");
-        timeCategories.add("Happy Hour");
-        timeCategories.add("Late Night");
+        List<String> conditionCategories = new ArrayList<String>();
+        conditionCategories.add("Unopened");
+        conditionCategories.add("Like New");
+        conditionCategories.add("Lightly Used");
+        conditionCategories.add("Used");
 
         // Creating adapter for spinner
-        ArrayAdapter<String> ageAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ageCategories);
-        ArrayAdapter<String> timeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, timeCategories);
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, typeCategories);
+        ArrayAdapter<String> conditionAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, conditionCategories);
 
         // Drop down layout style - list view with radio button
-        ageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        conditionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // attaching data adapter to spinner
-        ageSpinner.setAdapter(ageAdapter);
-        timeSpinner.setAdapter(timeAdapter);
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // On selecting a spinner item
-        String item = parent.getItemAtPosition(position).toString();
-
-        // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-    }
-    public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
+        typeSpinner.setAdapter(typeAdapter);
+        conditionSpinner.setAdapter(conditionAdapter);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {
             switch (requestCode) {
-                case 7:
+                case 8:
                     if (resultCode == Activity.RESULT_OK) {
                         //data gives you the image uri. Try to convert that to bitmap
                         Uri selectedImage = data.getData();
                         Bitmap bitmap = null;
                         try {
                             bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                            ImageView imageView = (ImageView) findViewById(R.id.eventUploadThumbImageView);
+                            ImageView imageView = (ImageView) findViewById(R.id.classifiedUploadImageThumb);
                             imageView.setImageBitmap(bitmap);
                         } catch (FileNotFoundException e) {
                             // TODO Auto-generated catch block

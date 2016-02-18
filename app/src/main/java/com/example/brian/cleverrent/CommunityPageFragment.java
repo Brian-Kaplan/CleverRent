@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import com.example.brian.cleverrent.FacilitiesListAdapter.Facility;
 import com.example.brian.cleverrent.EventsListAdapter.Event;
+import com.example.brian.cleverrent.ClassifiedsListAdapter.ClassifiedPost;
 
 /**
  * Created by brian on 1/31/16.
@@ -53,6 +54,8 @@ public class CommunityPageFragment extends Fragment {
                 break;
             case 2:
                 view  = inflater.inflate(R.layout.classifieds_fragment_page, container, false);
+                setClassifiedsListAdapter(view);
+                setClassifiedsCreateActionButton(view);
                 break;
             default:
                 view = null;
@@ -83,12 +86,34 @@ public class CommunityPageFragment extends Fragment {
         lv.setAdapter(adapter);
     }
 
+    private void setClassifiedsListAdapter(View view){
+        ClassifiedPost postOne = new ClassifiedPost("69th Floor", "$200", "http://www.mamabirddiaries.com/wp-content/uploads/2012/01/enormous-sectional-couch.jpg", "May 10", "Best Couch Ever");
+        ClassifiedPost postTwo = new ClassifiedPost("4th Floor", "Free", "http://mariashriver.com/wp-content/uploads/2011/06/Luxury-Purple-Sofa.jpg?bd3f04", "May 11", "Free Pimp Couch");
+        ClassifiedPost postThree = new ClassifiedPost("1st Floor", "$10,000", "http://twinfinite.net/wp-content/uploads/2016/01/bed-1.png", "May 15", "Kids Bed");
+        ClassifiedPost[] posts = {postOne, postTwo, postThree};
+
+        ListView lv = (ListView) view.findViewById(R.id.classifiedsListView);
+        ClassifiedsListAdapter adapter = new ClassifiedsListAdapter(getActivity(), posts);
+        lv.setAdapter(adapter);
+    }
+
     private void setEventCreateActionButton(View view){
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.eventCreateButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), EventCreateNewActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void setClassifiedsCreateActionButton(View view){
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.classifiedsPostCreateNewButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), ClassifiedsCreateNewActivity.class);
                 startActivity(intent);
             }
         });
