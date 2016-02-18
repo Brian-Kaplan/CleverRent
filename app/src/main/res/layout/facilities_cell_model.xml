@@ -7,7 +7,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:id="@+id/dealImageThumb"
+        android:id="@+id/facilityImageThumb"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:scaleType="fitXY"
@@ -18,32 +18,19 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:background="@drawable/rounded_corner"
-        android:id="@+id/dealPercentOffLabel"
+        android:id="@+id/facilityReservationLabel"
         android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/dealDateLabel"
-        android:layout_alignStart="@+id/dealDateLabel" />
+        android:layout_alignLeft="@+id/facilityLocationLabel"
+        android:layout_alignStart="@+id/facilityLocationLabel"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="May 9"
-        android:id="@+id/dealDateLabel"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/dealImageThumb"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="5dp"
-        android:layout_marginStart="10dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="DealTitle"
-        android:id="@+id/dealTitleLabel"
-        android:layout_below="@+id/dealImageThumb"
-        android:layout_toRightOf="@+id/dealDateLabel"
+        android:text="FacilityLocation"
+        android:id="@+id/facilityLocationLabel"
+        android:layout_below="@+id/facilityImageThumb"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="8dp"/>
 
@@ -51,12 +38,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Location"
-        android:id="@+id/dealLocationLabel"
-        android:layout_below="@+id/dealTitleLabel"
-        android:layout_alignLeft="@+id/dealDateLabel"
-        android:layout_alignStart="@+id/dealDateLabel"
-        android:paddingBottom="10dp" />
-
+        android:text="FacilitySubLocation"
+        android:id="@+id/facilitySubLocationLabel"
+        android:paddingBottom="10dp"
+        android:layout_below="@+id/facilityLocationLabel"
+        android:layout_alignLeft="@+id/facilityLocationLabel"
+        android:layout_alignStart="@+id/facilityLocationLabel" />
 
 </RelativeLayout>

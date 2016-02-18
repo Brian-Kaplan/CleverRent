@@ -39,7 +39,7 @@ public class CommunityFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public long getItemId(int position) {
         // give an ID different from position when position has been changed
-        return baseId + position;
+        return baseId - position;
     }
 
     @Override
@@ -50,6 +50,6 @@ public class CommunityFragmentPagerAdapter extends FragmentPagerAdapter {
 
     public void notifyChangeInPosition(int n) {
         // shift the ID returned by getItemId outside the range of all previous fragments
-        baseId += getCount() + n;
+        baseId -= getCount() - n;
     }
 }

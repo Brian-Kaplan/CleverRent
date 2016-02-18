@@ -7,7 +7,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:id="@+id/dealImageThumb"
+        android:id="@+id/eventImageThumb"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:scaleType="fitXY"
@@ -18,19 +18,19 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:background="@drawable/rounded_corner"
-        android:id="@+id/dealPercentOffLabel"
+        android:id="@+id/eventAgeLabel"
         android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/dealDateLabel"
-        android:layout_alignStart="@+id/dealDateLabel" />
+        android:layout_alignLeft="@+id/eventDateLabel"
+        android:layout_alignStart="@+id/eventDateLabel" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="May 9"
-        android:id="@+id/dealDateLabel"
+        android:id="@+id/eventDateLabel"
         android:layout_marginTop="15dp"
-        android:layout_below="@+id/dealImageThumb"
+        android:layout_below="@+id/eventImageThumb"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="5dp"
@@ -40,10 +40,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="DealTitle"
-        android:id="@+id/dealTitleLabel"
-        android:layout_below="@+id/dealImageThumb"
-        android:layout_toRightOf="@+id/dealDateLabel"
+        android:text="EventTitle"
+        android:id="@+id/eventTitleLabel"
+        android:layout_below="@+id/eventImageThumb"
+        android:layout_toRightOf="@+id/eventDateLabel"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="8dp"/>
 
@@ -51,12 +51,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Location"
-        android:id="@+id/dealLocationLabel"
-        android:layout_below="@+id/dealTitleLabel"
-        android:layout_alignLeft="@+id/dealDateLabel"
-        android:layout_alignStart="@+id/dealDateLabel"
+        android:text="EventLocation"
+        android:id="@+id/eventLocationLabel"
+        android:layout_below="@+id/eventTitleLabel"
+        android:layout_alignLeft="@+id/eventDateLabel"
+        android:layout_alignStart="@+id/eventDateLabel"
         android:paddingBottom="10dp" />
+
+
 
 
 </RelativeLayout>

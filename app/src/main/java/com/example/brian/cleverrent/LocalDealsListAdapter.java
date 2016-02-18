@@ -10,8 +10,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 /**
  * Created by brian on 2/15/16.
  */
@@ -48,10 +46,10 @@ public class LocalDealsListAdapter extends ArrayAdapter<LocalDealsListAdapter.De
         holder.dealTitle = (TextView) convertView.findViewById(R.id.dealTitleLabel);
 
         //Assign the data
-        holder.location.setText("("+myDeal.location+")");
-        holder.percentOff.setText(myDeal.percentOff + " Off");
-        Picasso.with(c).load("http://i.imgur.com/5kx1tmA.jpg").into(holder.imageThumb);
-        holder.date.setText(myDeal.date);
+        holder.location.setText("("+myDeal.dealLocation+")");
+        holder.percentOff.setText(myDeal.dealPercentOff + " Off");
+        Picasso.with(c).load(myDeal.imgeUrl).into(holder.imageThumb);
+        holder.date.setText(myDeal.dealDate);
         holder.dealTitle.setText(myDeal.dealTitle);
 
         return convertView;
@@ -67,17 +65,17 @@ public class LocalDealsListAdapter extends ArrayAdapter<LocalDealsListAdapter.De
     }
 
     public static class Deal{
-        String location;
-        String percentOff;
+        String dealLocation;
+        String dealPercentOff;
         String imgeUrl;
-        String date;
+        String dealDate;
         String dealTitle;
 
         public Deal(String location, String percentOff, String imgeUrl, String date, String dealTitle) {
-            this.location = location;
-            this.percentOff = percentOff;
+            this.dealLocation = location;
+            this.dealPercentOff = percentOff;
             this.imgeUrl = imgeUrl;
-            this.date = date;
+            this.dealDate = date;
             this.dealTitle = dealTitle;
         }
     }

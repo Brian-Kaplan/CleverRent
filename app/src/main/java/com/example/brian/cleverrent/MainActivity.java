@@ -164,11 +164,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
             //The fragmentsPagerAdapters mess with each other. Offset this by 2 and the other by 1
-//            communityFragmentPagerAdapter.notifyChangeInPosition(2);
-//            communityFragmentPagerAdapter.notifyDataSetChanged();
+            communityFragmentPagerAdapter.notifyChangeInPosition(-1);
+            communityFragmentPagerAdapter.notifyDataSetChanged();
             viewPager.setAdapter(communityFragmentPagerAdapter);
-
-
 
             // Give the TabLayout the ViewPager
             TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
@@ -187,9 +185,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             contentView.addView(child);
 
             ListView lv = (ListView) findViewById(R.id.localDealsListView);
-            Deal dealOne = new Deal("Lyric", "10%", "test1", "May 9", "10% Off DeadPool");
-            Deal dealTwo = new Deal("Cinnebowl", "20%", "test2", "May 10", "20% Off DeadPool");
-            Deal dealThree = new Deal("Not Here", "50%", "test3", "May 11", "Ryan Reynolds Loves you");
+            Deal dealOne = new Deal("Lyric", "10%", "http://i.imgur.com/5kx1tmA.jpg", "May 9", "10% Off DeadPool");
+            Deal dealTwo = new Deal("Cinnebowl", "20%", "http://i.imgur.com/5kx1tmA.jpg", "May 10", "20% Off DeadPool");
+            Deal dealThree = new Deal("Not Here", "50%", "http://i.imgur.com/5kx1tmA.jpg", "May 11", "Ryan Reynolds Loves you");
             Deal[] deals = {dealOne, dealTwo, dealThree};
             LocalDealsListAdapter adapter = new LocalDealsListAdapter(this, deals);
             lv.setAdapter(adapter);

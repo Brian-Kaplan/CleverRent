@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import com.example.brian.cleverrent.FacilitiesListAdapter.Facility;
+import com.example.brian.cleverrent.EventsListAdapter.Event;
 
 /**
  * Created by brian on 1/31/16.
@@ -41,10 +43,13 @@ public class CommunityPageFragment extends Fragment {
         mPage = getArguments().getInt(ARG_PAGE);
         switch (mPage){
             case 0:
-                view  = inflater.inflate(R.layout.facilites_fragment_page, container, false);
+                view  = inflater.inflate(R.layout.facilities_fragment_page, container, false);
+                setFacilitesListAdapter(view);
                 break;
             case 1:
                 view = inflater.inflate(R.layout.events_fragment_page, container, false);
+                setEventsListAdapter(view);
+                setEventCreateActionButton(view);
                 break;
             case 2:
                 view  = inflater.inflate(R.layout.classifieds_fragment_page, container, false);
@@ -54,5 +59,38 @@ public class CommunityPageFragment extends Fragment {
                 break;
         }
         return view;
+    }
+
+    private void setFacilitesListAdapter(View view){
+        Facility facilityOne = new Facility("Hot Dogs", "Must Reserve", "http://i.imgur.com/8vdAgMR.jpg", "Miami");
+        Facility facilityTwo = new Facility("More Dogs", "10AM - 9PM", "http://i.imgur.com/8vdAgMR.jpg", "Roanoke");
+        Facility facilityThree = new Facility("HOLY HOT Dogs", "Must Reserve", "http://i.imgur.com/8vdAgMR.jpg", "My House");
+        Facility[] facilities = {facilityOne, facilityTwo, facilityThree};
+
+        ListView lv = (ListView) view.findViewById(R.id.facilitiesListView);
+        FacilitiesListAdapter adapter = new FacilitiesListAdapter(getActivity(), facilities);
+        lv.setAdapter(adapter);
+    }
+
+    private void setEventsListAdapter(View view){
+        Event eventOne = new Event("Lazer Crazies", "Infants", "http://equinoxlasertag.com/wp-content/uploads/2015/09/Screen-Shot-2014-06-23-at-8.35.12-PM.png", "May 10", "Lazer Tag");
+        Event eventTwo = new Event("Black Pool", "Adults", "http://equinoxlasertag.com/wp-content/uploads/2015/09/Screen-Shot-2014-06-23-at-8.35.12-PM.png", "May 11", "Pool Party");
+        Event eventThree = new Event("Back Alley", "Middle Aged Women", "http://equinoxlasertag.com/wp-content/uploads/2015/09/Screen-Shot-2014-06-23-at-8.35.12-PM.png", "May 15", "CRZY ORGY");
+        Event[] events = {eventOne, eventTwo, eventThree};
+
+        ListView lv = (ListView) view.findViewById(R.id.eventsListView);
+        EventsListAdapter adapter = new EventsListAdapter(getActivity(), events);
+        lv.setAdapter(adapter);
+    }
+
+    private void setEventCreateActionButton(View view){
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.eventCreateButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), EventCreateNewActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
