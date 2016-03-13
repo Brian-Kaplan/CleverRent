@@ -70,14 +70,42 @@ public class EventsListAdapter extends ArrayAdapter<EventsListAdapter.Event> {
         String imgeUrl;
         String eventdate;
         String eventTitle;
+        String hostName;
+        String identifier;
+        int interestCount;
 
-        public Event(String location, String eventAge, String imgeUrl, String eventdate, String eventTitle) {
+        public Event() {}
+
+        public Event(String location, String eventAge, String imgeUrl, String eventdate, String eventTitle, String hostName, String identifier) {
             this.eventlocation = location;
             this.eventAge = eventAge;
             this.imgeUrl = imgeUrl;
             this.eventdate = eventdate;
             this.eventTitle = eventTitle;
+            this.hostName = hostName;
+            this.identifier = identifier;
+            this.interestCount = 0;
         }
+
+        public String getEventlocation() { return eventlocation; }
+
+        public String getEventAge() { return eventAge; }
+
+        public String getImgeUrl() { return imgeUrl; }
+
+        public String getEventdate() {
+            return eventdate;
+        }
+
+        public String getEventTitle() {
+            return eventTitle;
+        }
+
+        public String getHostName() { return hostName; }
+
+        public String getIdentifier() { return identifier; }
+
+        public int getInterestCount() { return interestCount; }
     }
 }
 

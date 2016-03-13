@@ -10,6 +10,8 @@
             android:title="Community" />
         <item android:id="@+id/nav_local" android:icon="@mipmap/ic_whatshot_black_24dp"
             android:title="Local Deals" />
+        <item android:id="@+id/nav_hub" android:icon="@android:drawable/ic_menu_compass"
+            android:title="Hub" />
     </group>
 
     <group android:id="@+id/group2">
@@ -17,5 +19,7 @@
                 android:title="Notifications" />
             <item android:id="@+id/nav_contact" android:icon="@mipmap/ic_call_black_24dp"
                 android:title="Contact Us" />
+            <item android:id="@+id/nav_logout" android:icon="@mipmap/ic_call_black_24dp"
+                android:title="Log Out" />
     </group>
 </menu>

@@ -76,9 +76,9 @@ public class CommunityPageFragment extends Fragment {
     }
 
     private void setEventsListAdapter(View view){
-        Event eventOne = new Event("Lazer Crazies", "Infants", "http://equinoxlasertag.com/wp-content/uploads/2015/09/Screen-Shot-2014-06-23-at-8.35.12-PM.png", "May 10", "Lazer Tag");
-        Event eventTwo = new Event("Black Pool", "Adults", "http://equinoxlasertag.com/wp-content/uploads/2015/09/Screen-Shot-2014-06-23-at-8.35.12-PM.png", "May 11", "Pool Party");
-        Event eventThree = new Event("Back Alley", "Middle Aged Women", "http://equinoxlasertag.com/wp-content/uploads/2015/09/Screen-Shot-2014-06-23-at-8.35.12-PM.png", "May 15", "CRZY ORGY");
+        Event eventOne = new Event("Lazer Crazies", "Infants", "http://equinoxlasertag.com/wp-content/uploads/2015/09/Screen-Shot-2014-06-23-at-8.35.12-PM.png", "May 10", "Lazer Tag" , "me", "fix");
+        Event eventTwo = new Event("Black Pool", "Adults", "http://equinoxlasertag.com/wp-content/uploads/2015/09/Screen-Shot-2014-06-23-at-8.35.12-PM.png", "May 11", "Pool Party", "me", "fix");
+        Event eventThree = new Event("Back Alley", "Middle Aged Women", "http://equinoxlasertag.com/wp-content/uploads/2015/09/Screen-Shot-2014-06-23-at-8.35.12-PM.png", "May 15", "CRZY ORGY", "me", "fix");
         Event[] events = {eventOne, eventTwo, eventThree};
 
         ListView lv = (ListView) view.findViewById(R.id.eventsListView);
@@ -87,9 +87,9 @@ public class CommunityPageFragment extends Fragment {
     }
 
     private void setClassifiedsListAdapter(View view){
-        ClassifiedPost postOne = new ClassifiedPost("69th Floor", "$200", "http://www.mamabirddiaries.com/wp-content/uploads/2012/01/enormous-sectional-couch.jpg", "May 10", "Best Couch Ever");
-        ClassifiedPost postTwo = new ClassifiedPost("4th Floor", "Free", "http://mariashriver.com/wp-content/uploads/2011/06/Luxury-Purple-Sofa.jpg?bd3f04", "May 11", "Free Pimp Couch");
-        ClassifiedPost postThree = new ClassifiedPost("1st Floor", "$10,000", "http://twinfinite.net/wp-content/uploads/2016/01/bed-1.png", "May 15", "Kids Bed");
+        ClassifiedPost postOne = new ClassifiedPost("69th Floor", "$200", "http://www.mamabirddiaries.com/wp-content/uploads/2012/01/enormous-sectional-couch.jpg", "May 10", "Best Couch Ever", "fix");
+        ClassifiedPost postTwo = new ClassifiedPost("4th Floor", "Free", "http://mariashriver.com/wp-content/uploads/2011/06/Luxury-Purple-Sofa.jpg?bd3f04", "May 11", "Free Pimp Couch", "fix");
+        ClassifiedPost postThree = new ClassifiedPost("1st Floor", "$10,000", "http://twinfinite.net/wp-content/uploads/2016/01/bed-1.png", "May 15", "Kids Bed", "fix");
         ClassifiedPost[] posts = {postOne, postTwo, postThree};
 
         ListView lv = (ListView) view.findViewById(R.id.classifiedsListView);

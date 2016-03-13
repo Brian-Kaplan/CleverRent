@@ -70,13 +70,45 @@ public class ClassifiedsListAdapter extends ArrayAdapter<ClassifiedsListAdapter.
         String imgeUrl;
         String postDate;
         String postPrice;
+        String identifier;
+        int interestCount;
 
-        public ClassifiedPost(String postLocation, String postPrice, String imgeUrl, String postDate, String postTitle) {
+        public ClassifiedPost(String postLocation, String postPrice, String imgeUrl, String postDate, String postTitle, String identifier) {
             this.postLocation = postLocation;
             this.postPrice = postPrice;
             this.imgeUrl = imgeUrl;
             this.postDate = postDate;
             this.postTitle = postTitle;
+            this.identifier = identifier;
+            this.interestCount = 0;
+        }
+
+        public String getPostLocation() {
+            return postLocation;
+        }
+
+        public String getPostTitle() {
+            return postTitle;
+        }
+
+        public String getImgeUrl() {
+            return imgeUrl;
+        }
+
+        public String getPostDate() {
+            return postDate;
+        }
+
+        public String getPostPrice() {
+            return postPrice;
+        }
+
+        public String getIdentifier() {
+            return identifier;
+        }
+
+        public int getInterestCount() {
+            return interestCount;
         }
     }
 }

@@ -1,12 +1,14 @@
 package com.example.brian.cleverrent;
 
-
+import android.app.ActionBar;
 import android.app.Fragment;
-import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,21 +20,48 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+import android.widget.TextView;
+
 import com.example.brian.cleverrent.LocalDealsListAdapter.Deal;
+import com.firebase.client.AuthData;
+import com.firebase.client.Firebase;
+
+import java.security.Provider;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     static AccountFragmentPagerAdapter accountFragmentPagerAdapter = null;
     static CommunityFragmentPagerAdapter communityFragmentPagerAdapter = null;
+    private Firebase firebaseRef = null;
+    static final int LOGIN_REQUEST = 1; //Request code for the LoginActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Firebase.setAndroidContext(this);
+        firebaseRef = new Firebase("https://cleverrent.firebaseio.com/");
+        firebaseRef.addAuthStateListener(new Firebase.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(AuthData authData) {
+                if (authData != null) {
+                    System.out.println("User Is Logged In");
+                    //Save the users UID into shared preferences
+                    SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("FIRE_BASE_UID", authData.getUid());
+                    editor.commit();
+                } else {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivityForResult(intent, LOGIN_REQUEST);
+                    finish();
+                }
+            }
+        });
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -55,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mi.setChecked(true);
 
 
+        //Load the Account Page By Default
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         accountFragmentPagerAdapter = new AccountFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this);
@@ -215,6 +245,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             contentView.removeAllViews();
             contentView.addView(child);
 
+        } else if(id == R.id.nav_logout) {
+            firebaseRef.unauth();
+
+
+        } else if(id == R.id.nav_hub) {
+
+            Intent intent = new Intent(MainActivity.this, HubActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
         }
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
