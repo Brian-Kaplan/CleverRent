@@ -70,7 +70,7 @@ public class AccountPageFragment extends Fragment {
 
     private void loadUserAccountDetails(View view){
 
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref  = getActivity().getSharedPreferences("mysettings", Context.MODE_PRIVATE);
         final String fireBaseUID = sharedPref.getString("FIRE_BASE_UID", null);
         if (fireBaseUID !=  null){
 
@@ -84,7 +84,7 @@ public class AccountPageFragment extends Fragment {
             ref.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
-                    String username = snapshot.child("userName").getValue(String.class);
+                    String username = snapshot.child("displayName").getValue(String.class);
                     String email = snapshot.child("email").getValue(String.class);
                     userNameLabel.setText(username);
                     userEmailLabel.setText(email);

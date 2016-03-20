@@ -45,15 +45,15 @@ public class ManageClassifiedsListAdapter extends ArrayAdapter<ClassifiedPost> {
         final ViewHolder holder = new ViewHolder();
 
         //Initialize the view
-        holder.title = (TextView) convertView.findViewById(R.id.manageEventTitleLabel);
-        holder.interestCount = (TextView) convertView.findViewById(R.id.manageEventCountLabel);
+        holder.title = (TextView) convertView.findViewById(R.id.manageClassifiedsTitleLabel);
+        holder.interestCount = (TextView) convertView.findViewById(R.id.manageClassifiedsCountLabel);
 
         //Assign the data
         holder.title.setText(posts.get(position).getPostTitle());
         holder.interestCount.setText(String.valueOf(posts.get(position).getInterestCount()));
 
 
-        convertView.setMinimumHeight(300);
+        convertView.setMinimumHeight(200);
         return convertView;
     }
 }

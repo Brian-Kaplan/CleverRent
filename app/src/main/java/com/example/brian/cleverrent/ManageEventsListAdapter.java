@@ -51,8 +51,8 @@ public class ManageEventsListAdapter extends ArrayAdapter<Event> {
         holder.title.setText(events.get(position).getEventTitle());
         holder.interestCount.setText(String.valueOf(events.get(position).getInterestCount()));
 
+        convertView.setMinimumHeight(200);
 
-        convertView.setMinimumHeight(300);
         return convertView;
     }
 }

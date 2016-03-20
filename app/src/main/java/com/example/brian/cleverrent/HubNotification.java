@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 /**
  * Created by brian on 3/12/16.
+ * A sub region of the hub notifications.
+ * They are kind of sorted by date so every instance of this class will have notifications of the same date
  */
 public class HubNotification {
 

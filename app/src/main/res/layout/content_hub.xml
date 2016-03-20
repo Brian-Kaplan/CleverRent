@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="1" >
+    android:layout_height="match_parent" >
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Manage Your Listings"
         android:textAppearance="?android:attr/textAppearanceSmall"
@@ -14,17 +13,17 @@
         android:layout_marginLeft="15dp"/>
 
     <View
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#000000"/>
 
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#ffffff">
 
         <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Events"
@@ -41,20 +40,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="0"
-            android:layout_marginRight="10dp"
-            android:id="@+id/eventsCountLabel"
-            android:layout_alignTop="@+id/eventsHubLabel"
-            android:layout_toLeftOf="@+id/arrow1"
-            android:layout_toStartOf="@+id/arrow1" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="->"
             android:id="@+id/arrow1"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="50dp"
             android:layout_alignTop="@+id/eventsHubLabel"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
@@ -69,12 +57,12 @@
 
 
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#ffffff">
 
         <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Classifieds"
@@ -91,20 +79,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="0"
-            android:layout_marginRight="10dp"
-            android:id="@+id/classifiedsCountLabel"
-            android:layout_alignTop="@+id/classifiedsHubLabel"
-            android:layout_toLeftOf="@+id/arrow2"
-            android:layout_toStartOf="@+id/arrow2" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="->"
             android:id="@+id/arrow2"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="50dp"
             android:layout_alignTop="@+id/classifiedsHubLabel"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
@@ -112,13 +89,13 @@
     </RelativeLayout>
 
     <View
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#000000"/>
 
     <ListView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:listSelector="@android:color/transparent"
         android:cacheColorHint="@android:color/transparent"
         android:id="@+id/hubListView"

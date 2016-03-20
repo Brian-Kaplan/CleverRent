@@ -1,13 +1,14 @@
 package com.example.brian.cleverrent;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 public class ManageEventsActivity extends AppCompatActivity {
 
     ArrayList<Event> events = null;
+    String userName = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,7 @@ public class ManageEventsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manage_events);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Manage Events");
 
         events = new ArrayList<>();
     }
@@ -37,11 +40,6 @@ public class ManageEventsActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         updateList();
-
-        if (events.size() == 0){
-            TextView noListingLabel = (TextView) findViewById(R.id.noListingsToShowLabel);
-            noListingLabel.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
@@ -51,8 +49,8 @@ public class ManageEventsActivity extends AppCompatActivity {
     }
 
     private void updateList() {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ManageEventsActivity.this);
-        final String userName = sharedPref.getString("USER_NAME", null);
+        SharedPreferences sharedPref = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
+        userName = sharedPref.getString("USER_NAME", null);
 
         Firebase ref = new Firebase("https://cleverrent.firebaseio.com/events/");
         // Attach an listener to read the data at our posts reference
@@ -66,9 +64,26 @@ public class ManageEventsActivity extends AppCompatActivity {
                             events.add(event);
                         }
                 }
+
+                if (events.size() == 0){
+                    TextView noListingLabel = (TextView) findViewById(R.id.noListingsToShowLabel);
+                    noListingLabel.setVisibility(View.VISIBLE);
+                }
+
                 ListView manageEventsListView = (ListView) findViewById(R.id.manageEventsListView);
                 ManageEventsListAdapter listAdapter = new ManageEventsListAdapter(ManageEventsActivity.this, events);
                 manageEventsListView.setAdapter(listAdapter);
+
+                manageEventsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
+                        Intent intent = new Intent(ManageEventsActivity.this, ManageListingsActivity.class);
+                        intent.putExtra("LISTING_TYPE", "events");
+                        intent.putExtra("LISTING_TITLE", events.get(position).getEventTitle());
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
+                    }
+                });
+
             }
 
             @Override

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -26,9 +27,16 @@ import android.widget.TextView;
 
 import com.example.brian.cleverrent.LocalDealsListAdapter.Deal;
 import com.firebase.client.AuthData;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.security.Provider;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 
@@ -36,24 +44,46 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     static AccountFragmentPagerAdapter accountFragmentPagerAdapter = null;
     static CommunityFragmentPagerAdapter communityFragmentPagerAdapter = null;
-    private Firebase firebaseRef = null;
     static final int LOGIN_REQUEST = 1; //Request code for the LoginActivity
+    static String firebaseUID = null;
+    static User authUser = null;
+    ArrayList<HubNotification> hubNotificationsList = null;
+    Firebase firebaseAuthRef = null;
+    SharedPreferences sharedPref = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(this);
-        firebaseRef = new Firebase("https://cleverrent.firebaseio.com/");
-        firebaseRef.addAuthStateListener(new Firebase.AuthStateListener() {
+        sharedPref = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
+        firebaseAuthRef = new Firebase("https://cleverrent.firebaseio.com/");
+        firebaseAuthRef.addAuthStateListener(new Firebase.AuthStateListener() {
             @Override
             public void onAuthStateChanged(AuthData authData) {
                 if (authData != null) {
                     System.out.println("User Is Logged In");
                     //Save the users UID into shared preferences
-                    SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putString("FIRE_BASE_UID", authData.getUid());
                     editor.commit();
+                    //Get the users information from the UID
+                    Firebase ref = new Firebase("https://cleverrent.firebaseio.com/users/" + authData.getUid());
+                    ref.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            authUser = dataSnapshot.getValue(User.class);
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString("USER_NAME", authUser.getUserName());
+                            editor.putString("USER_EMAIL", authUser.getEmail());
+                            editor.putString("DISPLAY_NAME", authUser.getDisplayName());
+                            editor.commit();
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
                 } else {
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     startActivityForResult(intent, LOGIN_REQUEST);
@@ -246,14 +276,72 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             contentView.addView(child);
 
         } else if(id == R.id.nav_logout) {
-            firebaseRef.unauth();
+            firebaseAuthRef.unauth();
 
 
         } else if(id == R.id.nav_hub) {
 
-            Intent intent = new Intent(MainActivity.this, HubActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
+            getSupportActionBar().setTitle("Hub");
+
+            RelativeLayout contentView = (RelativeLayout)findViewById(R.id.content_view);
+            View child = getLayoutInflater().inflate(R.layout.content_hub, null);
+            contentView.removeAllViews();
+            contentView.addView(child);
+
+
+            TextView eventsTextView = (TextView) findViewById(R.id.eventsHubLabel);
+            TextView classifiedsTextView = (TextView) findViewById(R.id.classifiedsHubLabel);
+
+            eventsTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, ManageEventsActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
+                }
+            });
+            classifiedsTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, ManageClassifiedsActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition (R.anim.right_slide_in, R.anim.right_slide_out);
+                }
+            });
+
+
+
+            hubNotificationsList = new ArrayList<>();
+            hubNotificationsList.clear();
+
+            final String userName = sharedPref.getString("USER_NAME", null);
+            Firebase firebaseRef = new Firebase("https://cleverrent.firebaseio.com/notifications/"+userName);
+
+            //Pull all the data, It will be in the form on NotifcationObjects
+            //Each object will have a date. Sort them into Hub Notifications and then build the lists
+            firebaseRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot dateSnapshot : dataSnapshot.getChildren()) {
+                        HubNotification temp = new HubNotification(dateSnapshot.getKey());
+                        for (DataSnapshot notifSnapshot : dateSnapshot.getChildren()) {
+                            NotificationObject notification = notifSnapshot.getValue(NotificationObject.class);
+                            temp.addNotificationObject(notification);
+                        }
+                        hubNotificationsList.add(0, temp);
+                    }
+
+                    ListView hubListView = (ListView) findViewById(R.id.hubListView);
+                    HubListAdapter adapter = new HubListAdapter(MainActivity.this, hubNotificationsList);
+                    hubListView.setAdapter(adapter);
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+
         }
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -278,5 +366,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         View child = getLayoutInflater().inflate(R.layout.content_main, null);
         contentView.removeAllViews();
         contentView.addView(child);
+    }
+
+    public static String getTodaysDate(){
+        String date = null;
+        Date now = new Date();
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("M-d-y");
+        date = dateFormatter.format(now);
+        return date;
+    }
+
+    public static String getTimeStamp() {
+        String time = null;
+        Date now = new Date();
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("h:mm a");
+        time = dateFormatter.format(now);
+        return time;
     }
 }
