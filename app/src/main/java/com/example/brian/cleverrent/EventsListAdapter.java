@@ -1,6 +1,9 @@
 package com.example.brian.cleverrent;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,18 +11,22 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 /**
  * Created by brian on 2/15/16.
  */
 public class EventsListAdapter extends ArrayAdapter<EventsListAdapter.Event> {
 
-    Event[] events = {};
+    ArrayList<Event> events = null;
     Context c;
     LayoutInflater inflater;
 
-    public EventsListAdapter(Context context, Event[] events) {
+    public EventsListAdapter(Context context, ArrayList<Event> events) {
         super(context, R.layout.event_cell_model, events);
         this.events = events;
         this.c = context;
@@ -36,7 +43,7 @@ public class EventsListAdapter extends ArrayAdapter<EventsListAdapter.Event> {
 
         //Make a ViewHolder object
         final EventViewHolder holder = new EventViewHolder();
-        final Event myEvent = events[position];
+        final Event myEvent = events.get(position);
 
         //Initialize the view
         holder.eventLocationLabel = (TextView) convertView.findViewById(R.id.eventLocationLabel);
@@ -46,10 +53,13 @@ public class EventsListAdapter extends ArrayAdapter<EventsListAdapter.Event> {
         holder.eventTitleLabel = (TextView) convertView.findViewById(R.id.eventTitleLabel);
 
         //Assign the data
-        holder.eventLocationLabel.setText("("+myEvent.eventlocation+")");
+        holder.eventLocationLabel.setText("("+myEvent.eventLocation+")");
         holder.eventAgeLabel.setText(myEvent.eventAge);
-        Picasso.with(c).load(myEvent.imgeUrl).into(holder.imageThumb);
-        holder.eventDateLabel.setText(myEvent.eventdate);
+        String encodedImage = myEvent.getImgeUrl();
+        byte[] b = Base64.decode(encodedImage, Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
+        holder.imageThumb.setImageBitmap(bitmap);
+        holder.eventDateLabel.setText(myEvent.eventDate);
         holder.eventTitleLabel.setText(myEvent.eventTitle);
 
         return convertView;
@@ -63,49 +73,78 @@ public class EventsListAdapter extends ArrayAdapter<EventsListAdapter.Event> {
         TextView eventDateLabel;
         TextView eventTitleLabel;
     }
-
+    @JsonIgnoreProperties({"chatInstances"})
     public static class Event{
-        String eventlocation;
+        String eventDescription;
+        String eventLocation;
         String eventAge;
+        String eventTime;
         String imgeUrl;
-        String eventdate;
+        String eventDate;
         String eventTitle;
+        String eventCost;
         String hostName;
         String identifier;
+        ArrayList<ChatInstance> chatInstances;
         int interestCount;
 
         public Event() {}
 
-        public Event(String location, String eventAge, String imgeUrl, String eventdate, String eventTitle, String hostName, String identifier) {
-            this.eventlocation = location;
+        public Event(String eventDescription, String eventLocation, String eventAge, String eventTime, String eventCost, String imgeUrl, String eventDate, String eventTitle, String hostName, String identifier) {
+            this.eventDescription = eventDescription;
+            this.eventLocation = eventLocation;
             this.eventAge = eventAge;
+            this.eventTime = eventTime;
+            this.eventCost = eventCost;
             this.imgeUrl = imgeUrl;
-            this.eventdate = eventdate;
+            this.eventDate = eventDate;
             this.eventTitle = eventTitle;
             this.hostName = hostName;
             this.identifier = identifier;
             this.interestCount = 0;
+            this.chatInstances = new ArrayList<>();
         }
 
-        public String getEventlocation() { return eventlocation; }
+        public String getEventCost() {return eventCost;}
+
+        public String getEventTime() {return eventTime;}
+
+        public String getEventDescription() {return eventDescription;}
+
+        public String getEventLocation() { return eventLocation; }
 
         public String getEventAge() { return eventAge; }
 
         public String getImgeUrl() { return imgeUrl; }
 
-        public String getEventdate() {
-            return eventdate;
+        public String getEventDate() {
+            return eventDate;
         }
 
-        public String getEventTitle() {
-            return eventTitle;
-        }
+        public String getEventTitle() {return eventTitle;}
 
         public String getHostName() { return hostName; }
 
         public String getIdentifier() { return identifier; }
 
         public int getInterestCount() { return interestCount; }
+
+        public void incrementInterestCount() { interestCount++; }
+
+        public ArrayList<ChatInstance> getChatInstances() {
+            return chatInstances;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o instanceof Event){
+                Event temp = (Event) o;
+                if (temp.getEventTitle().equals(this.getEventTitle())){
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }
 

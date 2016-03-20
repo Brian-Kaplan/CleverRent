@@ -1,6 +1,7 @@
 package com.example.brian.cleverrent;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.Image;
 import android.view.LayoutInflater;
@@ -58,17 +59,29 @@ public class HubListAdapter extends ArrayAdapter<HubNotification> {
 
         ArrayList<NotificationObject> list = notifications.get(position).getNotificationObjectList();
 
-        for (NotificationObject notificationObject : list){
+        for (final NotificationObject notificationObject : list){
             final View notificationView = inflater.inflate(R.layout.notifcation_object_cell_model, null);
 
             notificationView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN)
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
                         notificationView.setBackgroundColor(Color.parseColor("#838383"));
+
+                        Intent intent = new Intent(getContext(), ChatActivity.class);
+                        String listingType = notificationObject.getListingType();
+                        String listingIdentifier = notificationObject.getListingIdentifier();
+                        String chatIdentifier = notificationObject.getChatInstance().getIdentifier();
+                        intent.putExtra("LISTING_TYPE", listingType);
+                        intent.putExtra("LISTING_IDENTIFIER", listingIdentifier);
+                        intent.putExtra("CHAT_IDENTIFIER", chatIdentifier);
+                        getContext().startActivity(intent);
+                        
+                    }
                     else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
                         notificationView.setBackgroundColor(Color.parseColor("#ffffff"));
                     }
+
                     return true;
                 }
             });

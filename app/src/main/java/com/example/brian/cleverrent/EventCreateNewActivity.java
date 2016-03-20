@@ -5,12 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,16 +21,30 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EventCreateNewActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+
+    EditText eventDescriptionEditText = null;
+    EditText eventNameEditText = null;
+    EditText eventLocationEditText = null;
+    Spinner ageSpinner = null;
+    Spinner timeSpinner = null;
+    EditText eventDateEditText = null;
+    EditText eventCostEditText = null;
+    ImageView imageView = null;
+
+    Bitmap thumbnail = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,28 +54,111 @@ public class EventCreateNewActivity extends AppCompatActivity implements Adapter
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("New Event");
 
+        eventDescriptionEditText = (EditText) findViewById(R.id.eventDescription);
+        eventNameEditText = (EditText) findViewById(R.id.eventNameEditText);
+        eventLocationEditText = (EditText) findViewById(R.id.eventLocationEditText);
+        ageSpinner = (Spinner) findViewById(R.id.eventAgeTypeSpinner);
+        timeSpinner = (Spinner) findViewById(R.id.eventTimeSpinner);
+        eventDateEditText = (EditText) findViewById(R.id.eventDateEditText);
+        eventCostEditText = (EditText) findViewById(R.id.eventCostEditText);
+        imageView = (ImageView) findViewById(R.id.eventUploadThumbImageView);
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+
+        if(bundle != null) {
+            String callee = (String ) getCallingActivity().getClassName();
+            //If the activity was started with the intent to edit an event
+            //Fill in all of the fields
+            if (callee.equals("com.example.brian.cleverrent.ManageListingsActivity")){
+                String eventIdentifier = (String) bundle.get("LISTING_IDENTIFIER");
+                Firebase firebaseRef = new Firebase("https://cleverrent.firebaseio.com/events/"+eventIdentifier);
+                firebaseRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        EventsListAdapter.Event event = dataSnapshot.getValue(EventsListAdapter.Event.class);
+                        eventDescriptionEditText.setText(event.getEventDescription());
+                        eventNameEditText.setFocusable(false);
+                        eventNameEditText.setText(event.getEventTitle());
+                        eventLocationEditText.setText(event.getEventLocation());
+                        switch (event.getEventAge()){
+                            case "Adult":
+                                ageSpinner.setSelection(0);
+                                break;
+                            case "Teenage":
+                                ageSpinner.setSelection(1);
+                                break;
+                            case "Children":
+                                ageSpinner.setSelection(2);
+                                break;
+                            case "Toddlers":
+                                ageSpinner.setSelection(3);
+                                break;
+                            case "Other":
+                                ageSpinner.setSelection(4);
+                                break;
+                        }
+                        switch (event.getEventTime()){
+                            case "Early Morning":
+                                timeSpinner.setSelection(0);
+                                break;
+                            case "Afternoon":
+                                timeSpinner.setSelection(1);
+                                break;
+                            case "After Work":
+                                timeSpinner.setSelection(2);
+                                break;
+                            case "Happy Hour":
+                                timeSpinner.setSelection(3);
+                                break;
+                            case "Late Night":
+                                timeSpinner.setSelection(4);
+                                break;
+                        }
+                        eventDateEditText.setText(event.getEventDate());
+                        eventCostEditText.setText(event.getEventCost());
+                        String encodedImage = event.getImgeUrl();
+                        byte[] b = Base64.decode(encodedImage, Base64.DEFAULT);
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
+                        imageView.setImageBitmap(bitmap);
+                        thumbnail = bitmap;
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+            }
+            System.out.println();
+        }
+
+
+
         Button createEventButton = (Button) findViewById(R.id.eventCreateSubmitButton);
         createEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText eventDescription = (EditText) findViewById(R.id.eventDescription);
-                EditText eventNameEditText = (EditText) findViewById(R.id.eventNameEditText);
-                EditText eventLocationEditText = (EditText) findViewById(R.id.eventLocationEditText);
-                Spinner ageSpinner = (Spinner) findViewById(R.id.eventAgeTypeSpinner);
-                Spinner timeSpinner = (Spinner) findViewById(R.id.eventTimeSpinner);
-                EditText eventDateEditText = (EditText) findViewById(R.id.eventDateEditText);
-                EditText eventCostEditText = (EditText) findViewById(R.id.eventCostEditText);
 
-                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(EventCreateNewActivity.this);
+                SharedPreferences sharedPref = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
                 final String userName = sharedPref.getString("USER_NAME", null);
-                final String fireBaseUID = sharedPref.getString("FIRE_BASE_UID", null);
                 String eventIdentifier = eventNameEditText.getText().toString() + "-" + userName;
+                String encodedImage = "image url";
 
+                if (thumbnail != null) {
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+                    byte[] byteArray = baos.toByteArray();
+                    encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                }
 
                 EventsListAdapter.Event newEvent = new EventsListAdapter.Event(
+                        eventDescriptionEditText.getText().toString(),
                         eventLocationEditText.getText().toString(),
                         ageSpinner.getSelectedItem().toString(),
-                        "image url",
+                        timeSpinner.getSelectedItem().toString(),
+                        eventCostEditText.getText().toString(),
+                        encodedImage,
                         eventDateEditText.getText().toString(),
                         eventNameEditText.getText().toString(),
                         userName,
@@ -136,11 +235,9 @@ public class EventCreateNewActivity extends AppCompatActivity implements Adapter
                     if (resultCode == Activity.RESULT_OK) {
                         //data gives you the image uri. Try to convert that to bitmap
                         Uri selectedImage = data.getData();
-                        Bitmap bitmap = null;
                         try {
-                            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                            ImageView imageView = (ImageView) findViewById(R.id.eventUploadThumbImageView);
-                            imageView.setImageBitmap(bitmap);
+                            thumbnail = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                            imageView.setImageBitmap(thumbnail);
                         } catch (FileNotFoundException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();

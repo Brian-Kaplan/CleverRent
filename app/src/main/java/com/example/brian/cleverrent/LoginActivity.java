@@ -360,7 +360,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     public void onAuthenticated(AuthData authData) {
                         System.out.println("Successfully logged in");
                         //Save the users UID and user name into shared preferences
-                        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+                        SharedPreferences sharedPref = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("FIRE_BASE_UID", authData.getUid());
                         editor.putString("USER_NAME", mEmail.split("@")[0]);

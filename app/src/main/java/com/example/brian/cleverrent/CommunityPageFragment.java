@@ -9,10 +9,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import com.example.brian.cleverrent.FacilitiesListAdapter.Facility;
 import com.example.brian.cleverrent.EventsListAdapter.Event;
 import com.example.brian.cleverrent.ClassifiedsListAdapter.ClassifiedPost;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by brian on 1/31/16.
@@ -41,27 +49,60 @@ public class CommunityPageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view;
+        ListView listView;
         mPage = getArguments().getInt(ARG_PAGE);
         switch (mPage){
             case 0:
                 view  = inflater.inflate(R.layout.facilities_fragment_page, container, false);
+                listView = null;
                 setFacilitesListAdapter(view);
                 break;
             case 1:
                 view = inflater.inflate(R.layout.events_fragment_page, container, false);
+                listView = (ListView) view.findViewById(R.id.eventsListView);
                 setEventsListAdapter(view);
                 setEventCreateActionButton(view);
                 break;
             case 2:
                 view  = inflater.inflate(R.layout.classifieds_fragment_page, container, false);
+                listView = (ListView) view.findViewById(R.id.classifiedsListView);
                 setClassifiedsListAdapter(view);
                 setClassifiedsCreateActionButton(view);
                 break;
             default:
                 view = null;
+                listView = null;
                 break;
         }
+        setListingViewListener(listView);
         return view;
+    }
+
+    private void setListingViewListener(ListView listView){
+        if (listView != null){
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(getContext(), CommunityListingViewActivity.class);
+                    if (parent.getAdapter() instanceof EventsListAdapter) {
+                        EventsListAdapter adapter = (EventsListAdapter) parent.getAdapter();
+                        Event event = adapter.getItem(position);
+                        intent.putExtra("LISTING_TYPE", "events");
+                        String identifier = event.getIdentifier();
+                        intent.putExtra("LISTING_IDENTIFIER", identifier);
+                    }
+                    else if (parent.getAdapter() instanceof ClassifiedsListAdapter) {
+                        ClassifiedsListAdapter adapter = (ClassifiedsListAdapter) parent.getAdapter();
+                        ClassifiedPost post = adapter.getItem(position);
+                        intent.putExtra("LISTING_TYPE", "classifieds");
+                        String identifier = post.getIdentifier();
+                        intent.putExtra("LISTING_IDENTIFIER", identifier);
+                    }
+                    getContext().startActivity(intent);
+
+                }
+            });
+        }
     }
 
     private void setFacilitesListAdapter(View view){
@@ -75,26 +116,54 @@ public class CommunityPageFragment extends Fragment {
         lv.setAdapter(adapter);
     }
 
-    private void setEventsListAdapter(View view){
-        Event eventOne = new Event("Lazer Crazies", "Infants", "http://equinoxlasertag.com/wp-content/uploads/2015/09/Screen-Shot-2014-06-23-at-8.35.12-PM.png", "May 10", "Lazer Tag" , "me", "fix");
-        Event eventTwo = new Event("Black Pool", "Adults", "http://equinoxlasertag.com/wp-content/uploads/2015/09/Screen-Shot-2014-06-23-at-8.35.12-PM.png", "May 11", "Pool Party", "me", "fix");
-        Event eventThree = new Event("Back Alley", "Middle Aged Women", "http://equinoxlasertag.com/wp-content/uploads/2015/09/Screen-Shot-2014-06-23-at-8.35.12-PM.png", "May 15", "CRZY ORGY", "me", "fix");
-        Event[] events = {eventOne, eventTwo, eventThree};
+    private void setEventsListAdapter(final View view){
 
-        ListView lv = (ListView) view.findViewById(R.id.eventsListView);
-        EventsListAdapter adapter = new EventsListAdapter(getActivity(), events);
-        lv.setAdapter(adapter);
+        final ArrayList<Event> eventList = new ArrayList<>();
+        Firebase firebaseRef = new Firebase("https://cleverrent.firebaseio.com/events/");
+        firebaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
+                    Event event = eventSnapshot.getValue(Event.class);
+                    if (!eventList.contains(event)) {
+                        eventList.add(event);
+                    }
+                }
+                ListView lv = (ListView) view.findViewById(R.id.eventsListView);
+                EventsListAdapter adapter = new EventsListAdapter(getActivity(), eventList);
+                lv.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
-    private void setClassifiedsListAdapter(View view){
-        ClassifiedPost postOne = new ClassifiedPost("69th Floor", "$200", "http://www.mamabirddiaries.com/wp-content/uploads/2012/01/enormous-sectional-couch.jpg", "May 10", "Best Couch Ever", "fix");
-        ClassifiedPost postTwo = new ClassifiedPost("4th Floor", "Free", "http://mariashriver.com/wp-content/uploads/2011/06/Luxury-Purple-Sofa.jpg?bd3f04", "May 11", "Free Pimp Couch", "fix");
-        ClassifiedPost postThree = new ClassifiedPost("1st Floor", "$10,000", "http://twinfinite.net/wp-content/uploads/2016/01/bed-1.png", "May 15", "Kids Bed", "fix");
-        ClassifiedPost[] posts = {postOne, postTwo, postThree};
+    private void setClassifiedsListAdapter(final View view){
 
-        ListView lv = (ListView) view.findViewById(R.id.classifiedsListView);
-        ClassifiedsListAdapter adapter = new ClassifiedsListAdapter(getActivity(), posts);
-        lv.setAdapter(adapter);
+        final ArrayList<ClassifiedPost> postList = new ArrayList<>();
+        Firebase firebaseRef = new Firebase("https://cleverrent.firebaseio.com/classifieds/");
+        firebaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    ClassifiedPost post = postSnapshot.getValue(ClassifiedPost.class);
+                    if(!postList.contains(post)) {
+                        postList.add(post);
+                    }
+                }
+                ListView lv = (ListView) view.findViewById(R.id.classifiedsListView);
+                ClassifiedsListAdapter adapter = new ClassifiedsListAdapter(getActivity(), postList);
+                lv.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     private void setEventCreateActionButton(View view){
@@ -103,7 +172,7 @@ public class CommunityPageFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), EventCreateNewActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 0);
             }
         });
     }
@@ -114,7 +183,7 @@ public class CommunityPageFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), ClassifiedsCreateNewActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 0);
             }
         });
     }

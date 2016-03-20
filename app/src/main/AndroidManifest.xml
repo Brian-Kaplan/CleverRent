@@ -96,16 +96,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HubActivity"
-            android:label="@string/title_activity_hub"
-            android:theme="@style/AppTheme.NoActionBar" >
-            <intent-filter>
-                <action android:name="com.example.brian.cleverrent.HubActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".ManageEventsActivity"
             android:label="@string/title_activity_manage_events"
             android:theme="@style/AppTheme.NoActionBar" >
@@ -124,6 +114,38 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ManageListingsActivity"
+            android:label="@string/title_activity_manage_listings"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="com.example.brian.cleverrent.ManageListingsActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".CommunityListingViewActivity"
+            android:label="@string/title_activity_community_listing_view"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+
+        <intent-filter>
+            <action android:name="com.example.brian.cleverrent.CommunityListingViewActivity" />
+
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+
+        <activity
+            android:name=".ChatActivity"
+            android:label="@string/title_activity_chat"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".ManageListingsRsvpActivity"
+            android:label="@string/title_activity_manage_listings_rsvp"
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>
 

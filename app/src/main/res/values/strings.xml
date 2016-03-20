@@ -12,7 +12,9 @@
     <string name="title_activity_event_create_new">New Event</string>
     <string name="title_activity_classified_create_new">New Classified Post</string>
     <string name="title_activity_login">Sign in</string>
-    <string name="title_activity_hub">Hub</string>
+    <string name="title_activity_manage_events">Manage Events</string>
+    <string name="title_activity_manage_classifieds">Manage Classifieds</string>
+    <string name="title_activity_manage_listings">Manage Listings</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -23,9 +25,8 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
-    <string name="title_activity_manage_events">ManageEventsActivity</string>
-    <string name="title_activity_manage_classifieds">ManageClassifiedsActivity</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email completions." </string>
+    <string name="title_activity_community_listing_view">CommunityListingViewActivity</string>
+    <string name="title_activity_chat">ChatActivity</string>
+    <string name="title_activity_manage_listings_rsvp">ManageListingsRsvpActivity</string>
 </resources>
