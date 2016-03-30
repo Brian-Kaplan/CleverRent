@@ -7,22 +7,22 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 /**
  * Created by brian on 2/2/16.
  */
-public class MaintenanceListAdapter extends ArrayAdapter<String> {
+public class MaintenanceListAdapter extends ArrayAdapter<MaintenanceRequest> {
 
-    String[] dates = {};
-    String[] status = {};
+    ArrayList<MaintenanceRequest> maintenanceRequests;
     Context c;
     LayoutInflater inflater;
 
-    public MaintenanceListAdapter(Context context, String[] dates, String[] status) {
-        super(context, R.layout.maintenance_cell_model, dates);
+    public MaintenanceListAdapter(Context context, ArrayList<MaintenanceRequest> maintenanceRequests) {
+        super(context, R.layout.maintenance_cell_model, maintenanceRequests);
 
         this.c = context;
-        this.dates = dates;
-        this.status = status;
+        this.maintenanceRequests = maintenanceRequests;
     }
 
     //Inner Class to hold views for each row
@@ -48,8 +48,8 @@ public class MaintenanceListAdapter extends ArrayAdapter<String> {
         holder.status = (TextView) convertView.findViewById(R.id.maintenanceStatusLabel);
 
         //Assign the data
-        holder.date.setText(dates[position]);
-        holder.status.setText(status[position]);
+        holder.date.setText(maintenanceRequests.get(position).getTimeOfSubmission());
+        holder.status.setText(maintenanceRequests.get(position).getStatus());
 
         return convertView;
     }

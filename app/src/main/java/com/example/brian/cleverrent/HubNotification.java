@@ -1,5 +1,6 @@
 package com.example.brian.cleverrent;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
@@ -26,8 +27,21 @@ public class HubNotification {
     }
 
     public void addNotificationObject (NotificationObject object) {
-        if (!notificationObjectList.contains(object)){
+
+        //If the list is empty add one.
+        if (notificationObjectList.size() == 0){
             notificationObjectList.add(object);
+        } else {
+            //Loop the list and make the most recent chat notification the only chat notification
+            for (int i =0; i < notificationObjectList.size(); i++) {
+                NotificationObject temp = notificationObjectList.get(i);
+                if (temp.equals(object) && object.getType().equals("CHAT")) {
+                    if (object.isMoreRecent(temp))
+                        notificationObjectList.set(i, object);
+                } else {
+                    notificationObjectList.add(object);
+                }
+            }
         }
     }
 

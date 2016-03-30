@@ -119,7 +119,7 @@ public class CommunityPageFragment extends Fragment {
     private void setEventsListAdapter(final View view){
 
         final ArrayList<Event> eventList = new ArrayList<>();
-        Firebase firebaseRef = new Firebase("https://cleverrent.firebaseio.com/events/");
+        Firebase firebaseRef = new Firebase(MainActivity.getFirebaseRootRef() + "events/");
         firebaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -130,8 +130,10 @@ public class CommunityPageFragment extends Fragment {
                     }
                 }
                 ListView lv = (ListView) view.findViewById(R.id.eventsListView);
-                EventsListAdapter adapter = new EventsListAdapter(getActivity(), eventList);
-                lv.setAdapter(adapter);
+                if (getActivity() != null) {
+                    EventsListAdapter adapter = new EventsListAdapter(getActivity(), eventList);
+                    lv.setAdapter(adapter);
+                }
             }
 
             @Override
@@ -144,7 +146,7 @@ public class CommunityPageFragment extends Fragment {
     private void setClassifiedsListAdapter(final View view){
 
         final ArrayList<ClassifiedPost> postList = new ArrayList<>();
-        Firebase firebaseRef = new Firebase("https://cleverrent.firebaseio.com/classifieds/");
+        Firebase firebaseRef = new Firebase(MainActivity.getFirebaseRootRef() + "classifieds/");
         firebaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

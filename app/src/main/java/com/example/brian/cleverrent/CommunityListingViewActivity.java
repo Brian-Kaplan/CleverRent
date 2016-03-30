@@ -21,8 +21,10 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.example.brian.cleverrent.EventsListAdapter.Event;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CommunityListingViewActivity extends AppCompatActivity {
 
@@ -48,7 +50,7 @@ public class CommunityListingViewActivity extends AppCompatActivity {
         {
             final String listingType = (String) bundle.get("LISTING_TYPE");
             final String listingIdentifier = (String) bundle.get("LISTING_IDENTIFIER");
-            Firebase ref = new Firebase("https://cleverrent.firebaseio.com/"+listingType+"/"+listingIdentifier);
+            Firebase ref = new Firebase(MainActivity.getFirebaseRootRef()+listingType+"/"+listingIdentifier);
             ref.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -74,7 +76,7 @@ public class CommunityListingViewActivity extends AppCompatActivity {
                             final Button chat = (Button) findViewById(R.id.communityListingChatButton);
                             final Button showInterest = (Button) findViewById(R.id.communityListingInterestButton);
                             //If the user owns this event disable all the buttons
-                            if (event.getHostName().equals(userName)){
+                            if (event.getEventOwner().equals(userName)){
                                 rsvp.setEnabled(false);
                                 chat.setEnabled(false);
                                 showInterest.setEnabled(false);
@@ -97,8 +99,7 @@ public class CommunityListingViewActivity extends AppCompatActivity {
                             chat.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    //Make a new chat instance if it doesn't exist. Give the chat identifier to the ChatActivity
-                                    Firebase ref = new Firebase("https://cleverrent.firebaseio.com/"+listingType+"/"+listingIdentifier+"/chatInstances/"+userName);
+                                    Firebase ref = new Firebase(MainActivity.getFirebaseRootRef()+listingType+"/"+listingIdentifier+"/chatInstances/"+userName);
                                     ref.addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -134,18 +135,20 @@ public class CommunityListingViewActivity extends AppCompatActivity {
     }
 
     private void onShowInterest (final String displayName, final String listingType, final String listingIdentifier, final String userName, final EventsListAdapter.Event event) {
-        Firebase ref = new Firebase("https://cleverrent.firebaseio.com/"+listingType+"/"+listingIdentifier+"/chatInstances/"+userName);
+        final Firebase ref = new Firebase(MainActivity.getFirebaseRootRef() + listingType+"/"+listingIdentifier);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() == null) {
+                Event event = dataSnapshot.getValue(Event.class);
+                if (dataSnapshot.child("chatInstances").child(userName).getValue() == null) {
                     ChatInstance chatInstance = new ChatInstance(event.getHostName(), displayName, userName);
                     ChatEvent expressInterest = new ChatEvent("Friday, March 25", displayName.split(" ")[0] + " Expressed Interest");
                     chatInstance.addChatEvent(expressInterest);
-                    Firebase ref = new Firebase("https://cleverrent.firebaseio.com/" + listingType + "/" + listingIdentifier +
-                            "/chatInstances" + "/" + chatInstance.getIdentifier());
-                    ref.setValue(chatInstance);
-                    NotificationObject notificationObject = new NotificationObject(displayName, "Events: " + event.getEventTitle(), "CHAT", event.getHostName(), chatInstance, listingType, listingIdentifier);
+                    event.getChatInstances().put(userName, chatInstance);
+                    event.getInterestedList().add(userName);
+                    ref.child("chatInstances").setValue(event.getChatInstances());
+                    ref.child("interestedList").setValue(event.getInterestedList());
+                    NotificationObject notificationObject = new NotificationObject(displayName, "Events: " + event.getEventTitle(), "CHAT", event.getEventOwner(), chatInstance, listingType, listingIdentifier);
                     postChatNotification(notificationObject);
                 }
             }
@@ -158,25 +161,29 @@ public class CommunityListingViewActivity extends AppCompatActivity {
     }
 
     private void onRSVP(final String displayName, final String listingType, final String listingIdentifier, final String userName, final EventsListAdapter.Event event) {
-        Firebase ref = new Firebase("https://cleverrent.firebaseio.com/"+listingType+"/"+listingIdentifier+"/chatInstances/"+userName);
+        final Firebase ref = new Firebase(MainActivity.getFirebaseRootRef() + listingType+"/"+listingIdentifier);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ChatInstance chatInstance;
-                ChatEvent rsvp = new ChatEvent("Friday, March 25", displayName.split(" ")[0] + " RSVP'd");
-                if (dataSnapshot.getValue() == null) {
-                    chatInstance = new ChatInstance(event.getHostName(), displayName, userName);
-                    chatInstance.addChatEvent(rsvp);
-                } else {
-                    chatInstance = dataSnapshot.getValue(ChatInstance.class);
-                    ArrayList<ChatEvent> chatEventTimeline = chatInstance.getChatEventTimeline();
-                    if (!chatEventTimeline.contains(rsvp)) {
-                        chatEventTimeline.add(rsvp);
+                Event event = dataSnapshot.getValue(Event.class);
+                ArrayList<String> rsvpList = event.getRsvpList();
+                if (!rsvpList.contains(userName)) {
+                    ChatInstance chatInstance;
+                    if (dataSnapshot.child("chatInstances").child(userName).getValue() == null) {
+                        chatInstance = new ChatInstance(event.getHostName(), displayName, userName);
+                    } else {
+                        chatInstance = event.getChatInstances().get(userName);
                     }
+                    ArrayList<ChatEvent> chatEventTimeline = chatInstance.getChatEventTimeline();
+                    ChatEvent rsvp = new ChatEvent("Friday, March 25", displayName.split(" ")[0] + " RSVP'd");
+                    chatEventTimeline.add(rsvp);
+                    event.getChatInstances().put(userName, chatInstance);
+                    event.getRsvpList().add(userName);
+                    ref.child("chatInstances").setValue(event.getChatInstances());
+                    ref.child("rsvpList").setValue(event.getRsvpList());
+                    NotificationObject notificationObject = new NotificationObject(displayName, "Events: " + event.getEventTitle(), "CHAT", event.getEventOwner(), chatInstance, listingType, listingIdentifier);
+                    postChatNotification(notificationObject);
                 }
-                Firebase ref = new Firebase("https://cleverrent.firebaseio.com/" + listingType + "/" + listingIdentifier +
-                        "/chatInstances" + "/" + chatInstance.getIdentifier());
-                ref.setValue(chatInstance);
             }
 
             @Override
@@ -189,7 +196,7 @@ public class CommunityListingViewActivity extends AppCompatActivity {
     public static void postChatNotification(final NotificationObject notificationObject){
         String date = notificationObject.getNotifDate();
         String owner = notificationObject.getOwner();
-        final Firebase ref = new Firebase("https://cleverrent.firebaseio.com/notifications/" + owner + "/" + date);
+        final Firebase ref = new Firebase(MainActivity.getFirebaseRootRef() + "notifications/" + owner + "/" + date);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
