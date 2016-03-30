@@ -33,6 +33,7 @@ public class ManageListingsRsvpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manage_listings_rsvp);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Manage RSVP");
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -41,7 +42,7 @@ public class ManageListingsRsvpActivity extends AppCompatActivity {
             listingIdentifier = (String) bundle.get("LISTING_IDENTIFIER");
             listingType = (String) bundle.get("LISTING_TYPE");
             chatInstances = new ArrayList<>();
-            Firebase ref = new Firebase("https://cleverrent.firebaseio.com/" + listingType + "/" + listingIdentifier + "/chatInstances");
+            Firebase ref = new Firebase(MainActivity.getFirebaseRootRef() + listingType + "/" + listingIdentifier + "/chatInstances");
             ref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {

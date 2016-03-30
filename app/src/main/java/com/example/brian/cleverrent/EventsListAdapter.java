@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by brian on 2/15/16.
@@ -37,8 +38,8 @@ public class EventsListAdapter extends ArrayAdapter<EventsListAdapter.Event> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if(convertView == null){
-            inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.event_cell_model, null);
+                inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.event_cell_model, null);
         }
 
         //Make a ViewHolder object
@@ -73,7 +74,7 @@ public class EventsListAdapter extends ArrayAdapter<EventsListAdapter.Event> {
         TextView eventDateLabel;
         TextView eventTitleLabel;
     }
-    @JsonIgnoreProperties({"chatInstances"})
+
     public static class Event{
         String eventDescription;
         String eventLocation;
@@ -83,14 +84,17 @@ public class EventsListAdapter extends ArrayAdapter<EventsListAdapter.Event> {
         String eventDate;
         String eventTitle;
         String eventCost;
+        String eventOwner;
         String hostName;
         String identifier;
-        ArrayList<ChatInstance> chatInstances;
+        HashMap<String, ChatInstance> chatInstances;
+        ArrayList<String> interestedList;
+        ArrayList<String> rsvpList;
         int interestCount;
 
         public Event() {}
 
-        public Event(String eventDescription, String eventLocation, String eventAge, String eventTime, String eventCost, String imgeUrl, String eventDate, String eventTitle, String hostName, String identifier) {
+        public Event(String eventDescription, String eventLocation, String eventAge, String eventTime, String eventCost, String imgeUrl, String eventDate, String eventTitle, String hostName, String eventOwner, String identifier) {
             this.eventDescription = eventDescription;
             this.eventLocation = eventLocation;
             this.eventAge = eventAge;
@@ -100,16 +104,40 @@ public class EventsListAdapter extends ArrayAdapter<EventsListAdapter.Event> {
             this.eventDate = eventDate;
             this.eventTitle = eventTitle;
             this.hostName = hostName;
+            this.eventOwner = eventOwner;
             this.identifier = identifier;
             this.interestCount = 0;
-            this.chatInstances = new ArrayList<>();
+            this.chatInstances = new HashMap<>();
+            this.interestedList = new ArrayList<>();
+            this.rsvpList = new ArrayList<>();
+        }
+
+        public String getEventOwner() {
+            return eventOwner;
+        }
+
+        public ArrayList<String> getInterestedList() {
+            if (interestedList == null) {
+                interestedList = new ArrayList<>();
+            }
+            return interestedList;
+        }
+
+        public ArrayList<String> getRsvpList() {
+            if (rsvpList == null) {
+                rsvpList = new ArrayList<>();
+            }
+            return rsvpList;
         }
 
         public String getEventCost() {return eventCost;}
 
         public String getEventTime() {return eventTime;}
 
-        public String getEventDescription() {return eventDescription;}
+        public String getEventDescription() {
+            System.out.println();
+            return eventDescription;
+        }
 
         public String getEventLocation() { return eventLocation; }
 
@@ -117,9 +145,7 @@ public class EventsListAdapter extends ArrayAdapter<EventsListAdapter.Event> {
 
         public String getImgeUrl() { return imgeUrl; }
 
-        public String getEventDate() {
-            return eventDate;
-        }
+        public String getEventDate() { return eventDate; }
 
         public String getEventTitle() {return eventTitle;}
 
@@ -127,11 +153,17 @@ public class EventsListAdapter extends ArrayAdapter<EventsListAdapter.Event> {
 
         public String getIdentifier() { return identifier; }
 
-        public int getInterestCount() { return interestCount; }
+        public int getInterestCount() {
+            return interestCount;
+        }
 
         public void incrementInterestCount() { interestCount++; }
 
-        public ArrayList<ChatInstance> getChatInstances() {
+        public HashMap<String, ChatInstance> getChatInstances() {
+            if (chatInstances == null) {
+                chatInstances = new HashMap<String, ChatInstance>();
+            }
+            System.out.println();
             return chatInstances;
         }
 

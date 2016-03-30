@@ -52,7 +52,7 @@ public class ManageEventsActivity extends AppCompatActivity {
         SharedPreferences sharedPref = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
         userName = sharedPref.getString("USER_NAME", null);
 
-        Firebase ref = new Firebase("https://cleverrent.firebaseio.com/events/");
+        Firebase ref = new Firebase(MainActivity.getFirebaseRootRef() + "events/");
         // Attach an listener to read the data at our posts reference
         ref.addValueEventListener(new ValueEventListener() {
             @Override

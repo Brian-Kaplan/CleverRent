@@ -50,4 +50,8 @@ public class ChatInstance {
     public void setChatMessageTimeLine(ArrayList<ChatMessage> chatMessageTimeLine) {
         this.chatMessageTimeline = chatMessageTimeLine;
     }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
 }

@@ -72,7 +72,7 @@ public class EventCreateNewActivity extends AppCompatActivity implements Adapter
             //Fill in all of the fields
             if (callee.equals("com.example.brian.cleverrent.ManageListingsActivity")){
                 String eventIdentifier = (String) bundle.get("LISTING_IDENTIFIER");
-                Firebase firebaseRef = new Firebase("https://cleverrent.firebaseio.com/events/"+eventIdentifier);
+                Firebase firebaseRef = new Firebase(MainActivity.getFirebaseRootRef() + "events/"+eventIdentifier);
                 firebaseRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -142,6 +142,7 @@ public class EventCreateNewActivity extends AppCompatActivity implements Adapter
 
                 SharedPreferences sharedPref = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
                 final String userName = sharedPref.getString("USER_NAME", null);
+                final String displayName = sharedPref.getString("DISPLAY_NAME", null);
                 String eventIdentifier = eventNameEditText.getText().toString() + "-" + userName;
                 String encodedImage = "image url";
 
@@ -161,11 +162,12 @@ public class EventCreateNewActivity extends AppCompatActivity implements Adapter
                         encodedImage,
                         eventDateEditText.getText().toString(),
                         eventNameEditText.getText().toString(),
+                        displayName,
                         userName,
                         eventIdentifier
                 );
 
-                Firebase firebaseRef = new Firebase("https://cleverrent.firebaseio.com/events/"+eventIdentifier);
+                Firebase firebaseRef = new Firebase(MainActivity.getFirebaseRootRef() + "events/"+eventIdentifier);
                 firebaseRef.setValue(newEvent);
 
                 EventCreateNewActivity.this.finish();

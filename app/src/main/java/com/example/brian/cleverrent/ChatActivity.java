@@ -41,7 +41,7 @@ public class ChatActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
-       chatTimeLineLayout = (LinearLayout) findViewById(R.id.chatTimeLineLayout);
+        chatTimeLineLayout = (LinearLayout) findViewById(R.id.chatTimeLineLayout);
 
         if (bundle != null){
             SharedPreferences sharedPref  = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
@@ -52,7 +52,7 @@ public class ChatActivity extends AppCompatActivity {
             displayName = sharedPref.getString("DISPLAY_NAME", null);
 
             //Get the event information
-            ref = new Firebase("https://cleverrent.firebaseio.com/" + listingType + "/" + listingIdentifier);
+            ref = new Firebase(MainActivity.getFirebaseRootRef() + listingType + "/" + listingIdentifier);
             ref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -66,7 +66,7 @@ public class ChatActivity extends AppCompatActivity {
             });
 
 
-            ref = new Firebase("https://cleverrent.firebaseio.com/" + listingType + "/" + listingIdentifier +
+            ref = new Firebase(MainActivity.getFirebaseRootRef() + listingType + "/" + listingIdentifier +
                     "/chatInstances" + "/" + chatIdentifier);
             ref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override

@@ -54,7 +54,7 @@ public class ManageClassifiedsActivity extends AppCompatActivity {
         SharedPreferences sharedPref = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
         final String userName = sharedPref.getString("USER_NAME", null);
 
-        Firebase ref = new Firebase("https://cleverrent.firebaseio.com/classifieds/");
+        Firebase ref = new Firebase(MainActivity.getFirebaseRootRef() + "classifieds/");
         // Attach an listener to read the data at our posts reference
         ref.addValueEventListener(new ValueEventListener() {
             @Override

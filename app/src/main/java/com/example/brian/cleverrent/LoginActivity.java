@@ -352,7 +352,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             try {
                 // Simulate network access.
-                firebaseRef = new Firebase("https://cleverrent.firebaseio.com/");
+                firebaseRef = new Firebase(MainActivity.getFirebaseRootRef());
 
                 // Create a handler to handle the result of the authentication
                 Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {

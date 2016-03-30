@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,15 +14,20 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MaintenanceRequestActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     Context context;
+    MaintenanceRequest request = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +38,8 @@ public class MaintenanceRequestActivity extends AppCompatActivity implements Ada
         getSupportActionBar().setTitle("Maintenance Request");
 
         this.context = context;
+        request = new MaintenanceRequest();
+        request.setTimeOfSubmission(MainActivity.getTodaysDate());
 
         // Spinner element
         Spinner spinner = (Spinner) findViewById(R.id.typeSpinner);
@@ -44,6 +52,21 @@ public class MaintenanceRequestActivity extends AppCompatActivity implements Ada
                 dialog.setContentView(R.layout.maintenance_submit_confirmation);
                 dialog.show();  //<-- See This!
 
+                SharedPreferences sharedPref  = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
+                String userName = sharedPref.getString("USER_NAME", null);
+                String displayName = sharedPref.getString("DISPLAY_NAME", null);
+                Firebase firebaseRef = new Firebase(MainActivity.getFirebaseRootRef() + "maintenance/"+userName + "/"  + request.getTimeOfSubmission());
+
+                EditText editTextDescription = (EditText) findViewById(R.id.editTextDescription);
+                EditText editTextTimeFrame = (EditText) findViewById(R.id.editTextTimeFrame);
+
+                request.setDescription(editTextDescription.getText().toString());
+                request.setTimeForService(editTextTimeFrame.getText().toString());
+                request.setTenantName(displayName);
+                request.setStatus("pending");
+
+                firebaseRef.setValue(request);
+
                 Button confirmationButton = (Button) dialog.findViewById(R.id.confirmationButton);
                 confirmationButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -55,10 +78,6 @@ public class MaintenanceRequestActivity extends AppCompatActivity implements Ada
 
             }
         });
-
-        // Spinner click listener
-//        spinner.setOnItemSelectedListener(this);
-
 
         // Spinner Drop down elements
         List<String> categories = new ArrayList<String>();
@@ -81,7 +100,7 @@ public class MaintenanceRequestActivity extends AppCompatActivity implements Ada
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
         String item = parent.getItemAtPosition(position).toString();
-
+        request.setMaintenanceType(item);
         // Showing selected spinner item
         Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
     }

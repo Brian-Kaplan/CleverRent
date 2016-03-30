@@ -76,7 +76,7 @@ public class HubListAdapter extends ArrayAdapter<HubNotification> {
                         intent.putExtra("LISTING_IDENTIFIER", listingIdentifier);
                         intent.putExtra("CHAT_IDENTIFIER", chatIdentifier);
                         getContext().startActivity(intent);
-                        
+
                     }
                     else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
                         notificationView.setBackgroundColor(Color.parseColor("#ffffff"));

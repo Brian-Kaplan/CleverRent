@@ -129,13 +129,13 @@
             android:name=".CommunityListingViewActivity"
             android:label="@string/title_activity_community_listing_view"
             android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
 
         <intent-filter>
             <action android:name="com.example.brian.cleverrent.CommunityListingViewActivity" />
 
             <category android:name="android.intent.category.DEFAULT" />
         </intent-filter>
+        </activity>
 
         <activity
             android:name=".ChatActivity"
@@ -145,6 +145,11 @@
         <activity
             android:name=".ManageListingsRsvpActivity"
             android:label="@string/title_activity_manage_listings_rsvp"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".OfficeChatActivity"
+            android:label="@string/title_activity_office_chat"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>

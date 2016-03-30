@@ -1,5 +1,9 @@
 package com.example.brian.cleverrent;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by brian on 3/12/16.
  * A Single Notification Representation
@@ -56,10 +60,30 @@ public class NotificationObject {
     public boolean equals(Object o) {
         if (o instanceof NotificationObject){
             NotificationObject temp = (NotificationObject) o;
-            if (this.getTitle().equals(temp.getTitle()) && this.getTimeStamp().equals(temp.getTimeStamp())){
+            if (this.getTitle().equals(temp.getTitle())){
                 return true;
             }
         }
         return false;
+    }
+
+    public boolean isMoreRecent(NotificationObject object) {
+        String stamp1 = object.getTimeStamp();
+        String stamp2 = this.getTimeStamp();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
+        Date date1 = null;
+        Date date2 = null;
+        try {
+            date1 = sdf.parse(stamp1);
+            date2 = sdf.parse(stamp2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (date2.after(date1) || date2.equals(date1))
+            return true;
+        else
+            return false;
     }
 }

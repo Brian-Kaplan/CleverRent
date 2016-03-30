@@ -69,7 +69,7 @@ public class ClassifiedsCreateNewActivity extends AppCompatActivity {
             //Fill in all of the fields
             if (callee.equals("com.example.brian.cleverrent.ManageListingsActivity")) {
                 String classifiedIdentifier = (String) bundle.get("LISTING_IDENTIFIER");
-                Firebase firebaseRef = new Firebase("https://cleverrent.firebaseio.com/classifieds/" + classifiedIdentifier);
+                Firebase firebaseRef = new Firebase(MainActivity.getFirebaseRootRef() + "classifieds/" + classifiedIdentifier);
                 firebaseRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -146,7 +146,7 @@ public class ClassifiedsCreateNewActivity extends AppCompatActivity {
                         email.getText().toString(), postIdentifier
                 );
 
-                Firebase firebaseRef = new Firebase("https://cleverrent.firebaseio.com/classifieds/"+postIdentifier);
+                Firebase firebaseRef = new Firebase(MainActivity.getFirebaseRootRef() + "classifieds/"+postIdentifier);
                 firebaseRef.setValue(post);
 
                 ClassifiedsCreateNewActivity.this.finish();
