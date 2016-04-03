@@ -30,49 +30,6 @@
         android:layout_alignParentStart="true"
         android:textSize="15dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Bank Accounts"
-        android:id="@+id/textView8"
-        android:layout_marginTop="20dp"
-        android:textSize="15dp"
-        android:layout_below="@+id/statementView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <RelativeLayout
-        android:id="@+id/bankAccountView"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_below="@+id/textView8"
-        android:background="@drawable/rounded_corner">
-
-        <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/accountRadioGroup"
-            android:layout_marginBottom="25dp">
-
-        </RadioGroup>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Options..."
-            android:id="@+id/bankAccountOptionsLabel"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="32dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="5dp"
-            android:textColor="#5a7fd4" />
-
-    </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -82,7 +39,7 @@
         android:id="@+id/textView11"
         android:layout_marginTop="20dp"
         android:textSize="15dp"
-        android:layout_below="@+id/bankAccountView"
+        android:layout_below="@+id/statementView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -90,16 +47,16 @@
         android:id="@+id/creditCardView"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/rounded_corner"
         android:layout_below="@+id/textView11"
         android:layout_alignParentLeft="true">
 
         <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/creditCardRadioGroup"
-            android:layout_marginBottom="25dp" />
+            android:orientation="vertical" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -107,12 +64,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Options..."
             android:id="@+id/creditCardOptionsLabel"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="32dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="5dp"
+            android:layout_below="@id/creditCardRadioGroup"
             android:textColor="#5a7fd4" />
     </RelativeLayout>
 

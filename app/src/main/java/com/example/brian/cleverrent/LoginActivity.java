@@ -165,7 +165,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView.setError(null);
         mPasswordView.setError(null);
 
-        // Store values at the time of the login attempt.
+        // Store values at the chatTime of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
@@ -370,42 +370,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     @Override
                     public void onAuthenticationError(final FirebaseError firebaseError) {
                         System.out.println("ERROR:  " + firebaseError.toString());
-                        if (firebaseError.getCode() == FirebaseError.USER_DOES_NOT_EXIST) {
-                            // If the account does not exist create it
-                            firebaseRef.createUser(mEmail, mPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
-                                @Override
-                                public void onSuccess(Map<String, Object> result) {
-                                    System.out.println("Successfully created user account with uid: " + result.get("uid"));
-                                    //Log the user in
-                                    //We make a new handler to add user details to the newly created user
-                                    Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
-                                        @Override
-                                        public void onAuthenticated(AuthData authData) {
-                                            // Authentication just completed successfully :)
-                                            Map<String, String> map = new HashMap<String, String>();
-                                            map.put("provider", authData.getProvider());
-                                            map.put("userName", mEmail.split("@")[0]);
-                                            map.put("email", mEmail);
-                                            firebaseRef.child("users").child(authData.getUid()).setValue(map);
-                                        }
-
-                                        @Override
-                                        public void onAuthenticationError(FirebaseError firebaseError) {
-
-                                        }
-                                    };
-                                    firebaseRef.authWithPassword(mEmail, mPassword, authResultHandler);
-                                }
-
-                                @Override
-                                public void onError(FirebaseError firebaseError) {
-                                    System.out.println("ERROR:  " + firebaseError.toString());
-                                }
-                            });
-                        }
-                        else{
-                            throw new RuntimeException(firebaseError.getMessage());
-                        }
+                        throw new RuntimeException(firebaseError.getMessage());
                     }
                 };
 

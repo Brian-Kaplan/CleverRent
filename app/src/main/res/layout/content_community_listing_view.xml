@@ -90,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/communityLisitingViewTimeLabel"
-                android:text="The time of the event" />
+                android:text="The chatTime of the event" />
 
         </LinearLayout>
 

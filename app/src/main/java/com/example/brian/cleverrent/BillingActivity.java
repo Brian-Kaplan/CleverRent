@@ -3,6 +3,7 @@ package com.example.brian.cleverrent;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,8 +14,23 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.stripe.android.*;
+import com.stripe.android.model.Token;
+import com.stripe.exception.AuthenticationException;
+import com.stripe.android.model.*;
+
+import java.util.ArrayList;
+
+import com.example.brian.cleverrent.AddCreditCardActivity.CreditCard;
 
 public class BillingActivity extends AppCompatActivity {
+
+    CreditCard[] creditCards = null;
+    CreditCard selectedCard = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,14 +40,6 @@ public class BillingActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Billing");
 
-
-        TextView accountOptions = (TextView) findViewById(R.id.bankAccountOptionsLabel);
-        accountOptions.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(BillingActivity.this, AddBankAccountActivity.class);
-                startActivity(intent);
-            }
-        });
 
         TextView creditCardOptions = (TextView) findViewById(R.id.creditCardOptionsLabel);
         creditCardOptions.setOnClickListener(new View.OnClickListener() {
@@ -46,48 +54,75 @@ public class BillingActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dialog dialog = new Dialog(BillingActivity.this);
-                dialog.setContentView(R.layout.billing_submit_confirmation);
-                dialog.show();  //<-- See This!
-
-                Button confirmationButton = (Button) dialog.findViewById(R.id.confirmationButton);
-                confirmationButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //Close the activity
-                        BillingActivity.this.finish();
+                if (selectedCard != null) {
+                    Card card = new Card(
+                            selectedCard.getCardNumber(),
+                            selectedCard.getExpMonth(),
+                            selectedCard.getExpYear(),
+                            selectedCard.getCvc());
+                    Stripe stripe = null;
+                    try {
+                        stripe = new Stripe("pk_test_GCGdXvHzOEh3Be215XE3uPhH");
+                    } catch (AuthenticationException e) {
+                        e.printStackTrace();
                     }
-                });
+                    if (stripe != null) {
+                        stripe.createToken(card,
+                            new TokenCallback() {
+                                public void onSuccess(Token token) {
+                                    System.out.println(token);
+                                }
+                                public void onError(Exception error) {
+                                    // Show localized error message
+                                    Toast.makeText(getApplicationContext(), error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        );
+                    }
 
+                    Dialog dialog = new Dialog(BillingActivity.this);
+                    dialog.setContentView(R.layout.billing_submit_confirmation);
+                    dialog.show();  //<-- See This!
+
+                    Button confirmationButton = (Button) dialog.findViewById(R.id.confirmationButton);
+                    confirmationButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //Close the activity
+                            finish();
+                        }
+                    });
+                }
             }
         });
-
-        String[] accountNames = {"Checking", "Savings"};
-        String[] creditCardNames = {"Card 1", "Card 2"};
-        
-        RadioGroup accountRadioGroup = (RadioGroup) findViewById(R.id.accountRadioGroup);
-        RadioGroup creditCardRadioGroup = (RadioGroup) findViewById(R.id.creditCardRadioGroup);
-        RelativeLayout accountLayout = (RelativeLayout) findViewById(R.id.bankAccountView);
-        RelativeLayout creditLayout = (RelativeLayout) findViewById(R.id.creditCardView);
-
-        for (int i=0; i<accountNames.length; i++){
-            RadioButton account = new RadioButton(this);
-            RadioButton card = new RadioButton(this);
-            card.setText(creditCardNames[i]);
-            account.setText(accountNames[i]);
-            accountRadioGroup.addView(account, i);
-            creditCardRadioGroup.addView(card, i);
-            if (i > 1) {
-                accountLayout.getLayoutParams().height += 55;
-                creditLayout.getLayoutParams().height += 55;
-            }
-        }
     }
+
+
 
     @Override
     protected void onResume() {
         super.onResume();
-        // The activity has become visible (it is now "resumed").
+        SharedPreferences prefs = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
+        String cards = prefs.getString("CreditCards", null);
+        GsonBuilder gsonb = new GsonBuilder();
+        Gson gson = gsonb.create();
+        creditCards = gson.fromJson(cards, CreditCard[].class);
+        RadioGroup creditCardRadioGroup = (RadioGroup) findViewById(R.id.creditCardRadioGroup);
+        creditCardRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                selectedCard = creditCards[checkedId-1];
+            }
+        });
+        RelativeLayout creditLayout = (RelativeLayout) findViewById(R.id.creditCardView);
+
+        if (creditCards != null) {
+            for (int i = 0; i < creditCards.length; i++) {
+                RadioButton card = new RadioButton(this);
+                card.setText(creditCards[i].getCardNumber());
+                creditCardRadioGroup.addView(card);
+            }
+        }
     }
 
 }

@@ -136,7 +136,6 @@
             <category android:name="android.intent.category.DEFAULT" />
         </intent-filter>
         </activity>
-
         <activity
             android:name=".ChatActivity"
             android:label="@string/title_activity_chat"
@@ -152,6 +151,10 @@
             android:label="@string/title_activity_office_chat"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
-    </application>
 
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
+
+    </application>
 </manifest>

@@ -141,7 +141,7 @@ public class CommunityListingViewActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Event event = dataSnapshot.getValue(Event.class);
                 if (dataSnapshot.child("chatInstances").child(userName).getValue() == null) {
-                    ChatInstance chatInstance = new ChatInstance(event.getHostName(), displayName, userName);
+                    ChatInstance chatInstance = new ChatInstance(event.getEventOwner(), userName, userName);
                     ChatEvent expressInterest = new ChatEvent("Friday, March 25", displayName.split(" ")[0] + " Expressed Interest");
                     chatInstance.addChatEvent(expressInterest);
                     event.getChatInstances().put(userName, chatInstance);
@@ -170,7 +170,7 @@ public class CommunityListingViewActivity extends AppCompatActivity {
                 if (!rsvpList.contains(userName)) {
                     ChatInstance chatInstance;
                     if (dataSnapshot.child("chatInstances").child(userName).getValue() == null) {
-                        chatInstance = new ChatInstance(event.getHostName(), displayName, userName);
+                        chatInstance = new ChatInstance(event.getEventOwner(), userName, userName);
                     } else {
                         chatInstance = event.getChatInstances().get(userName);
                     }

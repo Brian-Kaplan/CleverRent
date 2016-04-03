@@ -128,8 +128,11 @@ public class ChatActivity extends AppCompatActivity {
                             TextView textLabel = (TextView) messageView.findViewById(R.id.chatMessageTextLabel);
                             textLabel.setText(chatMessage.getMessage());
                             chatTimeLineLayout.addView(messageView);
-
-                            NotificationObject notificationObject = new NotificationObject(displayName, "Events: " + event.getEventTitle(), "CHAT", event.getHostName(), chatInstance, listingType, listingIdentifier);
+                            String notifRecipient = chatInstance.getChatOwner();
+                            if (chatInstance.getChatOwner().equals(userName)) {
+                                notifRecipient = chatInstance.getChatParticipant();
+                            }
+                            NotificationObject notificationObject = new NotificationObject(displayName, "Events: " + event.getEventTitle(), "CHAT", notifRecipient, chatInstance, listingType, listingIdentifier);
                             CommunityListingViewActivity.postChatNotification(notificationObject);
                         }
 
