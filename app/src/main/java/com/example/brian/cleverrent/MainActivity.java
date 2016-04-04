@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     editor.putString("FIRE_BASE_UID", authData.getUid());
                     editor.commit();
                     //Get the users information from the UID
-                    Firebase ref = new Firebase(MainActivity.fireBaseRootRef + "users/" + authData.getUid());
+                    Firebase ref = new Firebase(MainActivity.fireBaseRootRef + "tenant/" + authData.getUid());
                     ref.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {

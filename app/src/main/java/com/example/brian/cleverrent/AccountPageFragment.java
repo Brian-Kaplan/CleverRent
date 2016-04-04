@@ -79,7 +79,7 @@ public class AccountPageFragment extends Fragment {
             final TextView userEmailLabel = (TextView) view.findViewById(R.id.userEmailLabel);
 
             // Get a reference to our user
-            Firebase ref = new Firebase(MainActivity.getFirebaseRootRef() + "users/" + fireBaseUID);
+            Firebase ref = new Firebase(MainActivity.getFirebaseRootRef() + "tenant/" + fireBaseUID);
             // Attach an listener to read the data at our posts reference
             ref.addValueEventListener(new ValueEventListener() {
                 @Override
