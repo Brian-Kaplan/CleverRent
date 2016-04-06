@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -117,7 +116,7 @@ public class EventCreateNewActivity extends AppCompatActivity implements Adapter
                         }
                         eventDateEditText.setText(event.getEventDate());
                         eventCostEditText.setText(event.getEventCost());
-                        String encodedImage = event.getImgeUrl();
+                        String encodedImage = event.getImageUrl();
                         byte[] b = Base64.decode(encodedImage, Base64.DEFAULT);
                         Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
                         imageView.setImageBitmap(bitmap);

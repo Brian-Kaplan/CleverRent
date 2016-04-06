@@ -1,6 +1,9 @@
 package com.example.brian.cleverrent;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +13,18 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 /**
  * Created by brian on 2/15/16.
  */
 public class LocalDealsListAdapter extends ArrayAdapter<LocalDealsListAdapter.Deal> {
 
-    Deal[] deals = {};
+    ArrayList<Deal> deals = null;
     Context c;
     LayoutInflater inflater;
 
-    public LocalDealsListAdapter(Context context, Deal[] deals) {
+    public LocalDealsListAdapter(Context context, ArrayList<Deal> deals) {
         super(context, R.layout.local_deal_cell_model, deals);
         this.deals = deals;
         this.c = context;
@@ -36,47 +41,59 @@ public class LocalDealsListAdapter extends ArrayAdapter<LocalDealsListAdapter.De
 
         //Make a ViewHolder object
         final DealViewHolder holder = new DealViewHolder();
-        final Deal myDeal = deals[position];
+        final Deal myDeal = deals.get(position);
 
         //Initialize the view
-        holder.location = (TextView) convertView.findViewById(R.id.dealLocationLabel);
-        holder.percentOff = (TextView) convertView.findViewById(R.id.dealPercentOffLabel);
+        holder.deal_description = (TextView) convertView.findViewById(R.id.dealLocationLabel);
         holder.imageThumb = (ImageView) convertView.findViewById(R.id.dealImageThumb);
-        holder.date = (TextView) convertView.findViewById(R.id.dealDateLabel);
-        holder.dealTitle = (TextView) convertView.findViewById(R.id.dealTitleLabel);
+        holder.deal_name = (TextView) convertView.findViewById(R.id.dealTitleLabel);
 
         //Assign the data
-        holder.location.setText("("+myDeal.dealLocation+")");
-        holder.percentOff.setText(myDeal.dealPercentOff + " Off");
-        Picasso.with(c).load(myDeal.imgeUrl).into(holder.imageThumb);
-        holder.date.setText(myDeal.dealDate);
-        holder.dealTitle.setText(myDeal.dealTitle);
-
+        holder.deal_description.setText("(" + myDeal.deal_description + ")");
+        holder.deal_name.setText(myDeal.deal_name);
+        String encodedImage = myDeal.getImageUrl();
+        if (encodedImage != null) {
+            byte[]b = null;
+            try {
+                b = Base64.decode(encodedImage, Base64.DEFAULT);
+            } catch (Exception e) {
+                Bitmap bm = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.no_image_available);
+                holder.imageThumb.setImageBitmap(bm);
+                return convertView;
+            }
+            Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
+            holder.imageThumb.setImageBitmap(bitmap);
+        } else {
+            Bitmap bm = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.no_image_available);
+            holder.imageThumb.setImageBitmap(bm);
+        }
         return convertView;
     }
 
     private class DealViewHolder
     {
-        TextView location;
-        TextView percentOff;
+        TextView deal_description;
+        TextView deal_name;
         ImageView imageThumb;
-        TextView date;
-        TextView dealTitle;
     }
 
     public static class Deal{
-        String dealLocation;
-        String dealPercentOff;
-        String imgeUrl;
-        String dealDate;
-        String dealTitle;
+        private String deal_description;
+        private String deal_name;
+        private String imageUrl;
 
-        public Deal(String location, String percentOff, String imgeUrl, String date, String dealTitle) {
-            this.dealLocation = location;
-            this.dealPercentOff = percentOff;
-            this.imgeUrl = imgeUrl;
-            this.dealDate = date;
-            this.dealTitle = dealTitle;
+        public Deal() {}
+
+        public String getDeal_description() {
+            return deal_description;
+        }
+
+        public String getDeal_name() {
+            return deal_name;
+        }
+
+        public String getImageUrl() {
+            return imageUrl;
         }
     }
 }

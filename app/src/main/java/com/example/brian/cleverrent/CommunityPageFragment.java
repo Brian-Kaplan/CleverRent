@@ -105,15 +105,26 @@ public class CommunityPageFragment extends Fragment {
         }
     }
 
-    private void setFacilitesListAdapter(View view){
-        Facility facilityOne = new Facility("Hot Dogs", "Must Reserve", "http://i.imgur.com/8vdAgMR.jpg", "Miami");
-        Facility facilityTwo = new Facility("More Dogs", "10AM - 9PM", "http://i.imgur.com/8vdAgMR.jpg", "Roanoke");
-        Facility facilityThree = new Facility("HOLY HOT Dogs", "Must Reserve", "http://i.imgur.com/8vdAgMR.jpg", "My House");
-        Facility[] facilities = {facilityOne, facilityTwo, facilityThree};
+    private void setFacilitesListAdapter(final View view){
+        Firebase firebaseRef = new Firebase(MainActivity.getFirebaseRootRef() + "facility/");
+        firebaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<Facility> facilities = new ArrayList<Facility>();
+                for (DataSnapshot facility : dataSnapshot.getChildren()) {
+                    Facility fc = facility.getValue(Facility.class);
+                    facilities.add(fc);
+                }
+                ListView lv = (ListView) view.findViewById(R.id.facilitiesListView);
+                FacilitiesListAdapter adapter = new FacilitiesListAdapter(getActivity(), facilities);
+                lv.setAdapter(adapter);
+            }
 
-        ListView lv = (ListView) view.findViewById(R.id.facilitiesListView);
-        FacilitiesListAdapter adapter = new FacilitiesListAdapter(getActivity(), facilities);
-        lv.setAdapter(adapter);
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     private void setEventsListAdapter(final View view){
@@ -157,8 +168,10 @@ public class CommunityPageFragment extends Fragment {
                     }
                 }
                 ListView lv = (ListView) view.findViewById(R.id.classifiedsListView);
-                ClassifiedsListAdapter adapter = new ClassifiedsListAdapter(getActivity(), postList);
-                lv.setAdapter(adapter);
+                if (getActivity() != null ) {
+                    ClassifiedsListAdapter adapter = new ClassifiedsListAdapter(getActivity(), postList);
+                    lv.setAdapter(adapter);
+                }
             }
 
             @Override

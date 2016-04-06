@@ -15,6 +15,10 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_community_listing_view" />
+    <include
+        layout="@layout/content_event_listing_view"
+        android:id="@+id/eventView"/>
+    <include layout="@layout/content_classifieds_listing_view"
+        android:id="@+id/classifiedView"/>
 
 </android.support.design.widget.CoordinatorLayout>

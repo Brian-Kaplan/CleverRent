@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ArrayList<HubNotification> hubNotificationsList = null;
     private Firebase firebaseAuthRef = null;
     private SharedPreferences sharedPref = null;
-    private  static String fireBaseRootRef = "https://clever-rent.firebaseio.com/";
+    private static String fireBaseRootRef = "https://clever-rent.firebaseio.com/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -268,13 +268,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             contentView.removeAllViews();
             contentView.addView(child);
 
-            ListView lv = (ListView) findViewById(R.id.localDealsListView);
-            Deal dealOne = new Deal("Lyric", "10%", "http://i.imgur.com/5kx1tmA.jpg", "May 9", "10% Off DeadPool");
-            Deal dealTwo = new Deal("Cinnebowl", "20%", "http://i.imgur.com/5kx1tmA.jpg", "May 10", "20% Off DeadPool");
-            Deal dealThree = new Deal("Not Here", "50%", "http://i.imgur.com/5kx1tmA.jpg", "May 11", "Ryan Reynolds Loves you");
-            Deal[] deals = {dealOne, dealTwo, dealThree};
-            LocalDealsListAdapter adapter = new LocalDealsListAdapter(this, deals);
-            lv.setAdapter(adapter);
+            Firebase ref = new Firebase(MainActivity.getFirebaseRootRef() + "deals/");
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    ArrayList<Deal> deals = new ArrayList<Deal>();
+                    for (DataSnapshot deal : dataSnapshot.getChildren()) {
+                        Deal temp = deal.getValue(Deal.class);
+                        deals.add(temp);
+                        ListView lv = (ListView) findViewById(R.id.localDealsListView);
+                        LocalDealsListAdapter adapter = new LocalDealsListAdapter(MainActivity.this, deals);
+                        lv.setAdapter(adapter);
+                    }
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
 
         } else if (id == R.id.nav_notification) {
 

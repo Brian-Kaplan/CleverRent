@@ -11,10 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 
 /**
@@ -55,13 +54,24 @@ public class ClassifiedsListAdapter extends ArrayAdapter<ClassifiedsListAdapter.
         //Assign the data
         holder.postLocation.setText("("+myPost.postType+")");
         holder.postPrice.setText(myPost.postPrice);
-        String encodedImage = myPost.getImgeUrl();
-        byte[] b = Base64.decode(encodedImage, Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
-        holder.imageThumb.setImageBitmap(bitmap);
         holder.postDate.setText(myPost.postDate);
         holder.postTitle.setText(myPost.postTitle);
-
+        String encodedImage = myPost.getImageUrl();
+        if (encodedImage != null) {
+            byte[]b = null;
+            try {
+                b = Base64.decode(encodedImage, Base64.DEFAULT);
+            } catch (Exception e) {
+                Bitmap bm = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.no_image_available);
+                holder.imageThumb.setImageBitmap(bm);
+                return convertView;
+            }
+            Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
+            holder.imageThumb.setImageBitmap(bitmap);
+        } else {
+            Bitmap bm = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.no_image_available);
+            holder.imageThumb.setImageBitmap(bm);
+        }
         return convertView;
     }
 
@@ -80,19 +90,20 @@ public class ClassifiedsListAdapter extends ArrayAdapter<ClassifiedsListAdapter.
         String postDescription;
         String postCondition;
         String postPrice;
-        String imgeUrl;
+        String imageUrl;
         String fullName;
         String postPhone;
         String postEmail;
         String identifier;
         String postDate;
+        HashMap<String, ChatInstance> chatInstances;
         int interestCount;
 
         public ClassifiedPost() {}
 
         public ClassifiedPost(String postType, String postTitle,
                               String postDescription, String postCondition,
-                              String postPrice, String imgeUrl,
+                              String postPrice, String imageUrl,
                               String fullName, String postPhone,
                               String postEmail , String identifier) {
 
@@ -101,7 +112,7 @@ public class ClassifiedsListAdapter extends ArrayAdapter<ClassifiedsListAdapter.
             this.postDescription = postDescription;
             this.postCondition = postCondition;
             this.postPrice = postPrice;
-            this.imgeUrl = imgeUrl;
+            this.imageUrl = imageUrl;
             this.fullName = fullName;
             this.postPhone = postPhone;
             this.postEmail = postEmail;
@@ -110,8 +121,16 @@ public class ClassifiedsListAdapter extends ArrayAdapter<ClassifiedsListAdapter.
             Locale locale = Locale.getDefault();
             String month = now.getDisplayName(Calendar.MONTH, Calendar.LONG, locale);
             int day = now.get(Calendar.DAY_OF_MONTH);
+            this.chatInstances = new HashMap<>();
             this.postDate = month + " " + Integer.toString(day); //TODO Generate the date somehow
             this.interestCount = 0;
+        }
+
+        public HashMap<String, ChatInstance> getChatInstances() {
+            if (chatInstances == null) {
+                chatInstances = new HashMap<String, ChatInstance>();
+            }
+            return chatInstances;
         }
 
         public String getPostDate() { return postDate; }
@@ -122,7 +141,7 @@ public class ClassifiedsListAdapter extends ArrayAdapter<ClassifiedsListAdapter.
 
         public String getPostTitle() {return postTitle;}
 
-        public String getImgeUrl() {return imgeUrl;}
+        public String getImageUrl() {return imageUrl;}
 
         public String getPostPrice() {
             return postPrice;

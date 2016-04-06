@@ -29,6 +29,7 @@ public class ChatActivity extends AppCompatActivity {
     static String displayName = null;
     static Firebase ref = null;
     EventsListAdapter.Event event = null;
+    ClassifiedsListAdapter.ClassifiedPost post = null;
     LinearLayout chatTimeLineLayout = null;
 
     @Override
@@ -56,7 +57,11 @@ public class ChatActivity extends AppCompatActivity {
             ref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    event = dataSnapshot.getValue(EventsListAdapter.Event.class);
+                    if (listingType.equals("events")) {
+                        event = dataSnapshot.getValue(EventsListAdapter.Event.class);
+                    } else if(listingType.equals("classifieds")) {
+                        post = dataSnapshot.getValue(ClassifiedsListAdapter.ClassifiedPost.class);
+                    }
                 }
 
                 @Override
@@ -132,7 +137,13 @@ public class ChatActivity extends AppCompatActivity {
                             if (chatInstance.getChatOwner().equals(userName)) {
                                 notifRecipient = chatInstance.getChatParticipant();
                             }
-                            NotificationObject notificationObject = new NotificationObject(displayName, "Events: " + event.getEventTitle(), "CHAT", notifRecipient, chatInstance, listingType, listingIdentifier);
+                            NotificationObject notificationObject = null;
+                            if (listingType.equals("events")) {
+                               notificationObject = new NotificationObject(displayName, "Events: " + event.getEventTitle(), "CHAT", notifRecipient, chatInstance, listingType, listingIdentifier);
+                            }
+                            else {
+                                notificationObject = new NotificationObject(displayName, "Classifieds: " + post.getPostTitle(), "CHAT", notifRecipient, chatInstance, listingType, listingIdentifier);
+                            }
                             CommunityListingViewActivity.postChatNotification(notificationObject);
                         }
 

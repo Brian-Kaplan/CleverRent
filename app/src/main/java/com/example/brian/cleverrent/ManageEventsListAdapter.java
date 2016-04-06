@@ -45,11 +45,9 @@ public class ManageEventsListAdapter extends ArrayAdapter<Event> {
 
         //Initialize the view
         holder.title = (TextView) convertView.findViewById(R.id.manageEventTitleLabel);
-        holder.interestCount = (TextView) convertView.findViewById(R.id.manageEventCountLabel);
 
         //Assign the data
         holder.title.setText(events.get(position).getEventTitle());
-        holder.interestCount.setText(String.valueOf(events.get(position).getInterestCount()));
 
         convertView.setMinimumHeight(200);
 

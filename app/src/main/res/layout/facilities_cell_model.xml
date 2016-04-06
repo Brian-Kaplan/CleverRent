@@ -20,8 +20,8 @@
         android:background="@drawable/rounded_corner"
         android:id="@+id/facilityReservationLabel"
         android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/facilityLocationLabel"
-        android:layout_alignStart="@+id/facilityLocationLabel"/>
+        android:layout_alignLeft="@+id/facilityNameLabel"
+        android:layout_alignStart="@+id/facilityNameLabel"/>
 
 
     <TextView
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="FacilityLocation"
-        android:id="@+id/facilityLocationLabel"
+        android:id="@+id/facilityNameLabel"
         android:layout_below="@+id/facilityImageThumb"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="8dp"/>
@@ -41,8 +41,8 @@
         android:text="FacilitySubLocation"
         android:id="@+id/facilitySubLocationLabel"
         android:paddingBottom="10dp"
-        android:layout_below="@+id/facilityLocationLabel"
-        android:layout_alignLeft="@+id/facilityLocationLabel"
-        android:layout_alignStart="@+id/facilityLocationLabel" />
+        android:layout_below="@+id/facilityNameLabel"
+        android:layout_alignLeft="@+id/facilityNameLabel"
+        android:layout_alignStart="@+id/facilityNameLabel" />
 
 </RelativeLayout>

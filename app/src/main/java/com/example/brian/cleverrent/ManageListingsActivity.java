@@ -14,6 +14,8 @@ public class ManageListingsActivity extends AppCompatActivity {
     String listingType = null;
     String listingTitle = null;
     String listingIdentifier = null;
+    String interestNumber = null;
+    String rsvpNumber = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +34,19 @@ public class ManageListingsActivity extends AppCompatActivity {
         {
             listingTitle = (String) bundle.get("LISTING_TITLE");
             listingType = (String) bundle.get("LISTING_TYPE");
+            interestNumber = (String) bundle.get("INTEREST_LIST_SIZE");
+            rsvpNumber = (String) bundle.get("RSVP_LIST_SIZE");
+
             listingIdentifier = listingTitle+"-"+userName;
             getSupportActionBar().setTitle("Manage: " + listingTitle);
 
             TextView editListingLabel = (TextView) findViewById(R.id.manageListingEditLabel);
+            TextView manageListingInterestedCountLabel = (TextView) findViewById(R.id.manageListingInterestedCountLabel);
+            TextView manageListingRSVPCountLabel = (TextView) findViewById(R.id.manageListingRSVPCountLabel);
+            manageListingInterestedCountLabel.setText(interestNumber);
+            manageListingRSVPCountLabel.setText(rsvpNumber);
             editListingLabel.setText("Edit " + listingType);
+
         }
 
         View editListingView = findViewById(R.id.manageListingEditView);

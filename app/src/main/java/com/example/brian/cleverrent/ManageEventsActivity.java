@@ -79,6 +79,8 @@ public class ManageEventsActivity extends AppCompatActivity {
                         Intent intent = new Intent(ManageEventsActivity.this, ManageListingsActivity.class);
                         intent.putExtra("LISTING_TYPE", "events");
                         intent.putExtra("LISTING_TITLE", events.get(position).getEventTitle());
+                        intent.putExtra("INTEREST_LIST_SIZE", String.valueOf(events.get(position).getInterestedList().size()));
+                        intent.putExtra("RSVP_LIST_SIZE", String.valueOf(events.get(position).getRsvpList().size()));
                         startActivity(intent);
                         overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
                     }

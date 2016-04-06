@@ -39,7 +39,7 @@ public class MaintenanceRequestActivity extends AppCompatActivity implements Ada
 
         this.context = context;
         request = new MaintenanceRequest();
-        request.setTimeOfSubmission(MainActivity.getTodaysDate());
+        request.setTimeOfSubmission(MainActivity.getTodaysDate() + "-" + MainActivity.getTimeStamp());
 
         // Spinner element
         Spinner spinner = (Spinner) findViewById(R.id.typeSpinner);

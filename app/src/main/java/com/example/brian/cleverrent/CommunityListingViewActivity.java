@@ -5,16 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
@@ -22,9 +20,9 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.example.brian.cleverrent.EventsListAdapter.Event;
+import com.example.brian.cleverrent.ClassifiedsListAdapter.ClassifiedPost;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class CommunityListingViewActivity extends AppCompatActivity {
 
@@ -34,17 +32,12 @@ public class CommunityListingViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_community_listing_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
-        final ImageView imageView = (ImageView) findViewById(R.id.communityListingViewImageView);
-        final TextView descriptionLabel = (TextView) findViewById(R.id.communityListingViewDescriptionLabel);
-        final TextView ageLabel = (TextView) findViewById(R.id.communityLisitingViewAgeLabel);
-        final TextView locationLabel = (TextView) findViewById(R.id.communityLisitingViewLocationLabel);
-        final TextView dateLabel = (TextView) findViewById(R.id.communityLisitingViewTimeLabel);
-        final TextView priceLabel = (TextView) findViewById(R.id.communityLisitingViewPriceLabel);
-        final TextView sponsorLabel = (TextView) findViewById(R.id.communityLisitingViewSponsorLabel);
+        SharedPreferences sharedPref = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
+        final String userName = sharedPref.getString("USER_NAME", null);
+        final String displayName = sharedPref.getString("DISPLAY_NAME", null);
 
         if(bundle != null)
         {
@@ -56,10 +49,25 @@ public class CommunityListingViewActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
                     switch (listingType) {
-                        case "events":
+                        case "events": {
+                            //Set the event view to be invisibile
+                            RelativeLayout view = (RelativeLayout) findViewById(R.id.classifiedView);
+                            view.setVisibility(View.INVISIBLE);
+
+                            final ImageView imageView = (ImageView) findViewById(R.id.eventListingViewImageView);
+                            final TextView descriptionLabel = (TextView) findViewById(R.id.eventListingViewDescriptionLabel);
+                            final TextView ageLabel = (TextView) findViewById(R.id.eventListingViewAgeLabel);
+                            final TextView locationLabel = (TextView) findViewById(R.id.eventListingViewLocationLabel);
+                            final TextView dateLabel = (TextView) findViewById(R.id.eventListingViewTimeLabel);
+                            final TextView priceLabel = (TextView) findViewById(R.id.eventListingViewPriceLabel);
+                            final TextView sponsorLabel = (TextView) findViewById(R.id.eventListingViewSponsorLabel);
+                            final Button rsvp = (Button) findViewById(R.id.eventListingRSVPButton);
+                            final Button chat = (Button) findViewById(R.id.eventListingChatButton);
+                            final Button showInterest = (Button) findViewById(R.id.eventListingInterestButton);
+
                             final EventsListAdapter.Event event = dataSnapshot.getValue(EventsListAdapter.Event.class);
                             getSupportActionBar().setTitle(event.getEventTitle());
-                            String encodedImage = event.getImgeUrl();
+                            String encodedImage = event.getImageUrl();
                             byte[] b = Base64.decode(encodedImage, Base64.DEFAULT);
                             Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
                             imageView.setImageBitmap(bitmap);
@@ -69,14 +77,8 @@ public class CommunityListingViewActivity extends AppCompatActivity {
                             dateLabel.setText(event.getEventDate());
                             priceLabel.setText(event.getEventCost());
                             sponsorLabel.setText(event.getHostName());
-                            SharedPreferences sharedPref  = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
-                            final String userName = sharedPref.getString("USER_NAME", null);
-                            final String displayName = sharedPref.getString("DISPLAY_NAME", null);
-                            final Button rsvp = (Button) findViewById(R.id.communityListingRSVPButton);
-                            final Button chat = (Button) findViewById(R.id.communityListingChatButton);
-                            final Button showInterest = (Button) findViewById(R.id.communityListingInterestButton);
                             //If the user owns this event disable all the buttons
-                            if (event.getEventOwner().equals(userName)){
+                            if (event.getEventOwner().equals(userName)) {
                                 rsvp.setEnabled(false);
                                 chat.setEnabled(false);
                                 showInterest.setEnabled(false);
@@ -99,7 +101,7 @@ public class CommunityListingViewActivity extends AppCompatActivity {
                             chat.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Firebase ref = new Firebase(MainActivity.getFirebaseRootRef()+listingType+"/"+listingIdentifier+"/chatInstances/"+userName);
+                                    Firebase ref = new Firebase(MainActivity.getFirebaseRootRef() + listingType + "/" + listingIdentifier + "/chatInstances/" + userName);
                                     ref.addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -119,9 +121,66 @@ public class CommunityListingViewActivity extends AppCompatActivity {
                                     startActivity(intent);
                                 }
                             });
-
-                        case "classifieds":
                             break;
+                        }
+                        case "classifieds": {
+                            //Set the event view to be invisibile
+                            RelativeLayout view = (RelativeLayout) findViewById(R.id.eventView);
+                            view.setVisibility(View.INVISIBLE);
+
+                            final ImageView imageView = (ImageView) findViewById(R.id.classifiedsListingViewImageView);
+                            final TextView descriptionLabel = (TextView) findViewById(R.id.classifiedsListingViewDescriptionLabel);
+                            final TextView conditionLabel = (TextView) findViewById(R.id.classifiedsListingViewConditionLabel);
+                            final TextView priceLabel = (TextView) findViewById(R.id.classifiedsListingViewPriceLabel);
+                            final TextView ownerLabel = (TextView) findViewById(R.id.classifiedsListingViewOwnerLabel);
+                            final TextView phoneLabel = (TextView) findViewById(R.id.classifiedsListingViewPhoneLabel);
+                            final TextView emailLabel = (TextView) findViewById(R.id.classifiedsListingViewEmailLabel);
+                            final TextView dateLabel = (TextView) findViewById(R.id.eventListingViewTimeLabel);
+                            final Button chat = (Button) findViewById(R.id.classifiedsListingChatButton);
+
+                            final ClassifiedPost post = dataSnapshot.getValue(ClassifiedPost.class);
+                            getSupportActionBar().setTitle(post.getPostTitle());
+                            String encodedImage = post.getImageUrl();
+                            byte[] b = Base64.decode(encodedImage, Base64.DEFAULT);
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
+                            imageView.setImageBitmap(bitmap);
+                            descriptionLabel.setText(post.getPostDescription());
+                            conditionLabel.setText(post.getPostCondition());
+                            priceLabel.setText(post.getPostPrice());
+                            ownerLabel.setText(post.getFullName());
+                            phoneLabel.setText(post.getPostPhone());
+                            emailLabel.setText(post.getPostEmail());
+                            dateLabel.setText(post.getPostDate());
+                            if (post.getIdentifier().split("-")[1].equals(userName)) {
+                                chat.setEnabled(false);
+                            }
+
+                            chat.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    final Firebase ref = new Firebase(MainActivity.getFirebaseRootRef() + listingType + "/" + listingIdentifier + "/chatInstances/" + userName);
+                                    ref.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            if (dataSnapshot.getValue() == null) {
+                                                createClassifiedChat(ref, displayName, userName, post);
+                                            }
+                                            Intent intent = new Intent(CommunityListingViewActivity.this, ChatActivity.class);
+                                            intent.putExtra("LISTING_TYPE", listingType);
+                                            intent.putExtra("LISTING_IDENTIFIER", listingIdentifier);
+                                            intent.putExtra("CHAT_IDENTIFIER", userName);
+                                            startActivity(intent);
+                                        }
+
+                                        @Override
+                                        public void onCancelled(FirebaseError firebaseError) {
+
+                                        }
+                                    });
+                                }
+                            });
+                            break;
+                        }
                     }
                 }
 
@@ -132,6 +191,12 @@ public class CommunityListingViewActivity extends AppCompatActivity {
             });
         }
 
+    }
+
+    private void createClassifiedChat(Firebase ref, String displayName, final String userName, final ClassifiedPost post) {
+        ChatInstance chatInstance = new ChatInstance(post.getIdentifier().split("-")[1], userName, userName);
+        post.getChatInstances().put(userName, chatInstance);
+        ref.getParent().setValue(post.getChatInstances());
     }
 
     private void onShowInterest (final String displayName, final String listingType, final String listingIdentifier, final String userName, final EventsListAdapter.Event event) {

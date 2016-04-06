@@ -11,10 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -38,8 +34,8 @@ public class EventsListAdapter extends ArrayAdapter<EventsListAdapter.Event> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if(convertView == null){
-                inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.event_cell_model, null);
+            inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.event_cell_model, null);
         }
 
         //Make a ViewHolder object
@@ -56,13 +52,24 @@ public class EventsListAdapter extends ArrayAdapter<EventsListAdapter.Event> {
         //Assign the data
         holder.eventLocationLabel.setText("("+myEvent.eventLocation+")");
         holder.eventAgeLabel.setText(myEvent.eventAge);
-        String encodedImage = myEvent.getImgeUrl();
-        byte[] b = Base64.decode(encodedImage, Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
-        holder.imageThumb.setImageBitmap(bitmap);
         holder.eventDateLabel.setText(myEvent.eventDate);
         holder.eventTitleLabel.setText(myEvent.eventTitle);
-
+        String encodedImage = myEvent.getImageUrl();
+        if (encodedImage != null) {
+            byte[]b = null;
+            try {
+                b = Base64.decode(encodedImage, Base64.DEFAULT);
+            } catch (Exception e) {
+                Bitmap bm = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.no_image_available);
+                holder.imageThumb.setImageBitmap(bm);
+                return convertView;
+            }
+            Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
+            holder.imageThumb.setImageBitmap(bitmap);
+        } else {
+            Bitmap bm = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.no_image_available);
+            holder.imageThumb.setImageBitmap(bm);
+        }
         return convertView;
     }
 
@@ -80,7 +87,7 @@ public class EventsListAdapter extends ArrayAdapter<EventsListAdapter.Event> {
         String eventLocation;
         String eventAge;
         String eventTime;
-        String imgeUrl;
+        String imageUrl;
         String eventDate;
         String eventTitle;
         String eventCost;
@@ -94,13 +101,13 @@ public class EventsListAdapter extends ArrayAdapter<EventsListAdapter.Event> {
 
         public Event() {}
 
-        public Event(String eventDescription, String eventLocation, String eventAge, String eventTime, String eventCost, String imgeUrl, String eventDate, String eventTitle, String hostName, String eventOwner, String identifier) {
+        public Event(String eventDescription, String eventLocation, String eventAge, String eventTime, String eventCost, String imageUrl, String eventDate, String eventTitle, String hostName, String eventOwner, String identifier) {
             this.eventDescription = eventDescription;
             this.eventLocation = eventLocation;
             this.eventAge = eventAge;
             this.eventTime = eventTime;
             this.eventCost = eventCost;
-            this.imgeUrl = imgeUrl;
+            this.imageUrl = imageUrl;
             this.eventDate = eventDate;
             this.eventTitle = eventTitle;
             this.hostName = hostName;
@@ -143,7 +150,7 @@ public class EventsListAdapter extends ArrayAdapter<EventsListAdapter.Event> {
 
         public String getEventAge() { return eventAge; }
 
-        public String getImgeUrl() { return imgeUrl; }
+        public String getImageUrl() { return imageUrl; }
 
         public String getEventDate() { return eventDate; }
 
