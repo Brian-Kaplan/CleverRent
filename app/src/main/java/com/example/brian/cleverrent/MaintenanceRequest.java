@@ -6,7 +6,7 @@ package com.example.brian.cleverrent;
 public class MaintenanceRequest {
     private String tenantName;
     private String tenantAddress;
-    private String maintenanceType;
+    private String requestType;
     private String description;
     private String timeForService;
     private String timeOfSubmission;
@@ -38,8 +38,8 @@ public class MaintenanceRequest {
         return tenantAddress;
     }
 
-    public String getMaintenanceType() {
-        return maintenanceType;
+    public String getRequestType() {
+        return requestType;
     }
 
     public String getDescription() {
@@ -58,8 +58,8 @@ public class MaintenanceRequest {
         this.tenantAddress = tenantAddress;
     }
 
-    public void setMaintenanceType(String maintenanceType) {
-        this.maintenanceType = maintenanceType;
+    public void setRequestType(String requestType) {
+        this.requestType = requestType;
     }
 
     public void setDescription(String description) {
@@ -68,5 +68,19 @@ public class MaintenanceRequest {
 
     public void setTimeForService(String timeForService) {
         this.timeForService = timeForService;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof MaintenanceRequest){
+            MaintenanceRequest temp = (MaintenanceRequest) o;
+            if (temp.getTimeOfSubmission().equals(this.getTimeOfSubmission())){
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        return false;
     }
 }

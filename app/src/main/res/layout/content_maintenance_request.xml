@@ -10,59 +10,59 @@
     tools:showIn="@layout/activity_maintenance_request"
     tools:context="com.example.brian.cleverrent.MaintenanceRequestActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:hint="Request Type"
-        android:id="@+id/requestTypeLabel"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="58dp" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <Spinner
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/typeSpinner"
-        android:layout_below="@+id/requestTypeLabel"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:hint="Request Type"
+            android:id="@+id/requestTypeLabel"
+            android:layout_marginTop="58dp" />
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/requestTypeSpinner" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextDescription"
+            android:layout_below="@+id/requestTypeSpinner"
+            android:layout_marginTop="33dp"
+            android:hint="Description" />
+
+         <TextView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="Best Time For Service"
+             android:layout_marginTop="58dp"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/timeFrameSpinner" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Submit"
         android:textAllCaps="false"
         android:id="@+id/maintenanceSubmitButton"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="48dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/typeSpinner"
-        android:layout_alignEnd="@+id/typeSpinner"
         android:background="@color/colorAccent" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editTextDescription"
-        android:layout_below="@+id/typeSpinner"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="33dp"
-        android:layout_alignRight="@+id/typeSpinner"
-        android:layout_alignEnd="@+id/typeSpinner"
-        android:hint="Description" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editTextTimeFrame"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:hint="Best timeframe for service" />
 </RelativeLayout>

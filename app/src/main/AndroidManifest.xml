@@ -29,7 +29,7 @@
             android:name=".MaintenanceRequestActivity"
             android:label="@string/title_activity_maintenance_request"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateVisible|adjustResize">
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="com.example.brian.cleverrent.MaintenanceRequestActivity" />
 

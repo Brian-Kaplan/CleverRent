@@ -210,9 +210,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             firebaseRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    maintenanceRequests.clear();
                     for (DataSnapshot request : dataSnapshot.getChildren()) {
                         MaintenanceRequest temp = request.getValue(MaintenanceRequest.class);
-                        maintenanceRequests.add(temp);
+                        if (!maintenanceRequests.contains(temp))
+                            maintenanceRequests.add(0, temp);
                     }
                     if (MainActivity.this != null && maintenanceRequests != null) {
                         ListView lv = (ListView) findViewById(R.id.maintenanceListView);

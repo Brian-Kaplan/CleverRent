@@ -1,13 +1,9 @@
 package com.example.brian.cleverrent;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -21,7 +17,6 @@ import android.widget.Toast;
 import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class MaintenanceRequestActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -42,8 +37,10 @@ public class MaintenanceRequestActivity extends AppCompatActivity implements Ada
         request.setTimeOfSubmission(MainActivity.getTodaysDate() + "-" + MainActivity.getTimeStamp());
 
         // Spinner element
-        Spinner spinner = (Spinner) findViewById(R.id.typeSpinner);
-
+        final Spinner requestTypeSpinner = (Spinner) findViewById(R.id.requestTypeSpinner);
+        final Spinner timeFrameSpinner = (Spinner) findViewById(R.id.timeFrameSpinner);
+        
+        
         Button button = (Button) findViewById(R.id.maintenanceSubmitButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,12 +55,13 @@ public class MaintenanceRequestActivity extends AppCompatActivity implements Ada
                 Firebase firebaseRef = new Firebase(MainActivity.getFirebaseRootRef() + "maintenance/"+userName + "/"  + request.getTimeOfSubmission());
 
                 EditText editTextDescription = (EditText) findViewById(R.id.editTextDescription);
-                EditText editTextTimeFrame = (EditText) findViewById(R.id.editTextTimeFrame);
 
                 request.setDescription(editTextDescription.getText().toString());
-                request.setTimeForService(editTextTimeFrame.getText().toString());
+                request.setTimeForService(timeFrameSpinner.getSelectedItem().toString());
                 request.setTenantName(displayName);
                 request.setStatus("pending");
+                request.setRequestType(requestTypeSpinner.getSelectedItem().toString());
+
 
                 firebaseRef.setValue(request);
 
@@ -80,27 +78,34 @@ public class MaintenanceRequestActivity extends AppCompatActivity implements Ada
         });
 
         // Spinner Drop down elements
-        List<String> categories = new ArrayList<String>();
-        categories.add("Plumbing");
-        categories.add("Electric");
-        categories.add("Appliances");
-        categories.add("Other");
+        List<String> typeOptions = new ArrayList<String>();
+        typeOptions.add("Plumbing");
+        typeOptions.add("Electric");
+        typeOptions.add("Appliances");
+        typeOptions.add("Other");
+
+        List<String> timeOptions = new ArrayList<>();
+        timeOptions.add("Morning");
+        timeOptions.add("Afternoon");
+        timeOptions.add("Evening");
 
         // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
-
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, typeOptions);
+        ArrayAdapter<String> timeFrameAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, timeOptions);
         // Drop down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        timeFrameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // attaching data adapter to spinner
-        spinner.setAdapter(dataAdapter);
+        requestTypeSpinner.setAdapter(typeAdapter);
+        timeFrameSpinner.setAdapter(timeFrameAdapter);
+
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
         String item = parent.getItemAtPosition(position).toString();
-        request.setMaintenanceType(item);
+        request.setRequestType(item);
         // Showing selected spinner item
         Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
     }

@@ -77,6 +77,7 @@ public class AccountPageFragment extends Fragment {
             TextView userAccountNumberLabel = (TextView) view.findViewById(R.id.userAccountNumberLabel);
             final TextView userNameLabel = (TextView) view.findViewById(R.id.userNameLabel);
             final TextView userEmailLabel = (TextView) view.findViewById(R.id.userEmailLabel);
+            final TextView userAddressLabel = (TextView) view.findViewById(R.id.userAddressLabel);
 
             // Get a reference to our user
             Firebase ref = new Firebase(MainActivity.getFirebaseRootRef() + "tenant/" + fireBaseUID);
@@ -86,8 +87,10 @@ public class AccountPageFragment extends Fragment {
                 public void onDataChange(DataSnapshot snapshot) {
                     String username = snapshot.child("displayName").getValue(String.class);
                     String email = snapshot.child("email").getValue(String.class);
+                    String address = snapshot.child("address").getValue(String.class);
                     userNameLabel.setText(username);
                     userEmailLabel.setText(email);
+                    userAddressLabel.setText(address);
                 }
 
                 @Override
