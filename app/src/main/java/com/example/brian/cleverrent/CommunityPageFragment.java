@@ -54,7 +54,7 @@ public class CommunityPageFragment extends Fragment {
         switch (mPage){
             case 0:
                 view  = inflater.inflate(R.layout.facilities_fragment_page, container, false);
-                listView = null;
+                listView = (ListView) view.findViewById(R.id.facilitiesListView);
                 setFacilitesListAdapter(view);
                 break;
             case 1:
@@ -96,6 +96,12 @@ public class CommunityPageFragment extends Fragment {
                         ClassifiedPost post = adapter.getItem(position);
                         intent.putExtra("LISTING_TYPE", "classifieds");
                         String identifier = post.getIdentifier();
+                        intent.putExtra("LISTING_IDENTIFIER", identifier);
+                    } else if (parent.getAdapter() instanceof FacilitiesListAdapter) {
+                        FacilitiesListAdapter adapter = (FacilitiesListAdapter) parent.getAdapter();
+                        Facility facility = adapter.getItem(position);
+                        intent.putExtra("LISTING_TYPE", "facility");
+                        String identifier = facility.getFacility_id();
                         intent.putExtra("LISTING_IDENTIFIER", identifier);
                     }
                     getContext().startActivity(intent);

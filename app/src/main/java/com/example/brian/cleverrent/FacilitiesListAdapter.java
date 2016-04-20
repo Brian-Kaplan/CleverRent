@@ -86,15 +86,18 @@ public class FacilitiesListAdapter extends ArrayAdapter<FacilitiesListAdapter.Fa
         private String facility_name;
         private String facility_image;
         private String facility_status;
+        private String facility_id;
 
         public Facility() {}
 
-        public Facility(String facility_description, String facility_hours, String facility_name, String imgeUrl, String facility_status) {
+        public Facility(String facility_description, String facility_hours, String facility_name, String imgeUrl, String facility_status, String facility_id) {
             this.facility_description = facility_description;
             this.facility_hours = facility_hours;
             this.facility_name = facility_name;
             this.facility_image = imgeUrl;
             this.facility_status = facility_status;
+            this.facility_id = facility_id;
+
         }
 
         public String getFacility_description() {
@@ -116,6 +119,8 @@ public class FacilitiesListAdapter extends ArrayAdapter<FacilitiesListAdapter.Fa
         public String getFacility_status() {
             return facility_status;
         }
+
+        public String getFacility_id() { return facility_id; }
     }
 }
 

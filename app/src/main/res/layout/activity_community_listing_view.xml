@@ -20,5 +20,7 @@
         android:id="@+id/eventView"/>
     <include layout="@layout/content_classifieds_listing_view"
         android:id="@+id/classifiedView"/>
+    <include layout="@layout/content_facility_listing_view"
+        android:id="@+id/facilityView"/>
 
 </android.support.design.widget.CoordinatorLayout>

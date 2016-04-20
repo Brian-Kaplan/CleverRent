@@ -19,14 +19,41 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/eventDescription"
-            android:hint="Event Description" />
+            android:id="@+id/eventNameEditText"
+            android:hint="Event Name"
+            android:layout_marginTop="25dp" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/eventNameEditText"
-            android:hint="Event Name"
+            android:id="@+id/eventDescription"
+            android:hint="Event Description" />
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/eventDateEditText"
+            android:hint="Date" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:hint="Time"
+            android:id="@+id/eventTimeLabel"
+            android:layout_marginTop="25dp" />
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/eventTimeSpinner" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/eventLocationEditText"
+            android:hint="Location"
             android:layout_marginTop="25dp" />
 
         <TextView
@@ -42,39 +69,14 @@
             android:layout_height="wrap_content"
             android:id="@+id/eventAgeTypeSpinner" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/eventLocationEditText"
-            android:hint="Location"
-            android:layout_marginTop="25dp" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/eventDateEditText"
-            android:hint="Date"
-            android:layout_marginTop="25dp" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/eventCostEditText"
             android:hint="Cost"
+            android:inputType="numberDecimal"
             android:layout_marginTop="25dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:hint="Time"
-            android:id="@+id/eventTimeLabel"
-            android:layout_marginTop="25dp" />
-
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/eventTimeSpinner" />
 
         <RelativeLayout
             android:layout_width="match_parent"

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -49,10 +50,31 @@ public class CommunityListingViewActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
                     switch (listingType) {
+
+                        case "facility": {
+                            RelativeLayout view = (RelativeLayout) findViewById(R.id.facilityView);
+                            view.setVisibility(View.VISIBLE);
+
+                            final ImageView imageView = (ImageView) findViewById(R.id.facilityListingViewImageView);
+                            final TextView descriptionLabel = (TextView) findViewById(R.id.facilityListingViewDescriptionLabel);
+                            final TextView hoursLabel = (TextView) findViewById(R.id.facilityListingViewHoursLabel);
+                            final TextView statusLabel = (TextView) findViewById(R.id.facilityListingViewStatusLabel);
+                            final FacilitiesListAdapter.Facility facility = dataSnapshot.getValue(FacilitiesListAdapter.Facility.class);
+                            getSupportActionBar().setTitle(facility.getFacility_name());
+                            String encodedImage = facility.getFacility_image();
+                            byte[] b = Base64.decode(encodedImage, Base64.DEFAULT);
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
+                            imageView.setImageBitmap(bitmap);
+                            descriptionLabel.setText(facility.getFacility_description());
+                            hoursLabel.setText(facility.getFacility_hours());
+                            statusLabel.setText(facility.getFacility_status());
+                            break;
+                        }
+
                         case "events": {
                             //Set the event view to be invisibile
-                            RelativeLayout view = (RelativeLayout) findViewById(R.id.classifiedView);
-                            view.setVisibility(View.INVISIBLE);
+                            RelativeLayout view = (RelativeLayout) findViewById(R.id.eventView);
+                            view.setVisibility(View.VISIBLE);
 
                             final ImageView imageView = (ImageView) findViewById(R.id.eventListingViewImageView);
                             final TextView descriptionLabel = (TextView) findViewById(R.id.eventListingViewDescriptionLabel);
@@ -125,8 +147,8 @@ public class CommunityListingViewActivity extends AppCompatActivity {
                         }
                         case "classifieds": {
                             //Set the event view to be invisibile
-                            RelativeLayout view = (RelativeLayout) findViewById(R.id.eventView);
-                            view.setVisibility(View.INVISIBLE);
+                            RelativeLayout view = (RelativeLayout) findViewById(R.id.classifiedView);
+                            view.setVisibility(View.VISIBLE);
 
                             final ImageView imageView = (ImageView) findViewById(R.id.classifiedsListingViewImageView);
                             final TextView descriptionLabel = (TextView) findViewById(R.id.classifiedsListingViewDescriptionLabel);
