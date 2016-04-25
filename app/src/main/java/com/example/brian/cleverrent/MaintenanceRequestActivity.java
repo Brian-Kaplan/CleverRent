@@ -16,7 +16,9 @@ import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MaintenanceRequestActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -34,7 +36,7 @@ public class MaintenanceRequestActivity extends AppCompatActivity implements Ada
 
         this.context = context;
         request = new MaintenanceRequest();
-        request.setTimeOfSubmission(MainActivity.getTodaysDate() + "-" + MainActivity.getTimeStamp());
+        request.setTimeOfSubmission(getTimeStamp());
 
         // Spinner element
         final Spinner requestTypeSpinner = (Spinner) findViewById(R.id.requestTypeSpinner);
@@ -111,6 +113,14 @@ public class MaintenanceRequestActivity extends AppCompatActivity implements Ada
     }
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
+    }
+
+    private String getTimeStamp() {
+        String time = null;
+        Date now = new Date();
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("d-M-y H:mm");
+        time = dateFormatter.format(now);
+        return time;
     }
 
 }
