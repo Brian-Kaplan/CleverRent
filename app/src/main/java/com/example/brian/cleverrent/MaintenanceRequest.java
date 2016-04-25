@@ -11,6 +11,7 @@ public class MaintenanceRequest {
     private String timeForService;
     private String timeOfSubmission;
     private String status;
+    private String responseTime;
 
     public MaintenanceRequest() {}
 
@@ -50,6 +51,8 @@ public class MaintenanceRequest {
         return timeForService;
     }
 
+    public String getResponseTime() {return responseTime;}
+
     public void setTenantName(String tenantName) {
         this.tenantName = tenantName;
     }
@@ -69,6 +72,8 @@ public class MaintenanceRequest {
     public void setTimeForService(String timeForService) {
         this.timeForService = timeForService;
     }
+
+
 
     @Override
     public boolean equals(Object o) {
