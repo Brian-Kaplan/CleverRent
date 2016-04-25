@@ -22,4 +22,17 @@ public class ChatMessage {
 
     public String getFrom() { return from; }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof ChatMessage){
+            ChatMessage temp = (ChatMessage) o;
+            if (temp.getMessage().equals(this.getMessage()) && temp.getChatTime().equals(this.getChatTime())){
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 }

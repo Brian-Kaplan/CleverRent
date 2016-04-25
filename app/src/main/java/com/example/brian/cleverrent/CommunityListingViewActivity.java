@@ -177,7 +177,7 @@ public class CommunityListingViewActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(View v) {
                                     final Firebase ref = new Firebase(MainActivity.getFirebaseRootRef() + listingType + "/" + listingIdentifier + "/chatInstances/" + userName);
-                                    ref.addValueEventListener(new ValueEventListener() {
+                                    ref.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                             if (dataSnapshot.getValue() == null) {
