@@ -64,7 +64,9 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:hint="Price"
+            android:inputType="numberDecimal"
             android:id="@+id/classifiedPriceEditText"
+
             android:layout_marginTop="25dp" />
 
         <RelativeLayout
@@ -95,30 +97,6 @@
                 android:layout_marginRight="42dp"
                 android:layout_marginEnd="42dp" />
         </RelativeLayout>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:hint="Full Name"
-            android:id="@+id/classifiedNameEditText"
-            android:layout_marginTop="25dp" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:hint="Phone"
-            android:id="@+id/classifiedPhoneEditText"
-            android:layout_marginTop="25dp" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:hint="Email"
-            android:id="@+id/classifiedEmailEditText"
-            android:layout_marginTop="25dp" />
 
         <Button
             android:layout_width="match_parent"

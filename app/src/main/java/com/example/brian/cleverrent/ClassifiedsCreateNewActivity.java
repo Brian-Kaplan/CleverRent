@@ -56,9 +56,6 @@ public class ClassifiedsCreateNewActivity extends AppCompatActivity {
         desc = (EditText) findViewById(R.id.classifiedDescEditText);
         condition = (Spinner) findViewById(R.id.classifiedConditionSpinner);
         price = (EditText) findViewById(R.id.classifiedPriceEditText);
-        name = (EditText) findViewById(R.id.classifiedNameEditText);
-        phone = (EditText) findViewById(R.id.classifiedPhoneEditText);
-        email = (EditText) findViewById(R.id.classifiedEmailEditText);
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
