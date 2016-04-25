@@ -84,11 +84,8 @@ public class OfficeChatActivity extends AppCompatActivity {
                       ref.addListenerForSingleValueEvent(new ValueEventListener() {
                           @Override
                           public void onDataChange(DataSnapshot dataSnapshot) {
-                              Calendar c = Calendar.getInstance();
-                              int minute = c.get(Calendar.MINUTE);
-                              int hour = c.get(Calendar.HOUR);
                               ChatInstance chatInstance = dataSnapshot.getValue(ChatInstance.class);
-                              ChatMessage chatMessage = new ChatMessage(Integer.toString(hour) + ":" + Integer.toString(minute), message, userName);
+                              ChatMessage chatMessage = new ChatMessage(MainActivity.getTimeStamp(), message, userName);
                               if (chatInstance.getChatMessageTimeline() == null) {
                                   ArrayList<ChatMessage> chatMessageArrayList = new ArrayList<>();
                                   chatInstance.setChatMessageTimeLine(chatMessageArrayList);
