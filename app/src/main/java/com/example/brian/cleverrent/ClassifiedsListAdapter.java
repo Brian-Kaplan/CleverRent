@@ -104,8 +104,7 @@ public class ClassifiedsListAdapter extends ArrayAdapter<ClassifiedsListAdapter.
         public ClassifiedPost(String postType, String postTitle,
                               String postDescription, String postCondition,
                               String postPrice, String imageUrl,
-                              String fullName, String postPhone,
-                              String postEmail , String identifier) {
+                              String fullName, String identifier) {
 
             this.postType = postType;
             this.postTitle = postTitle;
@@ -114,8 +113,6 @@ public class ClassifiedsListAdapter extends ArrayAdapter<ClassifiedsListAdapter.
             this.postPrice = postPrice;
             this.imageUrl = imageUrl;
             this.fullName = fullName;
-            this.postPhone = postPhone;
-            this.postEmail = postEmail;
             this.identifier = identifier;
             Calendar now = Calendar.getInstance();
             Locale locale = Locale.getDefault();
@@ -155,11 +152,7 @@ public class ClassifiedsListAdapter extends ArrayAdapter<ClassifiedsListAdapter.
 
         public String getPostCondition() {return postCondition;}
 
-        public String getPostPhone() {return postPhone;}
-
         public String getFullName() {return fullName;}
-
-        public String getPostEmail() {return postEmail;}
 
         @Override
         public boolean equals(Object o) {

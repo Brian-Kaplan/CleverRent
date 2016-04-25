@@ -36,9 +36,6 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
@@ -57,10 +54,16 @@ public class ChatActivity extends AppCompatActivity {
             ref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+                    setSupportActionBar(toolbar);
                     if (listingType.equals("events")) {
                         event = dataSnapshot.getValue(EventsListAdapter.Event.class);
+                        String name = event.getHostName().equals(displayName) ? chatIdentifier : event.getHostName();
+                        getSupportActionBar().setTitle(event.getEventTitle() + ": " + name);
                     } else if(listingType.equals("classifieds")) {
                         post = dataSnapshot.getValue(ClassifiedsListAdapter.ClassifiedPost.class);
+                        String name = post.getFullName().equals(displayName) ? chatIdentifier : post.getFullName();
+                        getSupportActionBar().setTitle(post.getPostTitle() + ": " + name);
                     }
                 }
 
