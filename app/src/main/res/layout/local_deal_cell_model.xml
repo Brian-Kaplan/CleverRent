@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:background="@drawable/rounded_corner"
-        android:id="@+id/dealPercentOffLabel"
+        android:id="@+id/dealDiscountLabel"
         android:layout_alignParentTop="true"
         android:layout_alignLeft="@+id/dealDateLabel"
         android:layout_alignStart="@+id/dealDateLabel" />

@@ -47,8 +47,10 @@ public class LocalDealsListAdapter extends ArrayAdapter<LocalDealsListAdapter.De
         holder.deal_description = (TextView) convertView.findViewById(R.id.dealLocationLabel);
         holder.imageThumb = (ImageView) convertView.findViewById(R.id.dealImageThumb);
         holder.deal_name = (TextView) convertView.findViewById(R.id.dealTitleLabel);
+        holder.deal_discount = (TextView) convertView.findViewById(R.id.dealDiscountLabel);
 
         //Assign the data
+        holder.deal_discount.setText(myDeal.getDeal_discount());
         holder.deal_description.setText("(" + myDeal.deal_description + ")");
         holder.deal_name.setText(myDeal.deal_name);
         String encodedImage = myDeal.getImageUrl();
@@ -75,12 +77,14 @@ public class LocalDealsListAdapter extends ArrayAdapter<LocalDealsListAdapter.De
         TextView deal_description;
         TextView deal_name;
         ImageView imageThumb;
+        TextView deal_discount;
     }
 
     public static class Deal{
         private String deal_description;
         private String deal_name;
         private String imageUrl;
+        private String deal_discount;
 
         public Deal() {}
 
@@ -95,6 +99,8 @@ public class LocalDealsListAdapter extends ArrayAdapter<LocalDealsListAdapter.De
         public String getImageUrl() {
             return imageUrl;
         }
+
+        public String getDeal_discount() { return deal_discount; }
     }
 }
 
