@@ -106,8 +106,8 @@ public class ChatActivity extends AppCompatActivity {
                                 } else {
                                     messageView = getLayoutInflater().inflate(R.layout.chat_message_fragment_left, null);
                                 }
-                                TextView textLabel = (TextView) messageView.findViewById(R.id.chatMessageTextLabel);
-                                textLabel.setText(chatMessage.getMessage());
+                                TextView comment = (TextView) messageView.findViewById(R.id.comment);
+                                comment.setText(chatMessage.getMessage());
                                 chatTimeLineLayout.addView(messageView);
                             }
                         }

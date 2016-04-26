@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layoutTextViews"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height = "wrap_content"
-    android:background="@drawable/speech_bubble_orange">
+    android:layout_height="wrap_content" >
 
-    <TextView
-        android:id="@+id/chatMessageTextLabel"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/wrapper"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="1dp"
-        android:gravity="center"
-        android:text="Hello"
-        android:textColor="#000000" />
+        android:gravity="left">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dip"
+            android:background="@drawable/bubble_yellow"
+            android:paddingLeft="10dip"
+            android:text="Hello bubbles!"
+            android:textColor="@android:color/primary_text_light" />
+    </LinearLayout>
+
+</LinearLayout>
