@@ -36,7 +36,7 @@ public class MaintenanceRequestActivity extends AppCompatActivity implements Ada
 
         this.context = context;
         request = new MaintenanceRequest();
-        request.setTimeOfSubmission(getTimeStamp());
+        request.setTimeOfSubmission(MainActivity.getTimeStamp());
 
         // Spinner element
         final Spinner requestTypeSpinner = (Spinner) findViewById(R.id.requestTypeSpinner);
@@ -114,13 +114,4 @@ public class MaintenanceRequestActivity extends AppCompatActivity implements Ada
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
     }
-
-    private String getTimeStamp() {
-        String time = null;
-        Date now = new Date();
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("d-M-y H:mm");
-        time = dateFormatter.format(now);
-        return time;
-    }
-
 }

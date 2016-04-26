@@ -25,7 +25,7 @@ public class ChatEvent {
     public boolean equals(Object o) {
         if (o instanceof ChatEvent) {
             ChatEvent temp = (ChatEvent) o;
-            if (temp.getText().equals(this.getText())){
+            if (temp.getText().equals(this.getText()) && temp.getDate().equals(this.getDate())){
                 return true;
             }
         }

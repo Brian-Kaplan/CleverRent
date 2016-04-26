@@ -31,18 +31,19 @@ public class ChatActivity extends AppCompatActivity {
     EventsListAdapter.Event event = null;
     ClassifiedsListAdapter.ClassifiedPost post = null;
     LinearLayout chatTimeLineLayout = null;
+    ArrayList<ChatMessage> chatMessageList = null;
+    ArrayList<ChatEvent> chatEventList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
         chatTimeLineLayout = (LinearLayout) findViewById(R.id.chatTimeLineLayout);
+        chatMessageList = new ArrayList<>();
+        chatEventList = new ArrayList<>();
 
         if (bundle != null){
             SharedPreferences sharedPref  = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
@@ -57,10 +58,16 @@ public class ChatActivity extends AppCompatActivity {
             ref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+                    setSupportActionBar(toolbar);
                     if (listingType.equals("events")) {
                         event = dataSnapshot.getValue(EventsListAdapter.Event.class);
+                        String name = event.getHostName().equals(displayName) ? chatIdentifier : event.getHostName();
+                        getSupportActionBar().setTitle(event.getEventTitle() + ": " + name);
                     } else if(listingType.equals("classifieds")) {
                         post = dataSnapshot.getValue(ClassifiedsListAdapter.ClassifiedPost.class);
+                        String name = post.getFullName().equals(displayName) ? chatIdentifier : post.getFullName();
+                        getSupportActionBar().setTitle(post.getPostTitle() + ": " + name);
                     }
                 }
 
@@ -73,30 +80,36 @@ public class ChatActivity extends AppCompatActivity {
 
             ref = new Firebase(MainActivity.getFirebaseRootRef() + listingType + "/" + listingIdentifier +
                     "/chatInstances" + "/" + chatIdentifier);
-            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            ref.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.getValue() != null) {
                         for (DataSnapshot event : dataSnapshot.child("chatEventTimeline").getChildren()) {
                             ChatEvent chatEvent = event.getValue(ChatEvent.class);
-                            View chatEventFragment = getLayoutInflater().inflate(R.layout.chat_event_fragment, null);
-                            TextView chatEventDateLabel = (TextView) chatEventFragment.findViewById(R.id.chatEventDateLabel);
-                            TextView chatEventTextLabel = (TextView) chatEventFragment.findViewById(R.id.chatEventTextLabel);
-                            chatEventDateLabel.setText(chatEvent.getDate());
-                            chatEventTextLabel.setText(chatEvent.getText());
-                            chatTimeLineLayout.addView(chatEventFragment);
+                            if (!chatEventList.contains(chatEvent)) {
+                                chatEventList.add(chatEvent);
+                                View chatEventFragment = getLayoutInflater().inflate(R.layout.chat_event_fragment, null);
+                                TextView chatEventDateLabel = (TextView) chatEventFragment.findViewById(R.id.chatEventDateLabel);
+                                TextView chatEventTextLabel = (TextView) chatEventFragment.findViewById(R.id.chatEventTextLabel);
+                                chatEventDateLabel.setText(chatEvent.getDate());
+                                chatEventTextLabel.setText(chatEvent.getText());
+                                chatTimeLineLayout.addView(chatEventFragment);
+                            }
                         }
                         for (DataSnapshot message : dataSnapshot.child("chatMessageTimeline").getChildren()) {
                             ChatMessage chatMessage = message.getValue(ChatMessage.class);
-                            View messageView;
-                            if (chatMessage.getFrom().equals(userName)) {
-                                messageView = getLayoutInflater().inflate(R.layout.chat_message_fragment_right, null);
-                            } else {
-                                messageView = getLayoutInflater().inflate(R.layout.chat_message_fragment_left, null);
+                            if (!chatMessageList.contains(chatMessage)) {
+                                chatMessageList.add(chatMessage);
+                                View messageView;
+                                if (chatMessage.getFrom().equals(userName)) {
+                                    messageView = getLayoutInflater().inflate(R.layout.chat_message_fragment_right, null);
+                                } else {
+                                    messageView = getLayoutInflater().inflate(R.layout.chat_message_fragment_left, null);
+                                }
+                                TextView textLabel = (TextView) messageView.findViewById(R.id.chatMessageTextLabel);
+                                textLabel.setText(chatMessage.getMessage());
+                                chatTimeLineLayout.addView(messageView);
                             }
-                            TextView textLabel = (TextView) messageView.findViewById(R.id.chatMessageTextLabel);
-                            textLabel.setText(chatMessage.getMessage());
-                            chatTimeLineLayout.addView(messageView);
                         }
                     }
                 }
@@ -126,19 +139,14 @@ public class ChatActivity extends AppCompatActivity {
                             chatInstance.addChatMessage(chatMessage);
                             ref.setValue(chatInstance);
 
-                            View messageView = getLayoutInflater().inflate(R.layout.chat_message_fragment_right, null);
-                            TextView textLabel = (TextView) messageView.findViewById(R.id.chatMessageTextLabel);
-                            textLabel.setText(chatMessage.getMessage());
-                            chatTimeLineLayout.addView(messageView);
                             String notifRecipient = chatInstance.getChatOwner();
                             if (chatInstance.getChatOwner().equals(userName)) {
                                 notifRecipient = chatInstance.getChatParticipant();
                             }
                             NotificationObject notificationObject = null;
                             if (listingType.equals("events")) {
-                               notificationObject = new NotificationObject(displayName, "Events: " + event.getEventTitle(), "CHAT", notifRecipient, chatInstance, listingType, listingIdentifier);
-                            }
-                            else {
+                                notificationObject = new NotificationObject(displayName, "Events: " + event.getEventTitle(), "CHAT", notifRecipient, chatInstance, listingType, listingIdentifier);
+                            } else {
                                 notificationObject = new NotificationObject(displayName, "Classifieds: " + post.getPostTitle(), "CHAT", notifRecipient, chatInstance, listingType, listingIdentifier);
                             }
                             CommunityListingViewActivity.postChatNotification(notificationObject);

@@ -155,8 +155,6 @@ public class CommunityListingViewActivity extends AppCompatActivity {
                             final TextView conditionLabel = (TextView) findViewById(R.id.classifiedsListingViewConditionLabel);
                             final TextView priceLabel = (TextView) findViewById(R.id.classifiedsListingViewPriceLabel);
                             final TextView ownerLabel = (TextView) findViewById(R.id.classifiedsListingViewOwnerLabel);
-                            final TextView phoneLabel = (TextView) findViewById(R.id.classifiedsListingViewPhoneLabel);
-                            final TextView emailLabel = (TextView) findViewById(R.id.classifiedsListingViewEmailLabel);
                             final TextView dateLabel = (TextView) findViewById(R.id.eventListingViewTimeLabel);
                             final Button chat = (Button) findViewById(R.id.classifiedsListingChatButton);
 
@@ -170,8 +168,6 @@ public class CommunityListingViewActivity extends AppCompatActivity {
                             conditionLabel.setText(post.getPostCondition());
                             priceLabel.setText(post.getPostPrice());
                             ownerLabel.setText(post.getFullName());
-                            phoneLabel.setText(post.getPostPhone());
-                            emailLabel.setText(post.getPostEmail());
                             dateLabel.setText(post.getPostDate());
                             if (post.getIdentifier().split("-")[1].equals(userName)) {
                                 chat.setEnabled(false);
@@ -181,7 +177,7 @@ public class CommunityListingViewActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(View v) {
                                     final Firebase ref = new Firebase(MainActivity.getFirebaseRootRef() + listingType + "/" + listingIdentifier + "/chatInstances/" + userName);
-                                    ref.addValueEventListener(new ValueEventListener() {
+                                    ref.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                             if (dataSnapshot.getValue() == null) {
@@ -266,8 +262,10 @@ public class CommunityListingViewActivity extends AppCompatActivity {
                     chatEventTimeline.add(rsvp);
                     event.getChatInstances().put(userName, chatInstance);
                     event.getRsvpList().add(userName);
+                    event.getInterestedList().remove(userName);
                     ref.child("chatInstances").setValue(event.getChatInstances());
                     ref.child("rsvpList").setValue(event.getRsvpList());
+                    ref.child("interestedList").setValue(event.getInterestedList());
                     NotificationObject notificationObject = new NotificationObject(displayName, "Events: " + event.getEventTitle(), "CHAT", event.getEventOwner(), chatInstance, listingType, listingIdentifier);
                     postChatNotification(notificationObject);
                 }

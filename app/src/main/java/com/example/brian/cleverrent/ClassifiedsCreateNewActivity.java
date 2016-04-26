@@ -104,8 +104,6 @@ public class ClassifiedsCreateNewActivity extends AppCompatActivity {
                         }
                         price.setText(post.getPostPrice());
                         name.setText(post.getFullName());
-                        phone.setText(post.getPostPhone());
-                        email.setText(post.getPostEmail());
                     }
 
                     @Override
@@ -124,6 +122,7 @@ public class ClassifiedsCreateNewActivity extends AppCompatActivity {
 
                 SharedPreferences sharedPref = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
                 final String userName = sharedPref.getString("USER_NAME", null);
+                final String displayName = sharedPref.getString("DISPLAY_NAME", null);
                 final String fireBaseUID = sharedPref.getString("FIRE_BASE_UID", null);
                 String postIdentifier = title.getText().toString() + "-" + userName;
                 String encodedImage = "image url";
@@ -139,8 +138,7 @@ public class ClassifiedsCreateNewActivity extends AppCompatActivity {
                         type.getSelectedItem().toString(), title.getText().toString(),
                         desc.getText().toString(), condition.getSelectedItem().toString(),
                         price.getText().toString(), encodedImage,
-                        name.getText().toString(), phone.getText().toString(),
-                        email.getText().toString(), postIdentifier
+                        displayName, postIdentifier
                 );
 
                 Firebase firebaseRef = new Firebase(MainActivity.getFirebaseRootRef() + "classifieds/"+postIdentifier);
