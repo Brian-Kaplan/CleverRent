@@ -262,8 +262,10 @@ public class CommunityListingViewActivity extends AppCompatActivity {
                     chatEventTimeline.add(rsvp);
                     event.getChatInstances().put(userName, chatInstance);
                     event.getRsvpList().add(userName);
+                    event.getInterestedList().remove(userName);
                     ref.child("chatInstances").setValue(event.getChatInstances());
                     ref.child("rsvpList").setValue(event.getRsvpList());
+                    ref.child("interestedList").setValue(event.getInterestedList());
                     NotificationObject notificationObject = new NotificationObject(displayName, "Events: " + event.getEventTitle(), "CHAT", event.getEventOwner(), chatInstance, listingType, listingIdentifier);
                     postChatNotification(notificationObject);
                 }

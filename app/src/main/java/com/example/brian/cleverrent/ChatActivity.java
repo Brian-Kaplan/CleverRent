@@ -32,6 +32,7 @@ public class ChatActivity extends AppCompatActivity {
     ClassifiedsListAdapter.ClassifiedPost post = null;
     LinearLayout chatTimeLineLayout = null;
     ArrayList<ChatMessage> chatMessageList = null;
+    ArrayList<ChatEvent> chatEventList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class ChatActivity extends AppCompatActivity {
 
         chatTimeLineLayout = (LinearLayout) findViewById(R.id.chatTimeLineLayout);
         chatMessageList = new ArrayList<>();
+        chatEventList = new ArrayList<>();
 
         if (bundle != null){
             SharedPreferences sharedPref  = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
@@ -84,12 +86,15 @@ public class ChatActivity extends AppCompatActivity {
                     if (dataSnapshot.getValue() != null) {
                         for (DataSnapshot event : dataSnapshot.child("chatEventTimeline").getChildren()) {
                             ChatEvent chatEvent = event.getValue(ChatEvent.class);
-                            View chatEventFragment = getLayoutInflater().inflate(R.layout.chat_event_fragment, null);
-                            TextView chatEventDateLabel = (TextView) chatEventFragment.findViewById(R.id.chatEventDateLabel);
-                            TextView chatEventTextLabel = (TextView) chatEventFragment.findViewById(R.id.chatEventTextLabel);
-                            chatEventDateLabel.setText(chatEvent.getDate());
-                            chatEventTextLabel.setText(chatEvent.getText());
-                            chatTimeLineLayout.addView(chatEventFragment);
+                            if (!chatEventList.contains(chatEvent)) {
+                                chatEventList.add(chatEvent);
+                                View chatEventFragment = getLayoutInflater().inflate(R.layout.chat_event_fragment, null);
+                                TextView chatEventDateLabel = (TextView) chatEventFragment.findViewById(R.id.chatEventDateLabel);
+                                TextView chatEventTextLabel = (TextView) chatEventFragment.findViewById(R.id.chatEventTextLabel);
+                                chatEventDateLabel.setText(chatEvent.getDate());
+                                chatEventTextLabel.setText(chatEvent.getText());
+                                chatTimeLineLayout.addView(chatEventFragment);
+                            }
                         }
                         for (DataSnapshot message : dataSnapshot.child("chatMessageTimeline").getChildren()) {
                             ChatMessage chatMessage = message.getValue(ChatMessage.class);
@@ -133,7 +138,7 @@ public class ChatActivity extends AppCompatActivity {
                             }
                             chatInstance.addChatMessage(chatMessage);
                             ref.setValue(chatInstance);
-                            
+
                             String notifRecipient = chatInstance.getChatOwner();
                             if (chatInstance.getChatOwner().equals(userName)) {
                                 notifRecipient = chatInstance.getChatParticipant();

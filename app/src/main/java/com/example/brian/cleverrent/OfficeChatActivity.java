@@ -27,6 +27,7 @@ public class OfficeChatActivity extends AppCompatActivity {
     static String displayName = null;
     static Firebase ref = null;
     LinearLayout chatTimeLineLayout = null;
+    ArrayList<ChatMessage> chatMessageList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,74 +39,77 @@ public class OfficeChatActivity extends AppCompatActivity {
 
 
         chatTimeLineLayout = (LinearLayout) findViewById(R.id.chatTimeLineLayout);
+        chatMessageList = new ArrayList<>();
 
 
         SharedPreferences sharedPref = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
         userName = sharedPref.getString("USER_NAME", null);
         displayName = sharedPref.getString("DISPLAY_NAME", null);
         ref = new Firebase(MainActivity.getFirebaseRootRef() + "officeChat/" + userName);
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() == null) {
-                    ChatInstance chatInstance = new ChatInstance(displayName, "Office Staff", userName);
-                    ref.setValue(chatInstance);
-                } else {
-                    for (DataSnapshot message : dataSnapshot.child("chatMessageTimeline").getChildren()) {
-                        ChatMessage chatMessage = message.getValue(ChatMessage.class);
-                        View messageView;
-                        if (chatMessage.getFrom().equals(userName)) {
-                            messageView = getLayoutInflater().inflate(R.layout.chat_message_fragment_right, null);
-                        } else {
-                            messageView = getLayoutInflater().inflate(R.layout.chat_message_fragment_left, null);
-                        }
-                        TextView textLabel = (TextView) messageView.findViewById(R.id.chatMessageTextLabel);
-                        textLabel.setText(chatMessage.getMessage());
-                        chatTimeLineLayout.addView(messageView);
-                        }
-                    }
-                }
+        ref.addValueEventListener(new ValueEventListener() {
+          @Override
+          public void onDataChange(DataSnapshot dataSnapshot) {
+              if (dataSnapshot.getValue() == null) {
+                  ChatInstance chatInstance = new ChatInstance(displayName, "Office Staff", userName);
+                  ref.setValue(chatInstance);
+              } else {
+                  for (DataSnapshot message : dataSnapshot.child("chatMessageTimeline").getChildren()) {
+                      ChatMessage chatMessage = message.getValue(ChatMessage.class);
+                      if (!chatMessageList.contains(chatMessage)) {
+                          chatMessageList.add(chatMessage);
+                          View messageView;
+                          if (chatMessage.getFrom().equals(userName)) {
+                              messageView = getLayoutInflater().inflate(R.layout.chat_message_fragment_right, null);
+                          } else {
+                              messageView = getLayoutInflater().inflate(R.layout.chat_message_fragment_left, null);
+                          }
+                          TextView textLabel = (TextView) messageView.findViewById(R.id.chatMessageTextLabel);
+                          textLabel.setText(chatMessage.getMessage());
+                          chatTimeLineLayout.addView(messageView);
+                      }
+                  }
+              }
+          }
 
-                @Override
-                public void onCancelled (FirebaseError firebaseError){
+                                      @Override
+                                      public void onCancelled(FirebaseError firebaseError) {
 
-                }
-            }
+                                      }
+                                  }
 
-            );
+        );
 
             final EditText chatEditText = (EditText) findViewById(R.id.chatEditText);
             Button chatSendButton = (Button) findViewById(R.id.chatSendButton);
             chatSendButton.setOnClickListener(new View.OnClickListener() {
-                  @Override
-                  public void onClick(View v) {
-                      final String message = chatEditText.getText().toString();
-                      chatEditText.getText().clear();
-                      ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                          @Override
-                          public void onDataChange(DataSnapshot dataSnapshot) {
-                              ChatInstance chatInstance = dataSnapshot.getValue(ChatInstance.class);
-                              ChatMessage chatMessage = new ChatMessage(MainActivity.getTimeStamp(), message, userName);
-                              if (chatInstance.getChatMessageTimeline() == null) {
-                                  ArrayList<ChatMessage> chatMessageArrayList = new ArrayList<>();
-                                  chatInstance.setChatMessageTimeLine(chatMessageArrayList);
-                              }
-                              chatInstance.addChatMessage(chatMessage);
-                              ref.setValue(chatInstance);
+                                                  @Override
+                                                  public void onClick(View v) {
+                                                      final String message = chatEditText.getText().toString();
+                                                      chatEditText.getText().clear();
+                                                      ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                          @Override
+                                                          public void onDataChange(DataSnapshot dataSnapshot) {
+                                                              ChatInstance chatInstance = dataSnapshot.getValue(ChatInstance.class);
+                                                              ChatMessage chatMessage = new ChatMessage(MainActivity.getTimeStamp(), message, userName);
+                                                              if (chatInstance.getChatMessageTimeline() == null) {
+                                                                  ArrayList<ChatMessage> chatMessageArrayList = new ArrayList<>();
+                                                                  chatInstance.setChatMessageTimeLine(chatMessageArrayList);
+                                                              }
+                                                              chatInstance.addChatMessage(chatMessage);
+                                                              ref.setValue(chatInstance);
 
-                              View messageView = getLayoutInflater().inflate(R.layout.chat_message_fragment_right, null);
-                              TextView textLabel = (TextView) messageView.findViewById(R.id.chatMessageTextLabel);
-                              textLabel.setText(chatMessage.getMessage());
-                              chatTimeLineLayout.addView(messageView);
-                          }
+                                                              View messageView = getLayoutInflater().inflate(R.layout.chat_message_fragment_right, null);
+                                                              TextView textLabel = (TextView) messageView.findViewById(R.id.chatMessageTextLabel);
+                                                              textLabel.setText(chatMessage.getMessage());
+                                                          }
 
-                          @Override
-                          public void onCancelled(FirebaseError firebaseError) {
+                                                          @Override
+                                                          public void onCancelled(FirebaseError firebaseError) {
 
-                          }
-                      });
-                  }
-              }
+                                                          }
+                                                      });
+                                                  }
+                                              }
 
             );
 
