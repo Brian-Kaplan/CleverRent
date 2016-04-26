@@ -427,7 +427,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static String getTimeStamp() {
         String time = null;
         Date now = new Date();
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("d/M/y H:mm");
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("M-d-y H:mm");
         time = dateFormatter.format(now);
         return time;
     }

@@ -71,7 +71,7 @@ public class NotificationObject {
         String stamp1 = object.getTimeStamp();
         String stamp2 = this.getTimeStamp();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("d/M/y H:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("M-d-y H:mm");
         Date date1 = null;
         Date date2 = null;
         try {
