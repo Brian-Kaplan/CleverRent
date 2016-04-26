@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -10,9 +10,9 @@
     tools:showIn="@layout/activity_maintenance_request"
     tools:context="com.example.brian.cleverrent.MaintenanceRequestActivity">
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,7 +26,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:hint="Request Type"
             android:id="@+id/requestTypeLabel"
-            android:layout_marginTop="58dp" />
+            android:layout_marginTop="20dp" />
 
         <Spinner
             android:layout_width="match_parent"
@@ -38,31 +38,32 @@
             android:layout_height="wrap_content"
             android:id="@+id/editTextDescription"
             android:layout_below="@+id/requestTypeSpinner"
-            android:layout_marginTop="33dp"
+            android:layout_marginTop="20dp"
             android:hint="Description" />
 
          <TextView
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:text="Best Time For Service"
-             android:layout_marginTop="58dp"/>
+             android:layout_marginTop="20dp"/>
 
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/timeFrameSpinner" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:textAllCaps="false"
+            android:id="@+id/maintenanceSubmitButton"
+            android:layout_marginTop="50dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorAccent" />
+
         </LinearLayout>
 
-    </ScrollView>
+    </RelativeLayout>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        android:textAllCaps="false"
-        android:id="@+id/maintenanceSubmitButton"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorAccent" />
-
-</RelativeLayout>
+</ScrollView>

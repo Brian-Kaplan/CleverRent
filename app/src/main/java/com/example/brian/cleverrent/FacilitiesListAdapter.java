@@ -80,6 +80,7 @@ public class FacilitiesListAdapter extends ArrayAdapter<FacilitiesListAdapter.Fa
         TextView facility_name;
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Facility{
         private String facility_description;
         private String facility_hours;
