@@ -30,6 +30,7 @@ public class MaintenanceListAdapter extends ArrayAdapter<MaintenanceRequest> {
     {
         TextView date;
         TextView status;
+        TextView title;
     }
 
     @Override
@@ -44,10 +45,12 @@ public class MaintenanceListAdapter extends ArrayAdapter<MaintenanceRequest> {
         final ViewHolder holder = new ViewHolder();
 
         //Initialize the view
+        holder.title = (TextView) convertView.findViewById(R.id.maintenanceTitleLabel);
         holder.date = (TextView) convertView.findViewById(R.id.maintenanceDateLabel);
         holder.status = (TextView) convertView.findViewById(R.id.maintenanceStatusLabel);
 
         //Assign the data
+        holder.title.setText(maintenanceRequests.get(position).getRequestType() + " Request");
         holder.date.setText(maintenanceRequests.get(position).getTimeOfSubmission());
         holder.status.setText(maintenanceRequests.get(position).getStatus());
 
