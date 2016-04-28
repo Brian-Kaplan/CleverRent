@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
@@ -31,6 +32,7 @@ public class ChatActivity extends AppCompatActivity {
     EventsListAdapter.Event event = null;
     ClassifiedsListAdapter.ClassifiedPost post = null;
     LinearLayout chatTimeLineLayout = null;
+    ScrollView scrollView = null;
     ArrayList<ChatMessage> chatMessageList = null;
     ArrayList<ChatEvent> chatEventList = null;
 
@@ -41,6 +43,7 @@ public class ChatActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
+        scrollView = (ScrollView) findViewById(R.id.scrollView);
         chatTimeLineLayout = (LinearLayout) findViewById(R.id.chatTimeLineLayout);
         chatMessageList = new ArrayList<>();
         chatEventList = new ArrayList<>();
@@ -138,6 +141,7 @@ public class ChatActivity extends AppCompatActivity {
                             }
                             chatInstance.addChatMessage(chatMessage);
                             ref.setValue(chatInstance);
+                            scrollView.fullScroll(View.FOCUS_DOWN);
 
                             String notifRecipient = chatInstance.getChatOwner();
                             if (chatInstance.getChatOwner().equals(userName)) {
