@@ -67,11 +67,24 @@ public class ManageListingsActivity extends AppCompatActivity {
             }
         });
 
+        View interestView = findViewById(R.id.manageListingInterestedView);
+        interestView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ManageListingsActivity.this, ManageListingsRsvpActivity.class);
+                intent.putExtra("TYPE", "interest");
+                intent.putExtra("LISTING_TYPE", listingType);
+                intent.putExtra("LISTING_IDENTIFIER", listingIdentifier);
+                startActivity(intent);
+            }
+        });
+
         View rsvpView = findViewById(R.id.manageListingRSVPView);
         rsvpView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ManageListingsActivity.this, ManageListingsRsvpActivity.class);
+                intent.putExtra("TYPE", "rsvp");
                 intent.putExtra("LISTING_TYPE", listingType);
                 intent.putExtra("LISTING_IDENTIFIER", listingIdentifier);
                 startActivity(intent);

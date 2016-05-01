@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 public class ManageListingsRsvpActivity extends AppCompatActivity {
 
+    String type = null;
     String listingType = null;
     String listingIdentifier = null;
     ArrayList<ChatInstance> chatInstances = null;
@@ -39,21 +40,27 @@ public class ManageListingsRsvpActivity extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
 
         if (bundle != null){
+            type = (String) bundle.get("TYPE");
             listingIdentifier = (String) bundle.get("LISTING_IDENTIFIER");
             listingType = (String) bundle.get("LISTING_TYPE");
             chatInstances = new ArrayList<>();
-            Firebase ref = new Firebase(MainActivity.getFirebaseRootRef() + listingType + "/" + listingIdentifier + "/chatInstances");
+            String typePath = null;
+            if (type.equals("interest")){
+                typePath = "interestedList";
+            } else
+                typePath = "rsvpList";
+
+            Firebase ref = new Firebase(MainActivity.getFirebaseRootRef() + listingType + "/" + listingIdentifier + "/" + typePath);
             ref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     LinearLayout listLayout = (LinearLayout) findViewById(R.id.manageListingRSVPLayout);
-                    for (DataSnapshot chatInstanceSnapchot : dataSnapshot.getChildren()) {
-                        final ChatInstance chatInstance = chatInstanceSnapchot.getValue(ChatInstance.class);
-                        chatInstances.add(chatInstance);
+                    for (DataSnapshot personSnapshot : dataSnapshot.getChildren()) {
+                        final String person = personSnapshot.getValue(String.class);
 
                         View chatCellModel = getLayoutInflater().inflate(R.layout.manage_listings_chat_cell_model, null);
                         TextView chatCellName = (TextView) chatCellModel.findViewById(R.id.manageListingChatNameLabel);
-                        chatCellName.setText(chatInstance.getChatParticipant());
+                        chatCellName.setText(person);
                         listLayout.addView(chatCellModel);
                         chatCellModel.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -61,7 +68,7 @@ public class ManageListingsRsvpActivity extends AppCompatActivity {
                                 Intent intent = new Intent(ManageListingsRsvpActivity.this, ChatActivity.class);
                                 intent.putExtra("LISTING_TYPE", listingType);
                                 intent.putExtra("LISTING_IDENTIFIER", listingIdentifier);
-                                intent.putExtra("CHAT_IDENTIFIER", chatInstance.getIdentifier());
+                                intent.putExtra("CHAT_IDENTIFIER", person);
                                 startActivity(intent);
                             }
                         });
