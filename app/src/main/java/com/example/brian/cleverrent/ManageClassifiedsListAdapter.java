@@ -30,7 +30,6 @@ public class ManageClassifiedsListAdapter extends ArrayAdapter<ClassifiedPost> {
     private class ViewHolder
     {
         TextView title;
-        TextView interestCount;
     }
 
     @Override
@@ -46,12 +45,9 @@ public class ManageClassifiedsListAdapter extends ArrayAdapter<ClassifiedPost> {
 
         //Initialize the view
         holder.title = (TextView) convertView.findViewById(R.id.manageClassifiedsTitleLabel);
-        holder.interestCount = (TextView) convertView.findViewById(R.id.manageClassifiedsCountLabel);
 
         //Assign the data
         holder.title.setText(posts.get(position).getPostTitle());
-        holder.interestCount.setText(String.valueOf(posts.get(position).getInterestCount()));
-
 
         convertView.setMinimumHeight(200);
         return convertView;

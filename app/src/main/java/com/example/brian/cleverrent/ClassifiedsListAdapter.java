@@ -92,19 +92,18 @@ public class ClassifiedsListAdapter extends ArrayAdapter<ClassifiedsListAdapter.
         String postPrice;
         String imageUrl;
         String fullName;
-        String postPhone;
-        String postEmail;
+        String postOwner;
         String identifier;
         String postDate;
         HashMap<String, ChatInstance> chatInstances;
-        int interestCount;
+        ArrayList<String> interestedList;
 
         public ClassifiedPost() {}
 
         public ClassifiedPost(String postType, String postTitle,
                               String postDescription, String postCondition,
                               String postPrice, String imageUrl,
-                              String fullName, String identifier) {
+                              String fullName, String postOwner, String identifier) {
 
             this.postType = postType;
             this.postTitle = postTitle;
@@ -113,6 +112,7 @@ public class ClassifiedsListAdapter extends ArrayAdapter<ClassifiedsListAdapter.
             this.postPrice = postPrice;
             this.imageUrl = imageUrl;
             this.fullName = fullName;
+            this.postOwner = postOwner;
             this.identifier = identifier;
             Calendar now = Calendar.getInstance();
             Locale locale = Locale.getDefault();
@@ -120,7 +120,7 @@ public class ClassifiedsListAdapter extends ArrayAdapter<ClassifiedsListAdapter.
             int day = now.get(Calendar.DAY_OF_MONTH);
             this.chatInstances = new HashMap<>();
             this.postDate = month + " " + Integer.toString(day); //TODO Generate the date somehow
-            this.interestCount = 0;
+            this.interestedList = new ArrayList<>();
         }
 
         public HashMap<String, ChatInstance> getChatInstances() {
@@ -130,11 +130,20 @@ public class ClassifiedsListAdapter extends ArrayAdapter<ClassifiedsListAdapter.
             return chatInstances;
         }
 
+        public ArrayList<String> getInterestedList() {
+            if (interestedList == null) {
+                interestedList = new ArrayList<>();
+            }
+            return interestedList;
+        }
+
         public String getPostDate() { return postDate; }
 
         public String getPostType() {
             return postType;
         }
+
+        public String getPostOwner() {return postOwner; }
 
         public String getPostTitle() {return postTitle;}
 
@@ -145,8 +154,6 @@ public class ClassifiedsListAdapter extends ArrayAdapter<ClassifiedsListAdapter.
         }
 
         public String getIdentifier() {return identifier;}
-
-        public int getInterestCount() {return interestCount;}
 
         public String getPostDescription() {return postDescription;}
 

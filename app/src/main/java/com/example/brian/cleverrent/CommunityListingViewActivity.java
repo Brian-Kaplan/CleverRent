@@ -109,7 +109,7 @@ public class CommunityListingViewActivity extends AppCompatActivity {
                             showInterest.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    onShowInterest(displayName, listingType, listingIdentifier, userName, event);
+                                    onShowInterest(displayName, listingType, listingIdentifier, userName);
                                 }
                             });
 
@@ -127,7 +127,7 @@ public class CommunityListingViewActivity extends AppCompatActivity {
                                     ref.addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
-                                            onShowInterest(displayName, listingType, listingIdentifier, userName, event);
+                                            onShowInterest(displayName, listingType, listingIdentifier, userName);
                                         }
 
                                         @Override
@@ -181,7 +181,7 @@ public class CommunityListingViewActivity extends AppCompatActivity {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                             if (dataSnapshot.getValue() == null) {
-                                                createClassifiedChat(ref, displayName, userName, post);
+                                                onShowInterest(displayName, listingType, listingIdentifier, userName);
                                             }
                                             Intent intent = new Intent(CommunityListingViewActivity.this, ChatActivity.class);
                                             intent.putExtra("LISTING_TYPE", listingType);
@@ -211,28 +211,45 @@ public class CommunityListingViewActivity extends AppCompatActivity {
 
     }
 
-    private void createClassifiedChat(Firebase ref, String displayName, final String userName, final ClassifiedPost post) {
-        ChatInstance chatInstance = new ChatInstance(post.getIdentifier().split("-")[1], userName, userName);
-        post.getChatInstances().put(userName, chatInstance);
-        ref.getParent().setValue(post.getChatInstances());
-    }
-
-    private void onShowInterest (final String displayName, final String listingType, final String listingIdentifier, final String userName, final EventsListAdapter.Event event) {
+    private void onShowInterest (final String displayName, final String listingType, final String listingIdentifier, final String userName) {
         final Firebase ref = new Firebase(MainActivity.getFirebaseRootRef() + listingType+"/"+listingIdentifier);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Event event = dataSnapshot.getValue(Event.class);
+                Event event = null;
+                ClassifiedPost post = null;
+                if (listingType.equals("classifieds"))
+                    post = dataSnapshot.getValue(ClassifiedPost.class);
+                else
+                    event = dataSnapshot.getValue(Event.class);
+
+
+
                 if (dataSnapshot.child("chatInstances").child(userName).getValue() == null) {
-                    ChatInstance chatInstance = new ChatInstance(event.getEventOwner(), userName, userName);
-                    ChatEvent expressInterest = new ChatEvent("Friday, March 25", displayName.split(" ")[0] + " Expressed Interest");
-                    chatInstance.addChatEvent(expressInterest);
-                    event.getChatInstances().put(userName, chatInstance);
-                    event.getInterestedList().add(userName);
-                    ref.child("chatInstances").setValue(event.getChatInstances());
-                    ref.child("interestedList").setValue(event.getInterestedList());
-                    NotificationObject notificationObject = new NotificationObject(displayName, "Events: " + event.getEventTitle(), "CHAT", event.getEventOwner(), chatInstance, listingType, listingIdentifier);
-                    postChatNotification(notificationObject);
+
+                    if (event != null) {
+                        ChatInstance chatInstance = new ChatInstance(event.getEventOwner(), userName, userName);
+                        ChatEvent expressInterest = new ChatEvent("Friday, March 25", displayName.split(" ")[0] + " Expressed Interest");
+                        chatInstance.addChatEvent(expressInterest);
+                        event.getChatInstances().put(userName, chatInstance);
+                        event.getInterestedList().add(userName);
+                        ref.child("chatInstances").setValue(event.getChatInstances());
+                        ref.child("interestedList").setValue(event.getInterestedList());
+                        NotificationObject notificationObject = new NotificationObject(displayName, "Events: " + event.getEventTitle(), "CHAT", event.getEventOwner(), chatInstance, listingType, listingIdentifier);
+                        postChatNotification(notificationObject);
+                    }
+
+                    if (post != null) {
+                        ChatInstance chatInstance = new ChatInstance(post.getPostOwner(), userName, userName);
+                        ChatEvent expressInterest = new ChatEvent("Friday, March 25", displayName.split(" ")[0] + " Expressed Interest");
+                        chatInstance.addChatEvent(expressInterest);
+                        post.getChatInstances().put(userName, chatInstance);
+                        post.getInterestedList().add(userName);
+                        ref.child("chatInstances").setValue(post.getChatInstances());
+                        ref.child("interestedList").setValue(post.getInterestedList());
+                        NotificationObject notificationObject = new NotificationObject(displayName, "Classifieds: " + post.getPostTitle(), "CHAT", post.getPostOwner(), chatInstance, listingType, listingIdentifier);
+                        postChatNotification(notificationObject);
+                    }
                 }
             }
 

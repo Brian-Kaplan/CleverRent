@@ -80,6 +80,11 @@ public class ManageListingsActivity extends AppCompatActivity {
         });
 
         View rsvpView = findViewById(R.id.manageListingRSVPView);
+        View bottomBorder = findViewById(R.id.bottom);
+        if (listingType.equals("classifieds")) {
+            rsvpView.setVisibility(View.INVISIBLE);
+            bottomBorder.setVisibility(View.INVISIBLE);
+        }
         rsvpView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

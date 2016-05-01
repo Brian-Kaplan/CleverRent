@@ -138,7 +138,7 @@ public class ClassifiedsCreateNewActivity extends AppCompatActivity {
                         type.getSelectedItem().toString(), title.getText().toString(),
                         desc.getText().toString(), condition.getSelectedItem().toString(),
                         price.getText().toString(), encodedImage,
-                        displayName, postIdentifier
+                        displayName, userName, postIdentifier
                 );
 
                 Firebase firebaseRef = new Firebase(MainActivity.getFirebaseRootRef() + "classifieds/"+postIdentifier);

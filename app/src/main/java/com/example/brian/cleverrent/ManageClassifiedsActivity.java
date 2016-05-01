@@ -79,8 +79,9 @@ public class ManageClassifiedsActivity extends AppCompatActivity {
                 classifiedsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> myAdapter, View myView, int position, long mylng) {
                         Intent intent = new Intent(ManageClassifiedsActivity.this, ManageListingsActivity.class);
-                        intent.putExtra("LISTING_TYPE", "classifiedss");
+                        intent.putExtra("LISTING_TYPE", "classifieds");
                         intent.putExtra("LISTING_TITLE", classifiedPosts.get(position).getPostTitle());
+                        intent.putExtra("INTEREST_LIST_SIZE", String.valueOf(classifiedPosts.get(position).getInterestedList().size()));
                         startActivity(intent);
                         overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
                     }
