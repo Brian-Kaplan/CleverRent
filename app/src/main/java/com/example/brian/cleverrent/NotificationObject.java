@@ -60,7 +60,7 @@ public class NotificationObject {
     public boolean equals(Object o) {
         if (o instanceof NotificationObject){
             NotificationObject temp = (NotificationObject) o;
-            if (this.getTitle().equals(temp.getTitle())){
+            if (this.getTitle().equals(temp.getTitle()) && this.getDescription().equals(temp.getDescription())){
                 return true;
             }
         }
