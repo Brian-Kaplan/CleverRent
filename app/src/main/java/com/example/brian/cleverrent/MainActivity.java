@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -37,6 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Firebase firebaseAuthRef = null;
     private SharedPreferences sharedPref = null;
     private static String fireBaseRootRef = "https://clever-rent.firebaseio.com/";
+    private static HashMap<String, Bitmap> bitmapCache = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -430,6 +433,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SimpleDateFormat dateFormatter = new SimpleDateFormat("M-d-y H:mm");
         time = dateFormatter.format(now);
         return time;
+    }
+
+    public static Bitmap getBitmap(String key) {
+        return bitmapCache.get(key);
+    }
+
+    public static boolean putBitmap(String key, Bitmap bitmap){
+        if (!bitmapCache.containsKey(key)) {
+            bitmapCache.put(key, bitmap);
+            return true;
+        }
+        return false;
     }
 
     public static String getFirebaseRootRef() {

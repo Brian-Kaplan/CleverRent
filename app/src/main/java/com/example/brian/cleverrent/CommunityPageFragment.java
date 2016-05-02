@@ -29,7 +29,9 @@ import java.util.List;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class CommunityPageFragment extends Fragment {
     public static final String ARG_PAGE = "ARG_PAGE";
-
+    private final ArrayList<Event> eventList = new ArrayList<>();
+    private final ArrayList<ClassifiedPost> classifiedsList = new ArrayList<>();
+    private final ArrayList<Facility> facilitiesList = new ArrayList<>();
     private int mPage;
 
     public static CommunityPageFragment newInstance(int page) {
@@ -112,17 +114,17 @@ public class CommunityPageFragment extends Fragment {
     }
 
     private void setFacilitesListAdapter(final View view){
+        facilitiesList.clear();
         Firebase firebaseRef = new Firebase(MainActivity.getFirebaseRootRef() + "facility/");
         firebaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<Facility> facilities = new ArrayList<Facility>();
                 for (DataSnapshot facility : dataSnapshot.getChildren()) {
                     Facility fc = facility.getValue(Facility.class);
-                    facilities.add(fc);
+                    facilitiesList.add(fc);
                 }
                 ListView lv = (ListView) view.findViewById(R.id.facilitiesListView);
-                FacilitiesListAdapter adapter = new FacilitiesListAdapter(getActivity(), facilities);
+                FacilitiesListAdapter adapter = new FacilitiesListAdapter(getActivity(), facilitiesList);
                 lv.setAdapter(adapter);
             }
 
@@ -134,8 +136,7 @@ public class CommunityPageFragment extends Fragment {
     }
 
     private void setEventsListAdapter(final View view){
-
-        final ArrayList<Event> eventList = new ArrayList<>();
+        eventList.clear();
         Firebase firebaseRef = new Firebase(MainActivity.getFirebaseRootRef() + "events/");
         firebaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -161,21 +162,20 @@ public class CommunityPageFragment extends Fragment {
     }
 
     private void setClassifiedsListAdapter(final View view){
-
-        final ArrayList<ClassifiedPost> postList = new ArrayList<>();
+        classifiedsList.clear();
         Firebase firebaseRef = new Firebase(MainActivity.getFirebaseRootRef() + "classifieds/");
         firebaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     ClassifiedPost post = postSnapshot.getValue(ClassifiedPost.class);
-                    if(!postList.contains(post)) {
-                        postList.add(post);
+                    if(!classifiedsList.contains(post)) {
+                        classifiedsList.add(post);
                     }
                 }
                 ListView lv = (ListView) view.findViewById(R.id.classifiedsListView);
                 if (getActivity() != null ) {
-                    ClassifiedsListAdapter adapter = new ClassifiedsListAdapter(getActivity(), postList);
+                    ClassifiedsListAdapter adapter = new ClassifiedsListAdapter(getActivity(), classifiedsList);
                     lv.setAdapter(adapter);
                 }
             }

@@ -56,23 +56,68 @@ public class ClassifiedsListAdapter extends ArrayAdapter<ClassifiedsListAdapter.
         holder.postPrice.setText(myPost.postPrice);
         holder.postDate.setText(myPost.postDate);
         holder.postTitle.setText(myPost.postTitle);
+
         String encodedImage = myPost.getImageUrl();
         if (encodedImage != null) {
             byte[]b = null;
+            Bitmap bitmap = null;
             try {
-                b = Base64.decode(encodedImage, Base64.DEFAULT);
+                bitmap = MainActivity.getBitmap(myPost.getIdentifier());
+                if (bitmap == null) {
+                    b = Base64.decode(encodedImage, Base64.DEFAULT);
+                    bitmap = decodeSampledBitmapFromByteArray(b, 800, 600);
+                    MainActivity.putBitmap(myPost.getIdentifier(), bitmap);
+                }
             } catch (Exception e) {
                 Bitmap bm = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.no_image_available);
                 holder.imageThumb.setImageBitmap(bm);
                 return convertView;
             }
-            Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
             holder.imageThumb.setImageBitmap(bitmap);
         } else {
             Bitmap bm = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.no_image_available);
             holder.imageThumb.setImageBitmap(bm);
         }
         return convertView;
+    }
+
+    private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+    }
+
+    private Bitmap decodeSampledBitmapFromByteArray(byte[] b, int reqWidth, int reqHeight) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+//        BitmapFactory.decodeResource(res, resId, options);
+        BitmapFactory.decodeByteArray(b, 0, b.length, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+//        return BitmapFactory.decodeResource(res, resId, options);
+        return BitmapFactory.decodeByteArray(b, 0, b.length, options);
     }
 
     private class ClassifiedsViewHolder
