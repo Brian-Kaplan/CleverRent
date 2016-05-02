@@ -110,7 +110,6 @@ public class FacilitiesListAdapter extends ArrayAdapter<FacilitiesListAdapter.Fa
 
         // Calculate inSampleSize
         options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
 //        return BitmapFactory.decodeResource(res, resId, options);
