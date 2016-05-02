@@ -10,16 +10,16 @@
             android:title="Community" />
         <item android:id="@+id/nav_local" android:icon="@mipmap/ic_whatshot_black_24dp"
             android:title="Local Deals" />
-        <item android:id="@+id/nav_hub" android:icon="@android:drawable/ic_menu_compass"
+        <item android:id="@+id/nav_hub" android:icon="@drawable/ic_group_work_black_24dp"
             android:title="Hub" />
     </group>
 
     <group android:id="@+id/group2">
             <item android:id="@+id/nav_notification" android:icon="@mipmap/ic_notifications_active_black_24dp"
                 android:title="Notifications" />
-            <item android:id="@+id/nav_contact" android:icon="@mipmap/ic_call_black_24dp"
+            <item android:id="@+id/nav_contact" android:icon="@drawable/ic_chat_black_24dp"
                 android:title="Contact Us" />
-            <item android:id="@+id/nav_logout" android:icon="@mipmap/ic_call_black_24dp"
+            <item android:id="@+id/nav_logout" android:icon="@drawable/ic_keyboard_backspace_black_24dp"
                 android:title="Log Out" />
     </group>
 </menu>
